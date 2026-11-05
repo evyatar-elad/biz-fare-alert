@@ -122,10 +122,27 @@ def main(dry_run: bool = False) -> int:
         return 0
     m = imaplib.IMAP4_SSL("imap.gmail.com")
     m.login(user, pw.replace(" ", ""))
-    m.select("INBOX")
-    _, data = m.search(None, "UNSEEN")
-    ids = data[0].split()[:MAX_PER_RUN]
-    print(f"newsletters: {len(ids)} unread")
+    # INBOX includes Gmail's Promotions/Updates tabs. Spam is a separate folder; find it by
+    # its \\Junk flag (its name depends on the account language).
+    folders = ["INBOX"]
+    _, lst = m.list()
+    for row in lst or []:
+        row = row.decode(errors="replace")
+        if "\\Junk" in row:
+            folders.append(row.rsplit(' "/" ', 1)[-1].strip())
+    hits = []
+    for folder in folders:
+        m.select(folder)
+        _, data = m.search(None, "UNSEEN")
+        ids = data[0].split()[:MAX_PER_RUN]
+        print(f"newsletters: {folder}: {len(ids)} unread")
+        hits += read_folder(m, ids, dry_run)
+    m.logout()
+    finish(hits, user, dry_run)
+    return 0
+
+
+def read_folder(m, ids, dry_run: bool) -> list[dict]:
     hits = []
     for i in ids:
         _, raw = m.fetch(i, "(BODY.PEEK[])")
@@ -140,9 +157,12 @@ def main(dry_run: bool = False) -> int:
                          "msgid": (msg.get("Message-ID") or "").strip("<>")})
         if not dry_run:
             m.store(i, "+FLAGS", "\\Seen")
-    m.logout()
+    return hits
+
+
+def finish(hits: list[dict], user: str, dry_run: bool) -> None:
     if not hits:
-        return 0
+        return
     hits.sort(key=lambda h: not h["c"]["israel"])
     cards = ""
     for h in hits:
@@ -164,7 +184,6 @@ def main(dry_run: bool = False) -> int:
     head = (f'<div style="{notify.FONT}font-size:20px;font-weight:bold;color:{notify.INK};margin:0 4px 12px">'
             f'📬 מבצעי ביזנס בניוזלטרים ({len(hits)})</div>')
     notify._send(f"📬 מבצעי ביזנס בניוזלטרים: {len(hits)}", notify.page(head + cards, hits[0]["subject"]), dry_run)
-    return 0
 
 
 if __name__ == "__main__":
