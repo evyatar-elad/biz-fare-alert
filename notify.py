@@ -190,6 +190,10 @@ def deal_card(d: dict) -> str:
         flights = (f'<div style="margin-top:14px;color:{MUTED};font-size:14px">'
                    "פרטי הטיסות לא נבדקו בריצה הזו. אפשר לראות אותם בקישורים.</div>")
     sisters = sorted(next((g for g in C.SISTER_CITIES if x in g), {x}) - {x})
+    eco = d.get("economy")
+    eco_row = (f'<tr><td style="padding:4px 0;color:{MUTED}">בתיירים</td><td style="padding:4px 0">'
+               f'{ltr(f"${eco:,.0f}")} באותם תאריכים · הביזנס יקר פי {ltr(f"{d["price"] / eco:.1f}")}</td></tr>'
+               ) if eco else ""
     src = ("Kiwi.com" + (" (חיפוש ממוקד בחברה)" if d.get("airline_focus") else "")) if d.get("src") == "kiwi" else "Google Flights"
     sep = (" <b style='color:#b45309'>· צירוף של כמה כרטיסים נפרדים (באחריותך אם טיסה מתעכבת)</b>"
            if det_any(d).get("separate_tickets") else "")
@@ -237,7 +241,7 @@ def deal_card(d: dict) -> str:
          <td style="padding:4px 0">{d["similar_dates"]} תאריכי יציאה בחודש הזה במחיר דומה</td></tr>
      <tr><td style="padding:4px 0;color:{MUTED};vertical-align:top">למה</td>
          <td style="padding:4px 0">{html.escape("; ".join(d["reasons"]))}</td></tr>
-     {src_row}{lca}{open_jaw}
+     {eco_row}{src_row}{lca}{open_jaw}
    </table>
  </td></tr>
  <tr><td style="padding:0 20px">{flights}</td></tr>
@@ -325,7 +329,7 @@ def send_heartbeat(state: dict, hist: dict, dry_run: bool = False) -> bool:
 SAMPLE = {
     "route": "TLV-PEK-14", "origin": "TLV", "dest": "PEK", "dur": 14, "month": "2027-03",
     "dep": "2027-03-10", "ret": "2027-03-24", "price": 1200, "effective": 1200, "ref": 4300,
-    "reasons": ["[בדיקה, לא מחיר אמיתי] 72% מתחת למחיר הרגיל"], "similar_dates": 4,
+    "reasons": ["[בדיקה, לא מחיר אמיתי] 72% מתחת למחיר הרגיל"], "similar_dates": 4, "economy": 980,
     "details": {"price": 1200,
         "out": {"stops": 1, "via": ["GYD"], "airlines": ["Azerbaijan Airlines"], "hours": 13.5, "mixed_cabin": False,
                 "legs": [{"from": "TLV", "to": "GYD", "airline": "Azerbaijan Airlines", "flight": "J2 82", "aircraft": "Airbus A320neo", "seat": None, "hours": 3.3},

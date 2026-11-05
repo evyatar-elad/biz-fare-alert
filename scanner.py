@@ -182,6 +182,14 @@ def calendar(t: dict) -> list[dict] | None:
     return [x for x in d.get("dates", []) if x.get("price")]
 
 
+def economy_gf(origin: str, dest: str, dep: str, ret: str) -> float | None:
+    dur = (date.fromisoformat(ret) - date.fromisoformat(dep)).days
+    d = fli(["dates", origin, dest, "--from", dep, "--to", dep, "--round", "-d", str(dur),
+             "--class", "ECONOMY", *airline_args(origin, dest), *stops_arg(dest)])
+    ps = [x["price"] for x in d.get("dates", []) if x.get("price") and x.get("departure_date") == dep]
+    return min(ps) if ps else None
+
+
 def details(origin: str, dest: str, dep: str, ret: str) -> dict | None:
     d = fli(["flights", origin, dest, dep, "--return", ret, "--class", "BUSINESS", "--sort", "CHEAPEST",
              *airline_args(origin, dest), *stops_arg(dest)])
@@ -362,6 +370,7 @@ def main() -> int:
     new_deals: list[dict] = []
     detail_budget = C.MAX_DETAIL_LOOKUPS
     kc, kiwi_off = None, False
+    econ_budget = C.MAX_ECONOMY_LOOKUPS
 
     try:
         for t in todo:
@@ -433,6 +442,22 @@ def main() -> int:
                     if vias & C.BANNED_AIRPORTS:
                         print(f"    מדלג: עובר דרך {sorted(vias & C.BANNED_AIRPORTS)}")
                         continue
+                if econ_budget > 0:
+                    econ_budget -= 1
+                    try:
+                        if dl.get("src") == "kiwi":
+                            time.sleep(C.KIWI_PACE_SECONDS)
+                            kc = kc or kiwi.Client()
+                            eco = kiwi.economy_price(kc, dl["origin"], dl["dest"], dl["dep"], dl["ret"])
+                        else:
+                            time.sleep(C.PACE_SECONDS)
+                            eco = economy_gf(dl["origin"], dl["dest"], dl["dep"], dl["ret"])
+                        run["calls"] += 1
+                    except kiwi.KiwiError:
+                        eco = None
+                    dl["economy"] = eco
+                    if eco and dl["price"] <= eco * C.BIZ_TO_ECO_RATIO:
+                        dl["reasons"].append(f"ביזנס רק פי {dl['price'] / eco:.1f} ממחיר התיירים")
                 new_deals.append(dl)
     except Blocked as e:
         run["blocked"] = True

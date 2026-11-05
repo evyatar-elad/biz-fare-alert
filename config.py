@@ -194,6 +194,10 @@ PACE_SECONDS = 30
 BACKOFF_HOURS = 4
 # Detail lookups (airline, stops) per run.
 MAX_DETAIL_LOOKUPS = 2  # each one is several requests to Google
+# Economy price for the same dates, shown next to each deal (one request per deal).
+MAX_ECONOMY_LOOKUPS = 4
+# Business at most this many times the economy price = note it as a reason too.
+BIZ_TO_ECO_RATIO = 1.6
 # Do not re-alert the same route and month unless the price dropped by this much.
 REALERT_DROP = 0.07
 REALERT_DAYS = 14

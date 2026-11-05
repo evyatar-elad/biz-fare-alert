@@ -128,3 +128,12 @@ def details_from_itin(it: dict) -> dict:
     return {"price": it.get("price"), "out": seg_info(it.get("outbound") or {}),
             "ret": seg_info(it.get("inbound") or it.get("return") or {}),
             "separate_tickets": len(tickets) > 1, "booking_url": it.get("bookingUrl")}
+
+
+def economy_price(client: Client, origin: str, dest: str, dep: str, ret: str) -> float | None:
+    its = client.search(flyFrom=origin, flyTo=dest, departureDate=ddmmyyyy(dep), returnDate=ddmmyyyy(ret),
+                        cabinClass="M", currency="USD", adults=1,
+                        exclude_airlines=",".join(C.EXCLUDE_AIRLINES),
+                        exclude_stopover_airports=",".join(sorted(C.BANNED_AIRPORTS)))
+    ps = [float(i["price"]) for i in its if i.get("price")]
+    return min(ps) if ps else None
