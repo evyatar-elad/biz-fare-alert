@@ -127,6 +127,22 @@ SISTER_CITIES = [
     {"RAK", "CMN"}, {"GRU", "EZE"},
 ]
 
+# Hubs whose airline sells good connections east, but Google Flights does NOT show
+# the through itinerary (found 6/11: Uzbekistan Airways TLV-TAS and TAS-BKK each
+# appear on Google, TLV-TAS-BKK does not; their own site shows captcha to bots).
+# Idea: price both legs on Google (that airline only) and add them up per date.
+# Tested 6/11 with fli: Google returns HY flight 302 TLV-TAS WITHOUT a price
+# (also with country IL), no HY business at all, and empty HY calendars. So it
+# does not work today and HUBS is disabled. Code paths stay (they are no-ops).
+HUBS: dict = {}
+HUBS_DISABLED = {
+    "TAS": {"airline": "HY", "name": "Uzbekistan Airways",
+            "site": "https://www.uzairways.com/en",
+            "dests": ["BKK", "KUL", "SIN", "DEL", "BOM", "ICN", "NRT", "PEK", "PVG", "HKG",
+                      "SGN", "HAN", "DPS", "MLE", "CMB"]},
+}
+HUB_MAX_AGE_DAYS = 4  # both legs must have been priced within this many days
+
 # Destinations searched only as nonstop from Israel (no connection via third countries).
 NONSTOP_ONLY = {"CAI"}
 

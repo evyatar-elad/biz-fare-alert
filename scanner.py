@@ -63,7 +63,7 @@ def build_tasks(only: set[str] | None) -> list[dict]:
         for code, (name, region, prio) in C.DESTINATIONS.items():
             if only and code not in only:
                 continue
-            if origin == "LCA" and C.LCA_ONLY_PRIORITY and not prio:
+            if origin == "LCA" and ((C.LCA_ONLY_PRIORITY and not prio) or code in C.HUBS):
                 continue
             kind = "LCA" if origin == "LCA" else ("priority" if prio else "normal")
             base = {"origin": origin, "dest": code, "dur": C.REGIONS[region]["dur"],
@@ -86,6 +86,27 @@ def build_tasks(only: set[str] | None) -> list[dict]:
                 tasks.append({**base, "key": f"{origin}-{code}-far{k}",
                               "from": anchor.isoformat(), "to": anchor.isoformat(),
                               "due_h": C.DUE_HOURS[kind] * C.FAR_DUE_FACTOR})
+                k += 1
+    # hub legs: TAS -> east, that hub airline only (TLV -> TAS is a normal destination)
+    for hub, h in C.HUBS.items():
+        for code in h["dests"]:
+            if only and code not in only and hub not in only:
+                continue
+            region = C.DESTINATIONS.get(code, ("", "asia", False))[1]
+            base = {"origin": hub, "dest": code, "dur": C.REGIONS[region]["dur"], "region": region, "prio": False}
+            start, w = first, 0
+            while start <= dense_end:
+                end = min(start + timedelta(days=C.WINDOW_DAYS - 1), dense_end)
+                tasks.append({**base, "key": f"{hub}-{code}-d{w}", "from": start.isoformat(),
+                              "to": end.isoformat(), "due_h": C.DUE_HOURS["normal"]})
+                start, w = end + timedelta(days=1), w + 1
+            k = 0
+            while True:
+                anchor = dense_end + timedelta(days=1 + k * C.FAR_STEP_DAYS + shift)
+                if anchor > end_all:
+                    break
+                tasks.append({**base, "key": f"{hub}-{code}-far{k}", "from": anchor.isoformat(),
+                              "to": anchor.isoformat(), "due_h": C.DUE_HOURS["normal"] * C.FAR_DUE_FACTOR})
                 k += 1
     return tasks
 
@@ -124,10 +145,18 @@ def stops_arg(dest: str) -> list[str]:
     return ["--stops", "0"] if dest in C.NONSTOP_ONLY else []
 
 
+def airline_args(origin: str, dest: str) -> list[str]:
+    """Legs to/from a hub: only the hub airline. Everything else: all airlines minus excluded."""
+    hub = origin if origin in C.HUBS else dest if dest in C.HUBS else None
+    if hub:
+        return ["--airlines", C.HUBS[hub]["airline"]]
+    return ["--exclude-airlines", ",".join(C.EXCLUDE_AIRLINES)]
+
+
 def calendar(t: dict) -> list[dict] | None:
     d = fli(["dates", t["origin"], t["dest"], "--from", t["from"], "--to", t["to"],
              "--round", "-d", str(t["dur"]), "--class", "BUSINESS",
-             "--exclude-airlines", ",".join(C.EXCLUDE_AIRLINES), *stops_arg(t["dest"])])
+             *airline_args(t["origin"], t["dest"]), *stops_arg(t["dest"])])
     if not d.get("success"):
         print(f"  ! {t['key']}: {d.get('error')}")
         return None
@@ -136,7 +165,7 @@ def calendar(t: dict) -> list[dict] | None:
 
 def details(origin: str, dest: str, dep: str, ret: str) -> dict | None:
     d = fli(["flights", origin, dest, dep, "--return", ret, "--class", "BUSINESS", "--sort", "CHEAPEST",
-             "--exclude-airlines", ",".join(C.EXCLUDE_AIRLINES), *stops_arg(dest)])
+             *airline_args(origin, dest), *stops_arg(dest)])
     flights = d.get("flights") or d.get("results") or []
     if not d.get("success") or not flights:
         return None
@@ -168,7 +197,32 @@ def details(origin: str, dest: str, dep: str, ret: str) -> dict | None:
 
 # ---------------------------------------------------------------- deal logic
 def route_key(t: dict) -> str:
-    return f"{t['origin']}-{t['dest']}-{t['dur']}"
+    return f"{t['origin']}-{t['dest']}-{t['dur']}" + (f"-{t['via']}" if t.get("via") else "")
+
+
+# ---------------------------------------------------------------- hub combinations
+def remember_cal(state: dict, t: dict, pts: list[dict], today: str) -> None:
+    """Keep per-date prices of hub legs (TLV->hub, hub->X) to combine them."""
+    if not (t["origin"] in C.HUBS or t["dest"] in C.HUBS):
+        return
+    cal = state.setdefault("cal", {}).setdefault(f"{t['origin']}-{t['dest']}", {})
+    for p in pts:
+        cal[p["departure_date"]] = [p["price"], p["return_date"], today]
+    for d in [d for d in cal if d < today]:
+        del cal[d]
+
+
+def hub_points(state: dict, hub: str, dest: str, today: str) -> list[dict]:
+    """TLV->hub + hub->dest on the same day (Uzbekistan Airways connects the same evening)."""
+    cals = state.get("cal", {})
+    a, b = cals.get(f"TLV-{hub}", {}), cals.get(f"{hub}-{dest}", {})
+    fresh = lambda row: (date.fromisoformat(today) - date.fromisoformat(row[2])).days <= C.HUB_MAX_AGE_DAYS
+    pts = []
+    for d, rb in b.items():
+        ra = a.get(d)
+        if ra and fresh(ra) and fresh(rb):
+            pts.append({"departure_date": d, "return_date": rb[1], "price": ra[0] + rb[0], "parts": [ra[0], rb[0]]})
+    return pts
 
 
 def update_history(hist: dict, rk: str, points: list[dict], today: str) -> None:
@@ -209,8 +263,10 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
     for month, ps in by_month.items():
         best = min(ps, key=lambda p: p["price"])
         price = best["price"] + extra
-        if t["origin"] == "LCA":
+        if t["origin"] == "LCA" or t.get("via"):
             ref, why = reference(hist, tlv_rk, month, "", [])  # TLV usual price, incl. today
+            if t.get("via"):
+                why = "מחיר רגיל בטיסה מתל אביב, " + why
         else:
             ref, why = reference(hist, rk, month, today, [p["price"] for p in points])
         reasons = []
@@ -224,7 +280,7 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
                 "route": rk, "origin": t["origin"], "dest": t["dest"], "dur": t["dur"],
                 "month": month, "dep": best["departure_date"], "ret": best["return_date"],
                 "price": best["price"], "effective": price, "ref": ref, "reasons": reasons,
-                "similar_dates": same,
+                "similar_dates": same, "via": t.get("via"), "parts": best.get("parts"),
             })
     return deals
 
@@ -295,12 +351,26 @@ def main() -> int:
             run["ok"] += 1
             deals = find_deals(t, pts, hist, today)
             update_history(hist, route_key(t), pts, today)
+            remember_cal(state, t, pts, today)
+            hub = t["origin"] if t["origin"] in C.HUBS else t["dest"] if t["dest"] in C.HUBS else None
+            if hub:
+                targets = [t["dest"]] if t["origin"] == hub else C.HUBS[hub]["dests"]
+                for x in targets:
+                    vp = hub_points(state, hub, x, today)
+                    if not vp:
+                        continue
+                    region = C.DESTINATIONS.get(x, ("", "asia", False))[1]
+                    vt = {"origin": "TLV", "dest": x, "dur": C.REGIONS[region]["dur"], "region": region, "via": hub}
+                    vdeals = find_deals(vt, vp, hist, today)
+                    update_history(hist, route_key(vt), vp, today)
+                    print(f"    דרך {hub} ל-{x}: {len(vp)} תאריכים משולבים, הזול ${min(p['price'] for p in vp):,.0f}, מציאות: {len(vdeals)}")
+                    deals += vdeals
             lo = min(p["price"] for p in pts)
             print(f"  {t['key']} {t['from']}..{t['to']}: {len(pts)} תאריכים, הזול ${lo:,.0f}, מציאות: {len(deals)}")
             for dl in deals:
                 if not is_new(dl, alerts):
                     continue
-                if detail_budget > 0:
+                if detail_budget > 0 and not dl.get("via"):
                     detail_budget -= 1
                     time.sleep(C.PACE_SECONDS)
                     run["calls"] += 1
