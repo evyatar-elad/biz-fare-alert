@@ -22,6 +22,10 @@ PROMO = ["sale", "offer", "deal", "promo", "discount", "save", "special fare", "
          "from usd", "from €", "%", "מבצע", "הנחה", "מחיר מיוחד", "flash"]
 ISRAEL = ["tel aviv", "israel", "tlv", "תל אביב", "ישראל"]
 MAX_PER_RUN = 60
+CONFIRM = re.compile(r"(confirm|verify|activate|validate|double opt|אישור|אשר)", re.I)
+# Free deal-site feeds that load without a bot check (Secret Flying is behind Cloudflare).
+FEEDS = {"Fly4free": "https://www.fly4free.com/feed/"}
+FEED_WORDS = ["business", "tel aviv", "israel", "larnaca", "cyprus", "ביזנס"]
 
 
 def dec(s) -> str:
@@ -67,7 +71,51 @@ def classify(subject: str, text: str) -> dict | None:
     return {"biz": biz, "promo": promo, "israel": any(w in low for w in ISRAEL)}
 
 
+def check_feeds(dry_run: bool) -> None:
+    """RSS of deal sites: new posts that mention business class or Israel/Cyprus."""
+    import json
+    import urllib.request
+    from pathlib import Path
+    seen_f = Path(__file__).parent / "data" / "feeds_seen.json"
+    try:
+        seen = set(json.loads(seen_f.read_text()))
+    except (FileNotFoundError, ValueError):
+        seen = set()
+    first_run = not seen
+    hits = []
+    for name, url in FEEDS.items():
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "biz-fare-alert (personal RSS reader)"})
+            xml = urllib.request.urlopen(req, timeout=30).read().decode("utf-8", "replace")
+        except Exception as e:
+            print(f"feed {name}: {e}")
+            continue
+        for item in re.findall(r"(?s)<item>(.*?)</item>", xml):
+            link = (re.search(r"<link>(.*?)</link>", item) or [None, ""])[1].strip()
+            title = html.unescape((re.search(r"(?s)<title>(.*?)</title>", item) or [None, ""])[1]).strip()
+            desc = html.unescape(re.sub(r"<[^>]+>", " ", (re.search(r"(?s)<description>(.*?)</description>", item) or [None, ""])[1]))
+            if not link or link in seen:
+                continue
+            seen.add(link)
+            low = (title + " " + desc).lower()
+            if not first_run and any(w in low for w in FEED_WORDS):
+                hits.append((name, title, link))
+    seen_f.parent.mkdir(exist_ok=True)
+    seen_f.write_text(json.dumps(sorted(seen)[-500:]))
+    print(f"feeds: {len(hits)} matching new posts")
+    if hits:
+        rows = "".join(
+            f'<tr><td style="padding:8px 0;border-top:1px solid {notify.LINE};{notify.FONT}font-size:14px">'
+            f'<span style="color:{notify.MUTED}">{html.escape(n)}</span><br>{notify.ltr(t)}<br>'
+            f'{notify.button("לפוסט", l)}</td></tr>' for n, t, l in hits)
+        body = (f'<div style="{notify.FONT}font-size:20px;font-weight:bold;margin:0 4px 12px">📰 דילים מאתרי מציאות</div>'
+                f'<table role="presentation" width="100%" style="background:#fff;border:1px solid {notify.LINE};'
+                f'border-radius:12px;padding:6px 14px">{rows}</table>')
+        notify._send(f"📰 דילים מאתרי מציאות: {len(hits)}", notify.page(body, hits[0][1]), dry_run)
+
+
 def main(dry_run: bool = False) -> int:
+    check_feeds(dry_run)
     user, pw = os.environ.get("NEWS_USER"), os.environ.get("NEWS_PASS")
     if not (user and pw):
         print("newsletters: no NEWS_USER/NEWS_PASS, skipping")
@@ -85,6 +133,8 @@ def main(dry_run: bool = False) -> int:
         subj, frm = dec(msg.get("Subject")), dec(msg.get("From"))
         text = body_text(msg)
         c = classify(subj, text)
+        if not c and CONFIRM.search(subj):
+            c = {"biz": [], "promo": [], "israel": False, "confirm": True}
         if c:
             hits.append({"from": frm, "subject": subj, "c": c, "snip": snippet(text, c["biz"]),
                          "msgid": (msg.get("Message-ID") or "").strip("<>")})
@@ -98,6 +148,8 @@ def main(dry_run: bool = False) -> int:
     for h in hits:
         link = (f"https://mail.google.com/mail/u/?authuser={quote(user)}#search/rfc822msgid%3A{quote(h['msgid'])}"
                 if h["msgid"] else "https://mail.google.com/")
+        if h["c"].get("confirm"):
+            h["snip"] = "מייל אישור הרשמה. צריך להיכנס לתיבה וללחוץ על הקישור שבו."
         tag = (' <span style="background:#d1fae5;color:#047857;font-size:12px;padding:2px 8px;border-radius:10px">'
                'מזכיר את ישראל</span>') if h["c"]["israel"] else ""
         cards += (
