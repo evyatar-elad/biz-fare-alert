@@ -2,7 +2,7 @@ name: scan
 
 on:
   schedule:
-    - cron: "23 */2 * * *"   # every 2 hours
+    - cron: "23 */8 * * *"   # every 8 hours (private repo: ~2,000 free minutes/month). If public: "23 */2 * * *"
   workflow_dispatch:
     inputs:
       minutes:
