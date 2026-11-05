@@ -143,6 +143,23 @@ HUBS_DISABLED = {
 }
 HUB_MAX_AGE_DAYS = 4  # both legs must have been priced within this many days
 
+# Second source: Kiwi.com public MCP (kiwi.py). One request = cheapest business round
+# trip leaving within a KIWI_WINDOW_DAYS window, any stay within KIWI_NIGHTS.
+KIWI_ENABLED = True
+KIWI_WINDOW_DAYS = 30
+KIWI_NIGHTS = {"europe": (3, 10), "near": (3, 10), "asia": (7, 21), "far": (7, 21)}
+KIWI_PACE_SECONDS = 10
+DORMANT_AFTER_EMPTY_KIWI = 10  # ~one full sweep of monthly windows
+KIWI_DUE_HOURS = {"priority": 24, "normal": 48}
+# Airlines Google misses: also searched on Kiwi on their own (so a promo shows even
+# when another airline is cheaper overall).
+KIWI_AIRLINE_FOCUS = {
+    "HY": ["BKK", "KUL", "SIN", "DEL", "BOM", "ICN", "NRT", "PEK", "PVG", "HKG",
+           "SGN", "HAN", "DPS", "MLE", "CMB"],   # Uzbekistan Airways via Tashkent
+}
+
+HUB_SITES = {"HY": ("Uzbekistan Airways", "https://www.uzairways.com/en")}
+
 # Destinations searched only as nonstop from Israel (no connection via third countries).
 NONSTOP_ONLY = {"CAI"}
 

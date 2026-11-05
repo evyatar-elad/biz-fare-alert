@@ -20,6 +20,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import config as C
+import kiwi
 import notify
 
 DATA = Path(__file__).parent / "data"
@@ -87,6 +88,24 @@ def build_tasks(only: set[str] | None) -> list[dict]:
                               "from": anchor.isoformat(), "to": anchor.isoformat(),
                               "due_h": C.DUE_HOURS[kind] * C.FAR_DUE_FACTOR})
                 k += 1
+    # Kiwi.com: monthly windows from TLV (all destinations), plus airline focus searches
+    if C.KIWI_ENABLED:
+        jobs = [(code, None) for code in C.DESTINATIONS] + \
+               [(code, al) for al, codes in C.KIWI_AIRLINE_FOCUS.items() for code in codes]
+        for code, al in jobs:
+            if only and code not in only:
+                continue
+            name_, region, prio = C.DESTINATIONS.get(code, ("", "asia", False))
+            start, i = first, 0
+            while start <= end_all:
+                end = min(start + timedelta(days=C.KIWI_WINDOW_DAYS - 1), end_all)
+                tasks.append({"src": "kiwi", "origin": "TLV", "dest": code, "airline": al,
+                              "dur": C.REGIONS[region]["dur"], "region": region, "prio": prio,
+                              "key": f"K-{al or 'ALL'}-{code}-m{i}", "from": start.isoformat(),
+                              "to": end.isoformat(),
+                              "due_h": C.KIWI_DUE_HOURS["priority" if prio else "normal"]})
+                start, i = end + timedelta(days=1), i + 1
+
     # hub legs: TAS -> east, that hub airline only (TLV -> TAS is a normal destination)
     for hub, h in C.HUBS.items():
         for code in h["dests"]:
@@ -196,7 +215,15 @@ def details(origin: str, dest: str, dep: str, ret: str) -> dict | None:
 
 
 # ---------------------------------------------------------------- deal logic
+def dorm_key(t: dict) -> str:
+    if t.get("src") == "kiwi":
+        return f"K-{t.get('airline') or 'ALL'}-{t['dest']}"
+    return f"{t['origin']}-{t['dest']}"
+
+
 def route_key(t: dict) -> str:
+    if t.get("src") == "kiwi":
+        return f"K-{t['origin']}-{t['dest']}" + (f"-{t['airline']}" if t.get("airline") else "")
     return f"{t['origin']}-{t['dest']}-{t['dur']}" + (f"-{t['via']}" if t.get("via") else "")
 
 
@@ -263,7 +290,12 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
     for month, ps in by_month.items():
         best = min(ps, key=lambda p: p["price"])
         price = best["price"] + extra
-        if t["origin"] == "LCA" or t.get("via"):
+        if t.get("src") == "kiwi":
+            ref, why = reference(hist, rk, month, today, [])
+            if ref is None or ref == 0:
+                ref, why = reference(hist, tlv_rk, month, "", [])
+                why = "מחיר רגיל ב-Google Flights, " + why
+        elif t["origin"] == "LCA" or t.get("via"):
             ref, why = reference(hist, tlv_rk, month, "", [])  # TLV usual price, incl. today
             if t.get("via"):
                 why = "מחיר רגיל בטיסה מתל אביב, " + why
@@ -281,6 +313,8 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
                 "month": month, "dep": best["departure_date"], "ret": best["return_date"],
                 "price": best["price"], "effective": price, "ref": ref, "reasons": reasons,
                 "similar_dates": same, "via": t.get("via"), "parts": best.get("parts"),
+                "src": t.get("src", "gf"), "airline_focus": t.get("airline"),
+                "details": kiwi.details_from_itin(best["itin"]) if best.get("itin") else None,
             })
     return deals
 
@@ -317,7 +351,8 @@ def main() -> int:
     only = {x.strip().upper() for x in a.only.split(",") if x.strip()} or None
     tasks = build_tasks(only)
     for t in tasks:  # routes with no flights at all: check rarely (a new route will wake them up)
-        if state.get("routes", {}).get(f"{t['origin']}-{t['dest']}", {}).get("empty_streak", 0) >= C.DORMANT_AFTER_EMPTY:
+        if state.get("routes", {}).get(dorm_key(t), {}).get("empty_streak", 0) >= (
+                C.DORMANT_AFTER_EMPTY_KIWI if t.get("src") == "kiwi" else C.DORMANT_AFTER_EMPTY):
             t["due_h"] = C.DORMANT_DUE_HOURS
     if not only:  # forget windows that no longer exist (past dates, changed settings)
         keys = {t["key"] for t in tasks}
@@ -326,19 +361,33 @@ def main() -> int:
     print(f"{len(todo)} משימות ממתינות")
     new_deals: list[dict] = []
     detail_budget = C.MAX_DETAIL_LOOKUPS
+    kc, kiwi_off = None, False
 
     try:
         for t in todo:
             if time.monotonic() - started > a.minutes * 60 or (a.max_calls and run["calls"] >= a.max_calls):
                 break
+            is_kiwi = t.get("src") == "kiwi"
+            if is_kiwi and (kiwi_off or not C.KIWI_ENABLED):
+                continue
             if run["calls"]:
-                time.sleep(C.PACE_SECONDS)
+                time.sleep(C.KIWI_PACE_SECONDS if is_kiwi else C.PACE_SECONDS)
             run["calls"] += 1
-            pts = calendar(t)
+            if is_kiwi:
+                try:
+                    kc = kc or kiwi.Client()
+                    pts = kiwi.search_month(kc, t)
+                    run["kiwi"] = run.get("kiwi", 0) + 1
+                except kiwi.KiwiError as e:
+                    print(f"  ! Kiwi: {e}. מדלגים על Kiwi בריצה הזו.")
+                    kiwi_off = True
+                    continue
+            else:
+                pts = calendar(t)
             state["last"][t["key"]] = now_utc().isoformat(timespec="seconds")
             if pts is None:
                 continue
-            ds = state.setdefault("routes", {}).setdefault(f"{t['origin']}-{t['dest']}", {"empty_streak": 0})
+            ds = state.setdefault("routes", {}).setdefault(dorm_key(t), {"empty_streak": 0})
             if not pts:
                 run["empty"] += 1
                 ds["empty_streak"] += 1
@@ -351,8 +400,10 @@ def main() -> int:
             run["ok"] += 1
             deals = find_deals(t, pts, hist, today)
             update_history(hist, route_key(t), pts, today)
-            remember_cal(state, t, pts, today)
-            hub = t["origin"] if t["origin"] in C.HUBS else t["dest"] if t["dest"] in C.HUBS else None
+            hub = None
+            if not is_kiwi:
+                remember_cal(state, t, pts, today)
+                hub = t["origin"] if t["origin"] in C.HUBS else t["dest"] if t["dest"] in C.HUBS else None
             if hub:
                 targets = [t["dest"]] if t["origin"] == hub else C.HUBS[hub]["dests"]
                 for x in targets:
@@ -370,11 +421,12 @@ def main() -> int:
             for dl in deals:
                 if not is_new(dl, alerts):
                     continue
-                if detail_budget > 0 and not dl.get("via"):
+                if detail_budget > 0 and not dl.get("via") and not dl.get("details"):
                     detail_budget -= 1
                     time.sleep(C.PACE_SECONDS)
                     run["calls"] += 1
                     dl["details"] = details(dl["origin"], dl["dest"], dl["dep"], dl["ret"])
+                if dl.get("details"):
                     vias = set()
                     for seg in ((dl["details"] or {}).get("out"), (dl["details"] or {}).get("ret")):
                         vias |= set((seg or {}).get("via", []))

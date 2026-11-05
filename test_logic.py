@@ -26,7 +26,7 @@ def fake_fli(args, timeout=180):
 tmp = Path(tempfile.mkdtemp())
 scanner.DATA = tmp; scanner.STATE_F = tmp/"state.json"; scanner.HIST_F = tmp/"history.json"
 scanner.ALERTS_F = tmp/"alerts.json"; scanner.LOG_F = tmp/"runs.jsonl"
-scanner.fli = fake_fli; C.PACE_SECONDS = 0
+scanner.fli = fake_fli; C.PACE_SECONDS = 0; C.KIWI_ENABLED = False
 import sys
 def run(extra=()):
     sys.argv = ["scanner.py", "--only", "PEK,DPS", "--dry-run", *extra]; scanner.main()

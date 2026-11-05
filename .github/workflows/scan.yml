@@ -46,6 +46,16 @@ jobs:
         run: |
           if [ "${{ inputs.test_email }}" = "true" ]; then python notify.py --test; exit $?; fi
           python scanner.py --minutes "${{ inputs.minutes || '45' }}" --only "${{ inputs.only }}" ${{ inputs.dry_run && '--dry-run' || '' }}
+      - name: newsletters
+        if: always() && inputs.test_email != true
+        continue-on-error: true
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          NEWS_USER: ${{ secrets.NEWS_USER }}
+          NEWS_PASS: ${{ secrets.NEWS_PASS }}
+        run: python newsletters.py
       - name: status page
         if: always()
         run: python status.py || true

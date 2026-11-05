@@ -166,6 +166,10 @@ def name_or_code(code: str) -> str:
     return C.HIGHLIGHT_HUBS.get(code) or (name(code) if code in C.DESTINATIONS else code)
 
 
+def det_any(d: dict) -> dict:
+    return d.get("details") or {}
+
+
 def deal_card(d: dict) -> str:
     o, x = d["origin"], d["dest"]
     pct = round(100 * (1 - d["effective"] / d["ref"])) if d.get("ref") else None
@@ -186,6 +190,10 @@ def deal_card(d: dict) -> str:
         flights = (f'<div style="margin-top:14px;color:{MUTED};font-size:14px">'
                    "פרטי הטיסות לא נבדקו בריצה הזו. אפשר לראות אותם בקישורים.</div>")
     sisters = sorted(next((g for g in C.SISTER_CITIES if x in g), {x}) - {x})
+    src = ("Kiwi.com" + (" (חיפוש ממוקד בחברה)" if d.get("airline_focus") else "")) if d.get("src") == "kiwi" else "Google Flights"
+    sep = (" <b style='color:#b45309'>· צירוף של כמה כרטיסים נפרדים (באחריותך אם טיסה מתעכבת)</b>"
+           if det_any(d).get("separate_tickets") else "")
+    src_row = (f'<tr><td style="padding:4px 0;color:{MUTED}">מקור</td><td style="padding:4px 0">{src}{sep}</td></tr>')
     open_jaw = (f'<tr><td style="padding:4px 0;color:{MUTED};vertical-align:top">טיפ</td><td style="padding:4px 0">'
                 f'אפשר לבדוק גם הלוך ל{name(x)} וחזור מ{" או מ".join(name(c) for c in sisters)} '
                 f'(בחיפוש "כמה יעדים"), לרוב באותו מחיר</td></tr>') if sisters else ""
@@ -194,8 +202,14 @@ def deal_card(d: dict) -> str:
         for a in (seg or {}).get("airlines", []):
             if a not in airlines:
                 airlines.append(a)
-    buttons = button("Google Flights", gf_link(o, x, d["dep"], d["ret"]), primary=True)
+    if d.get("src") == "kiwi" and det.get("booking_url"):
+        buttons = button("Kiwi.com (המחיר הזה)", det["booking_url"], primary=True)
+        buttons += button("Google Flights", gf_link(o, x, d["dep"], d["ret"]))
+    else:
+        buttons = button("Google Flights", gf_link(o, x, d["dep"], d["ret"]), primary=True)
     buttons += button("Skyscanner", sky_link(o, x, d["dep"], d["ret"]))
+    if d.get("airline_focus") in C.HUB_SITES:
+        buttons += button(f"אתר {C.HUB_SITES[d['airline_focus']][0]}", C.HUB_SITES[d["airline_focus"]][1])
     for a in airlines[:2]:
         buttons += button(f"אתר {html.escape(a)}", airline_link(a))
     return f'''
@@ -223,7 +237,7 @@ def deal_card(d: dict) -> str:
          <td style="padding:4px 0">{d["similar_dates"]} תאריכי יציאה בחודש הזה במחיר דומה</td></tr>
      <tr><td style="padding:4px 0;color:{MUTED};vertical-align:top">למה</td>
          <td style="padding:4px 0">{html.escape("; ".join(d["reasons"]))}</td></tr>
-     {lca}{open_jaw}
+     {src_row}{lca}{open_jaw}
    </table>
  </td></tr>
  <tr><td style="padding:0 20px">{flights}</td></tr>
@@ -281,7 +295,10 @@ def send_heartbeat(state: dict, hist: dict, dry_run: bool = False) -> bool:
     """Weekly 'still alive' mail with the cheapest price seen per destination (from TLV)."""
     rows = []
     for rk, months in hist.items():
-        o, d, dur = rk.split("-")
+        parts = rk.split("-")
+        if len(parts) != 3 or parts[0] == "K":
+            continue
+        o, d, dur = parts
         mins = [(r[2], m) for m, rs in months.items() for r in rs[-1:]]
         if mins and o == "TLV":
             p, m = min(mins)
