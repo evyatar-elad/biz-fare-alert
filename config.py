@@ -1,0 +1,115 @@
+"""Settings for the business class deal scanner. Edit here to add/remove destinations."""
+
+# Origins. LCA (Larnaca) needs a separate positioning flight from TLV,
+# so its prices are compared after adding POSITIONING_USD.
+ORIGINS = ["TLV", "LCA"]
+POSITIONING_USD = 150  # rough round trip TLV-LCA in economy
+
+# Destination regions. "dur" is the probe stay length in days (see CLAUDE.md:
+# the stay length is a probe, not a choice. Price barely depends on it).
+# "cap" = always alert if the round trip business price (USD) is at or below it.
+REGIONS = {
+    "europe": {"dur": 7, "cap": 450},
+    "near":   {"dur": 7, "cap": 650},    # Turkey, Gulf, Caucasus, North Africa
+    "asia":   {"dur": 14, "cap": 1700},
+    "far":    {"dur": 14, "cap": 2200},  # Oceania, Africa south of Sahara, Latin America, Canada
+}
+
+# code: (name in Hebrew, region, priority). priority=True -> scanned more often.
+DESTINATIONS = {
+    # Europe
+    "LHR": ("לונדון", "europe", False),
+    "CDG": ("פריז", "europe", False),
+    "FCO": ("רומא", "europe", False),
+    "MXP": ("מילאנו", "europe", False),
+    "BCN": ("ברצלונה", "europe", False),
+    "MAD": ("מדריד", "europe", False),
+    "LIS": ("ליסבון", "europe", False),
+    "AMS": ("אמסטרדם", "europe", False),
+    "FRA": ("פרנקפורט", "europe", False),
+    "MUC": ("מינכן", "europe", False),
+    "BER": ("ברלין", "europe", False),
+    "ZRH": ("ציריך", "europe", False),
+    "GVA": ("ז'נבה", "europe", False),
+    "VIE": ("וינה", "europe", False),
+    "PRG": ("פראג", "europe", False),
+    "BUD": ("בודפשט", "europe", False),
+    "WAW": ("ורשה", "europe", False),
+    "ATH": ("אתונה", "europe", False),
+    "CPH": ("קופנהגן", "europe", False),
+    "ARN": ("סטוקהולם", "europe", False),
+    "OSL": ("אוסלו", "europe", False),
+    "HEL": ("הלסינקי", "europe", False),
+    "DUB": ("דבלין", "europe", False),
+    "BRU": ("בריסל", "europe", False),
+    "NCE": ("ניס", "europe", False),
+    "VCE": ("ונציה", "europe", False),
+    # Near
+    "IST": ("איסטנבול", "near", False),
+    "DXB": ("דובאי", "near", False),
+    "AUH": ("אבו דאבי", "near", False),
+    "GYD": ("באקו", "near", False),
+    "TBS": ("טביליסי", "near", False),
+    "EVN": ("ירוואן", "near", False),
+    "CAI": ("קהיר", "near", False),
+    "CMN": ("קזבלנקה", "near", False),
+    "RAK": ("מרקש", "near", False),
+    # Asia
+    "SGN": ("הו צ'י מין", "asia", True),
+    "HAN": ("האנוי", "asia", True),
+    "DAD": ("דה נאנג", "asia", True),
+    "DPS": ("באלי", "asia", True),
+    "BKK": ("בנגקוק", "asia", False),
+    "HKT": ("פוקט", "asia", False),
+    "SIN": ("סינגפור", "asia", False),
+    "KUL": ("קואלה לומפור", "asia", False),
+    "HKG": ("הונג קונג", "asia", False),
+    "PEK": ("בייג'ינג", "asia", True),
+    "PVG": ("שנגחאי", "asia", False),
+    "NRT": ("טוקיו", "asia", False),
+    "ICN": ("סיאול", "asia", False),
+    "TPE": ("טאיפיי", "asia", False),
+    "MNL": ("מנילה", "asia", False),
+    "DEL": ("דלהי", "asia", False),
+    "BOM": ("מומבאי", "asia", False),
+    "CMB": ("קולומבו", "asia", False),
+    "MLE": ("מלדיביים", "asia", False),
+    "SEZ": ("סיישל", "asia", False),
+    "MRU": ("מאוריציוס", "asia", False),
+    # Far
+    "SYD": ("סידני", "far", False),
+    "MEL": ("מלבורן", "far", False),
+    "AKL": ("אוקלנד", "far", False),
+    "JNB": ("יוהנסבורג", "far", False),
+    "CPT": ("קייפטאון", "far", False),
+    "NBO": ("ניירובי", "far", False),
+    "ZNZ": ("זנזיבר", "far", False),
+    "GRU": ("סאו פאולו", "far", False),
+    "EZE": ("בואנוס איירס", "far", False),
+    "MEX": ("מקסיקו סיטי", "far", False),
+    "LIM": ("לימה", "far", False),
+    "YYZ": ("טורונטו", "far", False),
+}
+
+# From LCA only long haul makes sense (to Europe TLV is just as good).
+LCA_REGIONS = {"asia", "far"}
+
+# Search window: Google Flights calendar covers ~305 days ahead, 61 days per call.
+WINDOW_DAYS = 61
+HORIZON_DAYS = 300
+START_OFFSET_DAYS = 2
+
+# How often each task is due (hours).
+DUE_HOURS = {"priority": 24, "normal": 48, "LCA": 96}
+
+# Deal rule: price at least this fraction below the reference price.
+DROP = 0.35
+# Seconds between requests to Google. Slow on purpose: ~20 quick calls got HTTP 429.
+PACE_SECONDS = 30
+# After a 429/block, do not search again for this long.
+BACKOFF_HOURS = 4
+# Detail lookups (airline, stops) per run.
+MAX_DETAIL_LOOKUPS = 2  # each one is several requests to Google
+# Do not re-alert the same route and month unless the price dropped by this much.
+REALERT_DROP = 0.07
+REALERT_DAYS = 14

@@ -1,0 +1,295 @@
+"""Business class deal scanner.
+
+Each run picks the most overdue (origin, destination, 61-day window) tasks,
+asks Google Flights (via the `fli` CLI) for the round trip business price of
+every departure date in the window, compares them to the route's usual price,
+and emails new deals. State lives in data/*.json and is committed by the workflow.
+
+Usage: python scanner.py [--minutes 20] [--dry-run] [--only SGN,DPS]
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import statistics
+import subprocess
+import sys
+import time
+from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
+
+import config as C
+import notify
+
+DATA = Path(__file__).parent / "data"
+STATE_F = DATA / "state.json"
+HIST_F = DATA / "history.json"
+ALERTS_F = DATA / "alerts.json"
+LOG_F = DATA / "runs.jsonl"
+
+
+class Blocked(Exception):
+    pass
+
+
+def now_utc() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def load(p: Path, default):
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return default
+
+
+def save(p: Path, obj) -> None:
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(obj, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
+
+
+# ---------------------------------------------------------------- tasks
+def build_tasks(only: set[str] | None) -> list[dict]:
+    today = date.today()
+    tasks = []
+    for origin in C.ORIGINS:
+        for code, (name, region, prio) in C.DESTINATIONS.items():
+            if only and code not in only:
+                continue
+            if origin == "LCA" and region not in C.LCA_REGIONS:
+                continue
+            dur = C.REGIONS[region]["dur"]
+            start = today + timedelta(days=C.START_OFFSET_DAYS)
+            end_all = today + timedelta(days=C.HORIZON_DAYS)
+            w = 0
+            while start <= end_all:
+                end = min(start + timedelta(days=C.WINDOW_DAYS - 1), end_all)
+                kind = "LCA" if origin == "LCA" else ("priority" if prio else "normal")
+                tasks.append({
+                    "key": f"{origin}-{code}-w{w}",
+                    "origin": origin, "dest": code, "dur": dur, "region": region,
+                    "from": start.isoformat(), "to": end.isoformat(),
+                    "due_h": C.DUE_HOURS[kind], "prio": prio,
+                })
+                start = end + timedelta(days=1)
+                w += 1
+    return tasks
+
+
+def overdue(tasks: list[dict], last: dict) -> list[dict]:
+    t_now = now_utc()
+    out = []
+    for t in tasks:
+        ts = last.get(t["key"])
+        age_h = 1e9 if not ts else (t_now - datetime.fromisoformat(ts)).total_seconds() / 3600
+        if age_h >= t["due_h"]:
+            out.append((age_h / t["due_h"], t))
+    out.sort(key=lambda x: -x[0])
+    return [t for _, t in out]
+
+
+# ---------------------------------------------------------------- google flights via fli
+def fli(args: list[str], timeout: int = 180) -> dict:
+    cmd = ["fli", *args, "--currency", "USD", "--format", "json"]
+    try:
+        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return {"success": False, "error": {"type": "timeout", "message": "timeout"}}
+    try:
+        d = json.loads(p.stdout)
+    except json.JSONDecodeError:
+        return {"success": False, "error": {"type": "bad_output", "message": (p.stdout + p.stderr)[-400:]}}
+    if not d.get("success"):
+        msg = json.dumps(d.get("error", {}), ensure_ascii=False)
+        if any(s in msg for s in ("429", "rate-limit", "blocked", "captcha", "unusual traffic", "sorry")):
+            raise Blocked(msg)
+    return d
+
+
+def calendar(t: dict) -> list[dict] | None:
+    d = fli(["dates", t["origin"], t["dest"], "--from", t["from"], "--to", t["to"],
+             "--round", "-d", str(t["dur"]), "--class", "BUSINESS"])
+    if not d.get("success"):
+        print(f"  ! {t['key']}: {d.get('error')}")
+        return None
+    return [x for x in d.get("dates", []) if x.get("price")]
+
+
+def details(origin: str, dest: str, dep: str, ret: str) -> dict | None:
+    d = fli(["flights", origin, dest, dep, "--return", ret, "--class", "BUSINESS", "--sort", "CHEAPEST"])
+    flights = d.get("flights") or d.get("results") or []
+    if not d.get("success") or not flights:
+        return None
+    f = min(flights, key=lambda x: x.get("price") or 1e12)
+
+    def leg_info(seg):
+        if not seg:
+            return None
+        legs = seg.get("legs", [])
+        return {
+            "stops": seg.get("stops"),
+            "via": [l["arrival_airport"]["code"] if isinstance(l.get("arrival_airport"), dict) else str(l.get("arrival_airport"))
+                    for l in legs[:-1]],
+            "airlines": sorted({(l.get("airline") or {}).get("name", "?") for l in legs}),
+            "hours": round((seg.get("duration") or 0) / 60, 1),
+            "mixed_cabin": bool(seg.get("mixed_cabin")),
+        }
+    return {"price": f.get("price"), "out": leg_info(f.get("outbound")), "ret": leg_info(f.get("return"))}
+
+
+# ---------------------------------------------------------------- deal logic
+def route_key(t: dict) -> str:
+    return f"{t['origin']}-{t['dest']}-{t['dur']}"
+
+
+def update_history(hist: dict, rk: str, points: list[dict], today: str) -> None:
+    """Keep, per route and departure month, the median and min of each scan (last 30 scans)."""
+    by_month: dict[str, list[float]] = {}
+    for p in points:
+        by_month.setdefault(p["departure_date"][:7], []).append(p["price"])
+    r = hist.setdefault(rk, {})
+    for m, ps in by_month.items():
+        rows = [x for x in r.get(m, []) if x[0] != today]
+        rows.append([today, round(statistics.median(ps)), round(min(ps)), len(ps)])
+        r[m] = rows[-30:]
+
+
+def reference(hist: dict, rk: str, month: str, today: str, current: list[float]) -> tuple[float | None, str]:
+    """Usual price for this route and month. Prefers past scans (so a month long promo still stands out)."""
+    r = hist.get(rk, {})
+    past_month = [x[1] for x in r.get(month, []) if x[0] != today]
+    if len(past_month) >= 2:
+        return statistics.median(past_month), "היסטוריה של החודש"
+    past_all = [x[1] for rows in r.values() for x in rows if x[0] != today]
+    if len(past_all) >= 3:
+        return statistics.median(past_all), "היסטוריה של המסלול"
+    if len(current) >= 10:
+        return statistics.median(current), "חציון החלון הנוכחי"
+    return None, "אין עדיין מספיק נתונים"
+
+
+def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict]:
+    rk = route_key(t)
+    region = C.REGIONS[t["region"]]
+    extra = C.POSITIONING_USD if t["origin"] == "LCA" else 0
+    tlv_rk = f"TLV-{t['dest']}-{t['dur']}"
+    by_month: dict[str, list[dict]] = {}
+    for p in points:
+        by_month.setdefault(p["departure_date"][:7], []).append(p)
+    deals = []
+    for month, ps in by_month.items():
+        best = min(ps, key=lambda p: p["price"])
+        price = best["price"] + extra
+        if t["origin"] == "LCA":
+            ref, why = reference(hist, tlv_rk, month, "", [])  # TLV usual price, incl. today
+        else:
+            ref, why = reference(hist, rk, month, today, [p["price"] for p in points])
+        reasons = []
+        if ref and price <= ref * (1 - C.DROP):
+            reasons.append(f"{round(100 * (1 - price / ref))}% מתחת למחיר הרגיל (${ref:,.0f}, {why})")
+        if price <= region["cap"]:
+            reasons.append(f"מתחת לסף הקבוע לאזור (${region['cap']:,})")
+        if reasons:
+            same = sum(1 for p in ps if p["price"] <= best["price"] * 1.03)
+            deals.append({
+                "route": rk, "origin": t["origin"], "dest": t["dest"], "dur": t["dur"],
+                "month": month, "dep": best["departure_date"], "ret": best["return_date"],
+                "price": best["price"], "effective": price, "ref": ref, "reasons": reasons,
+                "similar_dates": same,
+            })
+    return deals
+
+
+def is_new(deal: dict, alerts: dict) -> bool:
+    k = f"{deal['route']}|{deal['month']}"
+    a = alerts.get(k)
+    if not a:
+        return True
+    age = (now_utc() - datetime.fromisoformat(a["at"])).days
+    return deal["price"] <= a["price"] * (1 - C.REALERT_DROP) or age >= C.REALERT_DAYS
+
+
+# ---------------------------------------------------------------- main
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--minutes", type=float, default=20)
+    ap.add_argument("--dry-run", action="store_true", help="print emails instead of sending")
+    ap.add_argument("--only", default="", help="comma separated destination codes")
+    ap.add_argument("--max-calls", type=int, default=0)
+    a = ap.parse_args()
+
+    state = load(STATE_F, {"last": {}, "backoff_until": None, "last_email": None})
+    hist = load(HIST_F, {})
+    alerts = load(ALERTS_F, {})
+    today = date.today().isoformat()
+    started = time.monotonic()
+    run = {"at": now_utc().isoformat(timespec="seconds"), "calls": 0, "ok": 0, "empty": 0, "deals": 0, "blocked": False}
+
+    if state.get("backoff_until") and now_utc() < datetime.fromisoformat(state["backoff_until"]):
+        print(f"בהמתנה אחרי חסימה עד {state['backoff_until']}, לא מחפשים.")
+        return 0
+
+    only = {x.strip().upper() for x in a.only.split(",") if x.strip()} or None
+    todo = overdue(build_tasks(only), state["last"])
+    print(f"{len(todo)} משימות ממתינות")
+    new_deals: list[dict] = []
+    detail_budget = C.MAX_DETAIL_LOOKUPS
+
+    try:
+        for t in todo:
+            if time.monotonic() - started > a.minutes * 60 or (a.max_calls and run["calls"] >= a.max_calls):
+                break
+            if run["calls"]:
+                time.sleep(C.PACE_SECONDS)
+            run["calls"] += 1
+            pts = calendar(t)
+            state["last"][t["key"]] = now_utc().isoformat(timespec="seconds")
+            if pts is None:
+                continue
+            if not pts:
+                run["empty"] += 1
+                print(f"  {t['key']}: אין תוצאות")
+                continue
+            run["ok"] += 1
+            deals = find_deals(t, pts, hist, today)
+            update_history(hist, route_key(t), pts, today)
+            lo = min(p["price"] for p in pts)
+            print(f"  {t['key']} {t['from']}..{t['to']}: {len(pts)} תאריכים, הזול ${lo:,.0f}, מציאות: {len(deals)}")
+            for dl in deals:
+                if not is_new(dl, alerts):
+                    continue
+                if detail_budget > 0:
+                    detail_budget -= 1
+                    time.sleep(C.PACE_SECONDS)
+                    run["calls"] += 1
+                    dl["details"] = details(dl["origin"], dl["dest"], dl["dep"], dl["ret"])
+                new_deals.append(dl)
+    except Blocked as e:
+        run["blocked"] = True
+        until = now_utc() + timedelta(hours=C.BACKOFF_HOURS)
+        state["backoff_until"] = until.isoformat(timespec="seconds")
+        print(f"נחסם / הוגבל ({e}). עוצרים עד {state['backoff_until']}.")
+
+    run["deals"] = len(new_deals)
+    if new_deals:
+        sent = notify.send_deals(new_deals, dry_run=a.dry_run)
+        if sent:
+            for dl in new_deals:
+                alerts[f"{dl['route']}|{dl['month']}"] = {"price": dl["price"], "at": now_utc().isoformat(timespec="seconds")}
+            state["last_email"] = now_utc().isoformat(timespec="seconds")
+    elif notify.heartbeat_due(state.get("last_email")):
+        if notify.send_heartbeat(state, hist, dry_run=a.dry_run):
+            state["last_email"] = now_utc().isoformat(timespec="seconds")
+
+    save(STATE_F, state)
+    save(HIST_F, hist)
+    save(ALERTS_F, alerts)
+    with LOG_F.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(run, ensure_ascii=False) + "\n")
+    print(json.dumps(run, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
