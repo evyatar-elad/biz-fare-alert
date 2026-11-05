@@ -111,6 +111,12 @@ START_OFFSET_DAYS = 2
 DUE_HOURS = {"priority": 24, "normal": 48, "LCA": 96}
 FAR_DUE_FACTOR = 1.5  # far (anchor) dates are checked a bit less often
 
+# Destinations searched only as nonstop from Israel (no connection via third countries).
+NONSTOP_ONLY = {"CAI"}
+
+# Hubs worth highlighting for flights east (good business products / promos).
+HIGHLIGHT_HUBS = {"GYD": "באקו", "TAS": "טשקנט"}
+
 # Safety for an Israeli traveller: never route via Turkey or hostile / no-entry
 # countries. Airlines excluded in the search itself:
 EXCLUDE_AIRLINES = [

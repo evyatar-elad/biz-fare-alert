@@ -56,6 +56,23 @@ def _wrap(inner: str) -> str:
             'בדולרים. אורך השהייה הוא רק "בדיקה", אפשר לשחק איתו באתר.</p></div>')
 
 
+WIDEBODY = ("787", "777", "350", "330", "340", "380", "767", "747")
+NARROWBODY = ("320", "321", "319", "318", "737", "220", "190", "195", "175", "170", "757")
+
+
+def seat_guess(aircraft: str | None, seat: str | None) -> str:
+    """Google sometimes says the seat type itself (e.g. "Lie flat seat"). Otherwise guess by aircraft."""
+    s = (seat or "").lower()
+    if "flat" in s or "suite" in s or "bed" in s:
+        return f"🛏️ {html.escape(seat)}"
+    a = (aircraft or "").replace(" ", "")
+    if any(x in a for x in WIDEBODY):
+        return "🛏️ כנראה מיטה (מטוס רחב גוף)"
+    if any(x in a for x in NARROWBODY):
+        return "💺 כנראה כיסא נשען (מטוס צר גוף)"
+    return "לא ידוע"
+
+
 def _fmt_details(det: dict | None) -> str:
     if not det:
         return "<li>פרטי טיסה: לא נבדקו (תבדוק בקישור)</li>"
@@ -64,16 +81,22 @@ def _fmt_details(det: dict | None) -> str:
         if not seg:
             continue
         via = ", ".join(seg["via"]) or "ישירה"
+        hubs = [C.HIGHLIGHT_HUBS[v] for v in seg["via"] if v in C.HIGHLIGHT_HUBS]
+        tag = f" ⭐ דרך {' ו'.join(hubs)}" if hubs else ""
         warn = ' <b style="color:#c00">(חלק מהדרך לא בביזנס!)</b>' if seg.get("mixed_cabin") else ""
+        legs = "".join(
+            f"<li>{l['from']}-{l['to']}: {html.escape(l['airline'])} {html.escape(str(l.get('flight') or ''))}, "
+            f"{html.escape(l.get('aircraft') or 'מטוס לא ידוע')}, {l['hours']} ש'. {seat_guess(l.get('aircraft'), l.get('seat'))}</li>"
+            for l in seg.get("legs", []))
         out.append(f"<li>{label}: {html.escape(', '.join(seg['airlines']))}, דרך {html.escape(via)}, "
-                   f"{seg['hours']} שעות{warn}</li>")
+                   f"{seg['hours']} שעות{tag}{warn}<ul>{legs}</ul></li>")
     return "".join(out)
 
 
-def send_deals(deals: list[dict], dry_run: bool = False) -> bool:
+def send_deals(deals: list[dict], dry_run: bool = False, prefix: str = "") -> bool:
     deals = sorted(deals, key=lambda d: d["effective"] / (d["ref"] or d["effective"]))
     top = deals[0]
-    subject = (f"✈️ ביזנס {name(top['origin'])}-{name(top['dest'])} ${top['price']:,.0f}"
+    subject = (prefix + f"✈️ ביזנס {name(top['origin'])}-{name(top['dest'])} ${top['price']:,.0f}"
                + (f" (בדרך כלל ~${top['ref']:,.0f})" if top["ref"] else "")
                + (f" ועוד {len(deals) - 1}" if len(deals) > 1 else ""))
     parts = []
@@ -113,3 +136,22 @@ def send_heartbeat(state: dict, hist: dict, dry_run: bool = False) -> bool:
             "<table border='1' cellpadding='4' style='border-collapse:collapse'>"
             "<tr><th>יעד</th><th>מוצא</th><th>הזול שנראה</th><th>חודש</th></tr>" + table + "</table>")
     return _send("✈️ סיכום שבועי: בוט הביזנס פעיל", _wrap(body), dry_run)
+
+
+if __name__ == "__main__":
+    import sys
+    if "--test" in sys.argv:
+        sample = {
+            "route": "TLV-PEK-14", "origin": "TLV", "dest": "PEK", "dur": 14, "month": "2027-03",
+            "dep": "2027-03-10", "ret": "2027-03-24", "price": 1200, "effective": 1200, "ref": 4300,
+            "reasons": ["[בדיקה, לא מחיר אמיתי] 72% מתחת למחיר הרגיל"], "similar_dates": 4,
+            "details": {"price": 1200,
+                "out": {"stops": 1, "via": ["GYD"], "airlines": ["Azerbaijan Airlines"], "hours": 13.5, "mixed_cabin": False,
+                        "legs": [{"from": "TLV", "to": "GYD", "airline": "Azerbaijan Airlines", "flight": "J2 82", "aircraft": "Airbus A320neo", "seat": None, "hours": 3.3},
+                                 {"from": "GYD", "to": "PEK", "airline": "Azerbaijan Airlines", "flight": "J2 61", "aircraft": "Boeing 787-8", "seat": "Lie flat seat", "hours": 7.2}]},
+                "ret": {"stops": 1, "via": ["GYD"], "airlines": ["Azerbaijan Airlines"], "hours": 14.0, "mixed_cabin": False,
+                        "legs": [{"from": "PEK", "to": "GYD", "airline": "Azerbaijan Airlines", "flight": "J2 62", "aircraft": "Boeing 787-8", "seat": None, "hours": 8.0},
+                                 {"from": "GYD", "to": "TLV", "airline": "Azerbaijan Airlines", "flight": "J2 81", "aircraft": "Airbus A320neo", "seat": None, "hours": 3.4}]}},
+        }
+        ok = send_deals([sample], prefix="[בדיקה] ")
+        sys.exit(0 if ok else 1)

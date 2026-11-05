@@ -120,10 +120,14 @@ def fli(args: list[str], timeout: int = 180) -> dict:
     return d
 
 
+def stops_arg(dest: str) -> list[str]:
+    return ["--stops", "0"] if dest in C.NONSTOP_ONLY else []
+
+
 def calendar(t: dict) -> list[dict] | None:
     d = fli(["dates", t["origin"], t["dest"], "--from", t["from"], "--to", t["to"],
              "--round", "-d", str(t["dur"]), "--class", "BUSINESS",
-             "--exclude-airlines", ",".join(C.EXCLUDE_AIRLINES)])
+             "--exclude-airlines", ",".join(C.EXCLUDE_AIRLINES), *stops_arg(t["dest"])])
     if not d.get("success"):
         print(f"  ! {t['key']}: {d.get('error')}")
         return None
@@ -132,11 +136,14 @@ def calendar(t: dict) -> list[dict] | None:
 
 def details(origin: str, dest: str, dep: str, ret: str) -> dict | None:
     d = fli(["flights", origin, dest, dep, "--return", ret, "--class", "BUSINESS", "--sort", "CHEAPEST",
-             "--exclude-airlines", ",".join(C.EXCLUDE_AIRLINES)])
+             "--exclude-airlines", ",".join(C.EXCLUDE_AIRLINES), *stops_arg(dest)])
     flights = d.get("flights") or d.get("results") or []
     if not d.get("success") or not flights:
         return None
     f = min(flights, key=lambda x: x.get("price") or 1e12)
+
+    def code(a):
+        return a.get("code") if isinstance(a, dict) else str(a or "?")
 
     def leg_info(seg):
         if not seg:
@@ -144,11 +151,17 @@ def details(origin: str, dest: str, dep: str, ret: str) -> dict | None:
         legs = seg.get("legs", [])
         return {
             "stops": seg.get("stops"),
-            "via": [l["arrival_airport"]["code"] if isinstance(l.get("arrival_airport"), dict) else str(l.get("arrival_airport"))
-                    for l in legs[:-1]],
+            "via": [code(l.get("arrival_airport")) for l in legs[:-1]],
             "airlines": sorted({(l.get("airline") or {}).get("name", "?") for l in legs}),
             "hours": round((seg.get("duration") or 0) / 60, 1),
             "mixed_cabin": bool(seg.get("mixed_cabin")),
+            "legs": [{
+                "from": code(l.get("departure_airport")), "to": code(l.get("arrival_airport")),
+                "airline": (l.get("airline") or {}).get("name", "?"),
+                "flight": l.get("flight_number"), "aircraft": l.get("aircraft"),
+                "seat": l.get("legroom"),
+                "hours": round((l.get("duration") or 0) / 60, 1),
+            } for l in legs],
         }
     return {"price": f.get("price"), "out": leg_info(f.get("outbound")), "ret": leg_info(f.get("return"))}
 

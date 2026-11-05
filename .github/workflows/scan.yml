@@ -11,6 +11,10 @@ on:
       only:
         description: "only these destinations, e.g. SGN,DPS (empty = all)"
         default: ""
+      test_email:
+        description: "only send a sample email (no search)"
+        type: boolean
+        default: false
       dry_run:
         description: "print emails instead of sending"
         type: boolean
@@ -40,6 +44,7 @@ jobs:
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           MAIL_TO: ${{ secrets.MAIL_TO }}
         run: |
+          if [ "${{ inputs.test_email }}" = "true" ]; then python notify.py --test; exit $?; fi
           python scanner.py --minutes "${{ inputs.minutes || '45' }}" --only "${{ inputs.only }}" ${{ inputs.dry_run && '--dry-run' || '' }}
       - name: save state
         if: always()
