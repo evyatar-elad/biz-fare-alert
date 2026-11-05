@@ -38,6 +38,11 @@
 - קהיר: רק ישירה מישראל (`NONSTOP_ONLY`).
 - לא שולחים שוב על אותו מסלול וחודש, אלא אם המחיר ירד ב-7% או עברו 14 יום.
 
+## מייל ודף סטטוס (5/11)
+- המייל: כרטיס לכל מציאה (טבלאות וסגנון inline בגלל Gmail), טקסט לטיני עטוף ב-`dir="ltr"`. כפתורים: Google Flights, ‏Skyscanner, ואתר חברת התעופה (`AIRLINE_SITES`, דף הבית; לא מוכר = חיפוש בגוגל). תצוגה מקומית: `python notify.py --html out.html`.
+- מציאה נשלחת מיד בריצה שמצאה אותה (כל שעה). הסיכום השבועי רק אם לא נשלח שום מייל 7 ימים.
+- דף סטטוס: `status.py` כותב `docs/index.html` אחרי כל ריצה, ‏GitHub Pages מ-`main` /docs: https://evyatar-elad.github.io/biz-fare-alert/
+
 ## בדיקות
 - מייל בדיקה: Actions, ‏scan, ‏Run workflow עם `test_email` (או `python notify.py --test`).
 - `python test_logic.py`: תשובות מדומות, בודק זיהוי, מייל ומניעת כפילות. בלי פנייה לגוגל.
