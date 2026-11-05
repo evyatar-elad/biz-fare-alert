@@ -66,12 +66,13 @@ DESTINATIONS = {
     "PEK": ("בייג'ינג", "asia", False),
     "PVG": ("שנגחאי", "asia", False),
     "NRT": ("טוקיו", "asia", False),
+    "KIX": ("אוסקה", "asia", False),
     "ICN": ("סיאול", "asia", False),
     "TPE": ("טאיוואן (טאיפיי)", "asia", True),
     "MNL": ("מנילה", "asia", False),
     "DEL": ("דלהי", "asia", True),
     "BOM": ("מומבאי", "asia", True),
-    "GOI": ("גואה", "asia", False),
+    "GOI": ("גואה", "asia", True),
     "CMB": ("קולומבו", "asia", False),
     "MLE": ("מלדיביים", "asia", False),
     "SEZ": ("סיישל", "asia", False),
@@ -110,6 +111,21 @@ START_OFFSET_DAYS = 2
 # How often each task is due (hours).
 DUE_HOURS = {"priority": 24, "normal": 48, "LCA": 96}
 FAR_DUE_FACTOR = 1.5  # far (anchor) dates are checked a bit less often
+
+# A route with this many empty results in a row (no flights at all, even with
+# connections; ~31 windows = one full sweep of a destination) becomes "dormant"
+# and is checked only every DORMANT_DUE_HOURS. It wakes up by itself once results
+# appear (e.g. a new route launches).
+DORMANT_AFTER_EMPTY = 40
+DORMANT_DUE_HOURS = 24 * 10
+
+# Nearby cities: a deal to one often allows "open jaw" (in to one, back from the other)
+# for about the same price. Mentioned in the email.
+SISTER_CITIES = [
+    {"NRT", "KIX"}, {"SGN", "HAN", "DAD"}, {"DEL", "BOM", "GOI"}, {"BKK", "HKT"},
+    {"SYD", "MEL"}, {"JNB", "CPT"}, {"PEK", "PVG"}, {"SIN", "KUL"}, {"NBO", "ZNZ"},
+    {"RAK", "CMN"}, {"GRU", "EZE"},
+]
 
 # Destinations searched only as nonstop from Israel (no connection via third countries).
 NONSTOP_ONLY = {"CAI"}

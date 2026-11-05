@@ -185,6 +185,10 @@ def deal_card(d: dict) -> str:
     if not flights:
         flights = (f'<div style="margin-top:14px;color:{MUTED};font-size:14px">'
                    "פרטי הטיסות לא נבדקו בריצה הזו. אפשר לראות אותם בקישורים.</div>")
+    sisters = sorted(next((g for g in C.SISTER_CITIES if x in g), {x}) - {x})
+    open_jaw = (f'<tr><td style="padding:4px 0;color:{MUTED};vertical-align:top">טיפ</td><td style="padding:4px 0">'
+                f'אפשר לבדוק גם הלוך ל{name(x)} וחזור מ{" או מ".join(name(c) for c in sisters)} '
+                f'(בחיפוש "כמה יעדים"), לרוב באותו מחיר</td></tr>') if sisters else ""
     airlines = []
     for seg in (det.get("out"), det.get("ret")):
         for a in (seg or {}).get("airlines", []):
@@ -219,7 +223,7 @@ def deal_card(d: dict) -> str:
          <td style="padding:4px 0">{d["similar_dates"]} תאריכי יציאה בחודש הזה במחיר דומה</td></tr>
      <tr><td style="padding:4px 0;color:{MUTED};vertical-align:top">למה</td>
          <td style="padding:4px 0">{html.escape("; ".join(d["reasons"]))}</td></tr>
-     {lca}
+     {lca}{open_jaw}
    </table>
  </td></tr>
  <tr><td style="padding:0 20px">{flights}</td></tr>
@@ -234,7 +238,7 @@ def page(inner: str, preheader: str = "") -> str:
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" dir="rtl" style="max-width:620px;text-align:right">
 <tr><td>{inner}</td></tr>
 <tr><td style="{FONT}font-size:12px;color:{MUTED};line-height:1.6;padding:4px 6px">
-מחירי Google Flights בדולרים, ביזנס הלוך חזור לנוסע אחד. אורך השהייה הוא רק "גשש" לזיהוי המחיר, ואפשר לשנות אותו באתר.
+מחירים מ-Google Flights (שמרכז את מחירי החברות ורוב הסוכנויות) בדולרים, ביזנס הלוך חזור לנוסע אחד. אורך השהייה הוא רק "גשש" לזיהוי המחיר, ואפשר לשנות אותו באתר.
 <br><a href="{STATUS_URL}" style="color:{NAVY}">דף הסטטוס של הבוט</a></td></tr>
 </table></td></tr></table></body></html>'''
 

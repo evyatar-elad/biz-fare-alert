@@ -80,6 +80,10 @@ def main() -> None:
                 f"<td{cheap}><b>${p:,.0f}</b></td><td class=m>{m}</td><td class=m>${med:,.0f}</td>"
                 f"<td class=m>{d[8:10]}/{d[5:7]}</td></tr>")
 
+    dormant = [k for k, v in state.get("routes", {}).items() if v.get("empty_streak", 0) >= C.DORMANT_AFTER_EMPTY]
+    dormant_html = ("<div class=card><h2>יעדים רדומים</h2><div class=m>אין טיסות בכלל, נבדקים רק כל 10 ימים: "
+                    + ", ".join(html.escape(f"{name(k.split('-')[0])}-{name(k.split('-')[1])}") for k in dormant)
+                    + "</div></div>") if dormant else ""
     al = sorted(alerts.items(), key=lambda kv: kv[1]["at"], reverse=True)[:15]
     al_rows = "".join(
         f"<tr><td>{t(v['at'])}</td><td>{html.escape(name(k.split('-')[0]))} - {html.escape(name(k.split('-')[1]))}</td>"
@@ -87,7 +91,7 @@ def main() -> None:
     ) or "<tr><td colspan=4 class=m>עוד לא נשלחו התראות</td></tr>"
 
     page = f"""<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>בוט מציאות ביזנס</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="600"><title>בוט מציאות ביזנס</title>
 <style>
 :root{{--ink:#1f2937;--muted:#6b7280;--line:#e5e7eb;--bg:#f3f4f6;--card:#fff;--navy:#0f2a4a;--good:#047857}}
 @media (prefers-color-scheme:dark){{:root{{--ink:#e5e7eb;--muted:#9ca3af;--line:#374151;--bg:#111827;--card:#1f2937;--navy:#0b1f38;--good:#34d399}}}}
@@ -104,7 +108,7 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 .scroll{{overflow-x:auto}}
 </style></head><body><div class="wrap">
 <header><h1>✈️ בוט מציאות ביזנס</h1>
-<div style="opacity:.8;margin-top:4px">ביזנס הלוך חזור מתל אביב, מחירי Google Flights. עודכן {t(now.isoformat())}</div></header>
+<div style="opacity:.8;margin-top:4px">ביזנס הלוך חזור מתל אביב. מקור: Google Flights, שמרכז את מחירי החברות ורוב הסוכנויות. עודכן {t(now.isoformat())}</div></header>
 <div class="card"><span style="color:{color};font-weight:bold">● {health}</span></div>
 <div class="kpis" style="margin-top:14px">
  <div class="kpi"><span class=m>ריצה אחרונה</span><b>{t(lr.get('at'))}</b><span class=m>{lr.get('calls', 0)} בדיקות</span></div>
@@ -114,11 +118,12 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 </div>
 <div class="card"><h2>התראות אחרונות</h2><div class=scroll><table>
 <tr><th>נשלח</th><th>מסלול</th><th>חודש</th><th>מחיר</th></tr>{al_rows}</table></div></div>
+{dormant_html}
 <div class="card"><h2>הזול ביותר לכל יעד (מתל אביב)</h2>
 <div class=m style="font-size:13px;margin-bottom:6px">⭐ יעד מועדף. "רגיל" = חציון כל הסריקות. ירוק = 35% ומטה מהרגיל.</div>
 <div class=scroll><table><tr><th>יעד</th><th></th><th>הזול</th><th>חודש</th><th>רגיל</th><th>נבדק</th></tr>
 {''.join(row(r) for r in rows)}</table></div></div>
-<p class=m style="font-size:12px">הדף מתעדכן אחרי כל ריצה (כל שעה). <a href="https://github.com/evyatar-elad/biz-fare-alert/actions" style="color:inherit">ריצות</a></p>
+<p class=m style="font-size:12px">הנתונים מתעדכנים אחרי כל ריצה (כל שעה), והדף נטען מחדש לבד כל 10 דקות. <a href="https://github.com/evyatar-elad/biz-fare-alert/actions" style="color:inherit">ריצות</a></p>
 </div></body></html>"""
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(page, encoding="utf-8")

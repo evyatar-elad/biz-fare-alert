@@ -260,6 +260,9 @@ def main() -> int:
 
     only = {x.strip().upper() for x in a.only.split(",") if x.strip()} or None
     tasks = build_tasks(only)
+    for t in tasks:  # routes with no flights at all: check rarely (a new route will wake them up)
+        if state.get("routes", {}).get(f"{t['origin']}-{t['dest']}", {}).get("empty_streak", 0) >= C.DORMANT_AFTER_EMPTY:
+            t["due_h"] = C.DORMANT_DUE_HOURS
     if not only:  # forget windows that no longer exist (past dates, changed settings)
         keys = {t["key"] for t in tasks}
         state["last"] = {k: v for k, v in state["last"].items() if k in keys}
@@ -279,10 +282,16 @@ def main() -> int:
             state["last"][t["key"]] = now_utc().isoformat(timespec="seconds")
             if pts is None:
                 continue
+            ds = state.setdefault("routes", {}).setdefault(f"{t['origin']}-{t['dest']}", {"empty_streak": 0})
             if not pts:
                 run["empty"] += 1
+                ds["empty_streak"] += 1
                 print(f"  {t['key']}: אין תוצאות")
                 continue
+            if ds.get("empty_streak", 0) >= C.DORMANT_AFTER_EMPTY:
+                print(f"  {t['origin']}-{t['dest']}: חזרו תוצאות, היעד פעיל שוב")
+            ds["empty_streak"] = 0
+            ds["last_found"] = today
             run["ok"] += 1
             deals = find_deals(t, pts, hist, today)
             update_history(hist, route_key(t), pts, today)
