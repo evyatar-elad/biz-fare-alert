@@ -22,6 +22,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: scan
@@ -30,8 +31,10 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 58
+    timeout-minutes: 75
     steps:
+      - name: start time
+        run: echo "JOB_START=$(date +%s)" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -67,3 +70,14 @@ jobs:
           git add data docs
           git diff --cached --quiet || git commit -m "data: scan $(date -u +%F_%H%M)"
           for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
+      # GitHub's hourly schedule is unreliable (did not fire at all in the first hours),
+      # so each run queues the next one, at least ~55 minutes after this one started.
+      # (workflow_dispatch from GITHUB_TOKEN is allowed to start a new run.)
+      - name: queue next run
+        if: always() && inputs.test_email != true && inputs.only == '' && inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          left=$(( 55*60 - ($(date +%s) - JOB_START) ))
+          if [ $left -gt 0 ]; then echo "waiting $left s"; sleep $left; fi
+          gh workflow run scan.yml --ref main
