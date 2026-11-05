@@ -2,12 +2,12 @@ name: scan
 
 on:
   schedule:
-    - cron: "23 */8 * * *"   # every 8 hours (private repo: ~2,000 free minutes/month). If public: "23 */2 * * *"
+    - cron: "23 * * * *"   # every hour (public repo: unlimited minutes)
   workflow_dispatch:
     inputs:
       minutes:
         description: "time budget (minutes)"
-        default: "20"
+        default: "45"
       only:
         description: "only these destinations, e.g. SGN,DPS (empty = all)"
         default: ""
@@ -26,7 +26,7 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 58
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -40,7 +40,7 @@ jobs:
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           MAIL_TO: ${{ secrets.MAIL_TO }}
         run: |
-          python scanner.py --minutes "${{ inputs.minutes || '20' }}" --only "${{ inputs.only }}" ${{ inputs.dry_run && '--dry-run' || '' }}
+          python scanner.py --minutes "${{ inputs.minutes || '45' }}" --only "${{ inputs.only }}" ${{ inputs.dry_run && '--dry-run' || '' }}
       - name: save state
         if: always()
         run: |

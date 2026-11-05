@@ -51,9 +51,13 @@ def save(p: Path, obj) -> None:
 
 # ---------------------------------------------------------------- tasks
 def build_tasks(only: set[str] | None) -> list[dict]:
+    """Near months: 61-day calendar windows. Far months (and LCA): one anchor date per
+    FAR_STEP_DAYS slot, shifted by one day each day so all dates get covered over time."""
     today = date.today()
+    first = today + timedelta(days=C.START_OFFSET_DAYS)
     dense_end = today + timedelta(days=C.DENSE_DAYS)
     end_all = today + timedelta(days=C.HORIZON_DAYS)
+    shift = today.toordinal() % C.FAR_STEP_DAYS
     tasks = []
     for origin in C.ORIGINS:
         for code, (name, region, prio) in C.DESTINATIONS.items():
@@ -61,24 +65,28 @@ def build_tasks(only: set[str] | None) -> list[dict]:
                 continue
             if origin == "LCA" and C.LCA_ONLY_PRIORITY and not prio:
                 continue
-            dur = C.REGIONS[region]["dur"]
             kind = "LCA" if origin == "LCA" else ("priority" if prio else "normal")
-            start = today + timedelta(days=C.START_OFFSET_DAYS)
-            w = 0
-            while start <= end_all:
-                far = start > dense_end or origin == "LCA"
-                span = C.FAR_STEP_DAYS if far else C.WINDOW_DAYS
-                end = min(start + timedelta(days=span - 1), end_all)
-                if not far:
-                    end = min(end, dense_end)
-                tasks.append({
-                    "key": f"{origin}-{code}-{start.isoformat()}",
-                    "origin": origin, "dest": code, "dur": dur, "region": region,
-                    "from": start.isoformat(), "to": end.isoformat(),
-                    "due_h": C.DUE_HOURS[kind] * (C.FAR_DUE_FACTOR if far else 1), "prio": prio,
-                })
-                start = end + timedelta(days=1)
-                w += 1
+            base = {"origin": origin, "dest": code, "dur": C.REGIONS[region]["dur"],
+                    "region": region, "prio": prio}
+            far_start = first
+            if origin != "LCA":  # Google has no cached LCA calendar, so LCA is anchors only
+                start, w = first, 0
+                while start <= dense_end:
+                    end = min(start + timedelta(days=C.WINDOW_DAYS - 1), dense_end)
+                    tasks.append({**base, "key": f"{origin}-{code}-d{w}",
+                                  "from": start.isoformat(), "to": end.isoformat(),
+                                  "due_h": C.DUE_HOURS[kind]})
+                    start, w = end + timedelta(days=1), w + 1
+                far_start = dense_end + timedelta(days=1)
+            k = 0
+            while True:
+                anchor = far_start + timedelta(days=k * C.FAR_STEP_DAYS + shift)
+                if anchor > end_all:
+                    break
+                tasks.append({**base, "key": f"{origin}-{code}-far{k}",
+                              "from": anchor.isoformat(), "to": anchor.isoformat(),
+                              "due_h": C.DUE_HOURS[kind] * C.FAR_DUE_FACTOR})
+                k += 1
     return tasks
 
 
@@ -114,7 +122,8 @@ def fli(args: list[str], timeout: int = 180) -> dict:
 
 def calendar(t: dict) -> list[dict] | None:
     d = fli(["dates", t["origin"], t["dest"], "--from", t["from"], "--to", t["to"],
-             "--round", "-d", str(t["dur"]), "--class", "BUSINESS"])
+             "--round", "-d", str(t["dur"]), "--class", "BUSINESS",
+             "--exclude-airlines", ",".join(C.EXCLUDE_AIRLINES)])
     if not d.get("success"):
         print(f"  ! {t['key']}: {d.get('error')}")
         return None
@@ -122,7 +131,8 @@ def calendar(t: dict) -> list[dict] | None:
 
 
 def details(origin: str, dest: str, dep: str, ret: str) -> dict | None:
-    d = fli(["flights", origin, dest, dep, "--return", ret, "--class", "BUSINESS", "--sort", "CHEAPEST"])
+    d = fli(["flights", origin, dest, dep, "--return", ret, "--class", "BUSINESS", "--sort", "CHEAPEST",
+             "--exclude-airlines", ",".join(C.EXCLUDE_AIRLINES)])
     flights = d.get("flights") or d.get("results") or []
     if not d.get("success") or not flights:
         return None
@@ -273,6 +283,12 @@ def main() -> int:
                     time.sleep(C.PACE_SECONDS)
                     run["calls"] += 1
                     dl["details"] = details(dl["origin"], dl["dest"], dl["dep"], dl["ret"])
+                    vias = set()
+                    for seg in ((dl["details"] or {}).get("out"), (dl["details"] or {}).get("ret")):
+                        vias |= set((seg or {}).get("via", []))
+                    if vias & C.BANNED_AIRPORTS:
+                        print(f"    מדלג: עובר דרך {sorted(vias & C.BANNED_AIRPORTS)}")
+                        continue
                 new_deals.append(dl)
     except Blocked as e:
         run["blocked"] = True

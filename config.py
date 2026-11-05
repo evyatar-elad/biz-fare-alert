@@ -10,7 +10,7 @@ POSITIONING_USD = 150  # rough round trip TLV-LCA in economy
 # "cap" = always alert if the round trip business price (USD) is at or below it.
 REGIONS = {
     "europe": {"dur": 7, "cap": 450},
-    "near":   {"dur": 7, "cap": 650},    # Turkey, Gulf, Caucasus, North Africa
+    "near":   {"dur": 7, "cap": 650},    # Gulf, Caucasus, North Africa
     "asia":   {"dur": 14, "cap": 1700},
     "far":    {"dur": 14, "cap": 2200},  # Oceania, Africa south of Sahara, Latin America, Canada
 }
@@ -45,7 +45,6 @@ DESTINATIONS = {
     "NCE": ("ניס", "europe", False),
     "VCE": ("ונציה", "europe", False),
     # Near
-    "IST": ("איסטנבול", "near", False),
     "DXB": ("דובאי", "near", False),
     "AUH": ("אבו דאבי", "near", False),
     "GYD": ("באקו", "near", False),
@@ -64,14 +63,15 @@ DESTINATIONS = {
     "SIN": ("סינגפור", "asia", False),
     "KUL": ("קואלה לומפור", "asia", False),
     "HKG": ("הונג קונג", "asia", False),
-    "PEK": ("בייג'ינג", "asia", True),
+    "PEK": ("בייג'ינג", "asia", False),
     "PVG": ("שנגחאי", "asia", False),
     "NRT": ("טוקיו", "asia", False),
     "ICN": ("סיאול", "asia", False),
-    "TPE": ("טאיפיי", "asia", False),
+    "TPE": ("טאיוואן (טאיפיי)", "asia", True),
     "MNL": ("מנילה", "asia", False),
-    "DEL": ("דלהי", "asia", False),
-    "BOM": ("מומבאי", "asia", False),
+    "DEL": ("דלהי", "asia", True),
+    "BOM": ("מומבאי", "asia", True),
+    "GOI": ("גואה", "asia", False),
     "CMB": ("קולומבו", "asia", False),
     "MLE": ("מלדיביים", "asia", False),
     "SEZ": ("סיישל", "asia", False),
@@ -98,16 +98,38 @@ LCA_ONLY_PRIORITY = True
 # Search window: Google Flights calendar covers ~305 days ahead, 61 days per call.
 # Measured 5/11/2026: the calendar is full only ~100 days ahead (Google has cached
 # prices there). Further out it returns just the requested start date. So beyond
-# DENSE_DAYS we ask for one "anchor" date every FAR_STEP_DAYS days.
+# DENSE_DAYS we ask for one "anchor" date every FAR_STEP_DAYS days, and the anchors
+# move by one day every day, so over a few scans every date (and every weekday,
+# some airlines fly only on certain days) gets checked.
 WINDOW_DAYS = 61
 DENSE_DAYS = 100
-FAR_STEP_DAYS = 14
+FAR_STEP_DAYS = 7
 HORIZON_DAYS = 300
 START_OFFSET_DAYS = 2
 
 # How often each task is due (hours).
 DUE_HOURS = {"priority": 24, "normal": 48, "LCA": 96}
-FAR_DUE_FACTOR = 2  # far (anchor) windows are checked half as often
+FAR_DUE_FACTOR = 1.5  # far (anchor) dates are checked a bit less often
+
+# Safety for an Israeli traveller: never route via Turkey or hostile / no-entry
+# countries. Airlines excluded in the search itself:
+EXCLUDE_AIRLINES = [
+    "TK", "PC", "XQ",              # Turkish Airlines, Pegasus, SunExpress (via Turkey)
+    "QR",                          # Qatar Airways (via Doha)
+    "SV", "XY", "F3",              # Saudia, flynas, flyadeal
+    "KU", "J9",                    # Kuwait Airways, Jazeera
+    "ME", "IR", "W5", "EP", "IA",  # MEA (Lebanon), Iran Air, Mahan, Iran Aseman, Iraqi
+    "PK", "AH",                    # PIA (Pakistan), Air Algerie
+]
+# Layover airports that drop a deal if the detail check shows them.
+BANNED_AIRPORTS = {
+    "IST", "SAW", "AYT", "ESB", "ADB",          # Turkey
+    "DOH",                                      # Qatar
+    "RUH", "JED", "DMM", "MED",                 # Saudi Arabia
+    "KWI", "BEY", "BGW", "BSR", "EBL", "NJF",   # Kuwait, Lebanon, Iraq
+    "IKA", "THR", "MHD", "DAM", "ALP",          # Iran, Syria
+    "SAH", "ADE", "KHI", "LHE", "ISB", "ALG",   # Yemen, Pakistan, Algeria
+}
 
 # Deal rule: price at least this fraction below the reference price.
 DROP = 0.35
