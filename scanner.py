@@ -52,25 +52,30 @@ def save(p: Path, obj) -> None:
 # ---------------------------------------------------------------- tasks
 def build_tasks(only: set[str] | None) -> list[dict]:
     today = date.today()
+    dense_end = today + timedelta(days=C.DENSE_DAYS)
+    end_all = today + timedelta(days=C.HORIZON_DAYS)
     tasks = []
     for origin in C.ORIGINS:
         for code, (name, region, prio) in C.DESTINATIONS.items():
             if only and code not in only:
                 continue
-            if origin == "LCA" and region not in C.LCA_REGIONS:
+            if origin == "LCA" and C.LCA_ONLY_PRIORITY and not prio:
                 continue
             dur = C.REGIONS[region]["dur"]
+            kind = "LCA" if origin == "LCA" else ("priority" if prio else "normal")
             start = today + timedelta(days=C.START_OFFSET_DAYS)
-            end_all = today + timedelta(days=C.HORIZON_DAYS)
             w = 0
             while start <= end_all:
-                end = min(start + timedelta(days=C.WINDOW_DAYS - 1), end_all)
-                kind = "LCA" if origin == "LCA" else ("priority" if prio else "normal")
+                far = start > dense_end or origin == "LCA"
+                span = C.FAR_STEP_DAYS if far else C.WINDOW_DAYS
+                end = min(start + timedelta(days=span - 1), end_all)
+                if not far:
+                    end = min(end, dense_end)
                 tasks.append({
-                    "key": f"{origin}-{code}-w{w}",
+                    "key": f"{origin}-{code}-{start.isoformat()}",
                     "origin": origin, "dest": code, "dur": dur, "region": region,
                     "from": start.isoformat(), "to": end.isoformat(),
-                    "due_h": C.DUE_HOURS[kind], "prio": prio,
+                    "due_h": C.DUE_HOURS[kind] * (C.FAR_DUE_FACTOR if far else 1), "prio": prio,
                 })
                 start = end + timedelta(days=1)
                 w += 1
@@ -231,7 +236,11 @@ def main() -> int:
         return 0
 
     only = {x.strip().upper() for x in a.only.split(",") if x.strip()} or None
-    todo = overdue(build_tasks(only), state["last"])
+    tasks = build_tasks(only)
+    if not only:  # forget windows that no longer exist (past dates, changed settings)
+        keys = {t["key"] for t in tasks}
+        state["last"] = {k: v for k, v in state["last"].items() if k in keys}
+    todo = overdue(tasks, state["last"])
     print(f"{len(todo)} משימות ממתינות")
     new_deals: list[dict] = []
     detail_budget = C.MAX_DETAIL_LOOKUPS

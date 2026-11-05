@@ -91,16 +91,23 @@ DESTINATIONS = {
     "YYZ": ("טורונטו", "far", False),
 }
 
-# From LCA only long haul makes sense (to Europe TLV is just as good).
-LCA_REGIONS = {"asia", "far"}
+# From LCA: only priority destinations (Google has almost no cached LCA business
+# prices, so every date costs a request).
+LCA_ONLY_PRIORITY = True
 
 # Search window: Google Flights calendar covers ~305 days ahead, 61 days per call.
+# Measured 5/11/2026: the calendar is full only ~100 days ahead (Google has cached
+# prices there). Further out it returns just the requested start date. So beyond
+# DENSE_DAYS we ask for one "anchor" date every FAR_STEP_DAYS days.
 WINDOW_DAYS = 61
+DENSE_DAYS = 100
+FAR_STEP_DAYS = 14
 HORIZON_DAYS = 300
 START_OFFSET_DAYS = 2
 
 # How often each task is due (hours).
 DUE_HOURS = {"priority": 24, "normal": 48, "LCA": 96}
+FAR_DUE_FACTOR = 2  # far (anchor) windows are checked half as often
 
 # Deal rule: price at least this fraction below the reference price.
 DROP = 0.35
