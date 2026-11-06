@@ -111,7 +111,7 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 <div style="opacity:.8;margin-top:4px">ביזנס הלוך חזור מתל אביב. מקור: Google Flights, שמרכז את מחירי החברות ורוב הסוכנויות. עודכן {t(now.isoformat())}</div></header>
 <div class="card"><span style="color:{color};font-weight:bold">● {health}</span></div>
 <div class="kpis" style="margin-top:14px">
- <div class="kpi"><span class=m>ריצה אחרונה</span><b>{t(lr.get('at'))}</b><span class=m>{lr.get('calls', 0)} בדיקות</span></div>
+ <div class="kpi"><span class=m>ריצה אחרונה הסתיימה</span><b>{t(lr.get('end') or lr.get('at'))}</b><span class=m>{lr.get('calls', 0)} בדיקות</span></div>
  <div class="kpi"><span class=m>בדיקות ב-24 שעות</span><b>{calls_24h:,}</b><span class=m>{blocks_24h} חסימות</span></div>
  <div class="kpi"><span class=m>כיסוי עדכני</span><b>{100 * fresh // max(1, len(tasks))}%</b><span class=m>{fresh:,} מתוך {len(tasks):,} חלונות</span></div>
  <div class="kpi"><span class=m>נסרקו אי פעם</span><b>{100 * ever // max(1, len(tasks))}%</b><span class=m>מהחלונות</span></div>
@@ -123,7 +123,7 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 <div class=m style="font-size:13px;margin-bottom:6px">⭐ יעד מועדף. "רגיל" = חציון כל הסריקות. ירוק = 35% ומטה מהרגיל.</div>
 <div class=scroll><table><tr><th>יעד</th><th></th><th>הזול</th><th>חודש</th><th>רגיל</th><th>נבדק</th></tr>
 {''.join(row(r) for r in rows)}</table></div></div>
-<p class=m style="font-size:12px">הנתונים מתעדכנים אחרי כל ריצה (כל שעה), והדף נטען מחדש לבד כל 10 דקות. <a href="https://github.com/evyatar-elad/biz-fare-alert/actions" style="color:inherit">ריצות</a></p>
+<p class=m style="font-size:12px">הנתונים נשמרים בסוף כל ריצה (ריצה = כ-45 דקות סריקה, אחת לשעה בערך), והדף נטען מחדש לבד כל 10 דקות. <a href="https://github.com/evyatar-elad/biz-fare-alert/actions" style="color:inherit">ריצות</a></p>
 </div></body></html>"""
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(page, encoding="utf-8")

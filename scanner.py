@@ -479,6 +479,7 @@ def main() -> int:
     save(STATE_F, state)
     save(HIST_F, hist)
     save(ALERTS_F, alerts)
+    run["end"] = now_utc().isoformat(timespec="seconds")
     with LOG_F.open("a", encoding="utf-8") as f:
         f.write(json.dumps(run, ensure_ascii=False) + "\n")
     print(json.dumps(run, ensure_ascii=False))
