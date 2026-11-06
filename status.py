@@ -57,15 +57,17 @@ def main() -> None:
         health, color = "פעיל", "#047857"
 
     # per destination (TLV): cheapest in the latest scan of each month, per source
+    kiwi_best = state.get("kiwi_best", {})
+
     def cheapest(rk):
         months = hist.get(rk, {})
         latest = [(rs[-1][2], m, rs[-1][0]) for m, rs in months.items() if rs]
-        mins = [r[2] for rs in months.values() for r in rs]  # cheapest of each scan, same basis as alerts
         if not latest:
             return None
         p, m, d = min(latest)
-        same_month = [r[2] for r in months[m]]  # usual = cheapest of each scan of THAT month
-        return {"p": p, "m": m, "d": d, "med": statistics.median(same_month), "n": len(months)}
+        past = [r[2] for r in months[m][:-1]]  # earlier scans of THAT month (same basis as alerts)
+        kb = kiwi_best.get(rk, {}).get(m) if rk.startswith("K-") else None
+        return {"p": p, "m": m, "d": d, "med": statistics.median(past) if len(past) >= 2 else None, "kb": kb}
 
     rows = []
     for code, (hname, region, prio) in C.DESTINATIONS.items():
@@ -73,12 +75,20 @@ def main() -> None:
                      cheapest(f"K-TLV-{code}")))
     rows.sort(key=lambda r: (not r[2], r[0]))
 
+    def via_txt(kb):
+        if not kb:
+            return ""
+        v = "ישירה" if not kb["via"] else "דרך " + ", ".join(name(x) for x in kb["via"])
+        sep = " · כרטיסים נפרדים" if kb.get("sep") else ""
+        return f"<br><span class=m>{html.escape(v)}{sep}</span>"
+
     def cells(c):
         if not c:
-            return "<td colspan=3 class=m>עוד לא נסרק</td>"
-        cheap = " class=good" if c["med"] and c["p"] <= c["med"] * (1 - C.DROP) else ""  # needs history
-        return (f"<td{cheap}><b>${c['p']:,.0f}</b><br><span class=m>{c['m']}</span></td>"
-                f"<td class=m>${c['med']:,.0f}</td><td class=m>{c['n']}</td>")
+            return "<td colspan=2 class=m>עוד לא נסרק</td>"
+        cheap = " class=good" if c["med"] and c["p"] <= c["med"] * (1 - C.DROP) else ""
+        usual = f"${c['med']:,.0f}" if c["med"] else "<span class=m>עוד אין</span>"
+        return (f"<td{cheap}><b>${c['p']:,.0f}</b><br><span class=m>{c['m']}</span>{via_txt(c.get('kb'))}</td>"
+                f"<td class=m>{usual}</td>")
 
     def row(r):
         hname, code, prio, g, k = r
@@ -135,9 +145,9 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 <tr><th>נשלח</th><th>מסלול</th><th>חודש</th><th>מחיר</th></tr>{al_rows}</table></div></div>
 {dormant_html}
 <div class="card"><h2>הזול ביותר לכל יעד (מתל אביב)</h2>
-<div class=m style="font-size:13px;margin-bottom:6px">⭐ יעד מועדף. "רגיל" = לאותו חודש, הזול שנמצא בכל בדיקה בממוצע (חציון), כמו בהתראות. "חודשים" = כמה חודשי יציאה כבר נבדקו (מתוך ~10). גוגל סורק קודם את החודשים הקרובים. ירוק = 35% ומטה מהרגיל.</div>
-<div class=scroll><table><tr><th></th><th colspan=3>Google Flights</th><th colspan=3>Kiwi.com</th></tr>
-<tr><th>יעד</th><th>הזול</th><th>רגיל</th><th>חודשים</th><th>הזול</th><th>רגיל</th><th>חודשים</th></tr>
+<div class=m style="font-size:13px;margin-bottom:6px">⭐ יעד מועדף. "רגיל לחודש" = הזול שנמצא באותו חודש בבדיקות קודמות (חציון), כמו בהתראות; "עוד אין" = פחות משתי בדיקות קודמות. ירוק = 35% ומטה מהרגיל, כלומר מציאה. מסלול (ישירה / דרך) ידוע רק ב-Kiwi; ב-Google הוא מופיע במייל של מציאה.</div>
+<div class=scroll><table><tr><th></th><th colspan=2>Google Flights</th><th colspan=2>Kiwi.com</th></tr>
+<tr><th>יעד</th><th>הזול</th><th>רגיל לחודש</th><th>הזול</th><th>רגיל לחודש</th></tr>
 {''.join(row(r) for r in rows)}</table></div></div>
 <p class=m style="font-size:12px">הנתונים נשמרים בסוף כל ריצה (ריצה = כ-45 דקות סריקה, אחת לשעה בערך), והדף נטען מחדש לבד כל 10 דקות. <a href="https://github.com/evyatar-elad/biz-fare-alert/actions" style="color:inherit">ריצות</a></p>
 </div></body></html>"""

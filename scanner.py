@@ -408,6 +408,19 @@ def main() -> int:
             ds["empty_streak"] = 0
             ds["last_found"] = today
             run["ok"] += 1
+            if is_kiwi:  # remember route of the cheapest Kiwi trip per month (for the status page)
+                kb = state.setdefault("kiwi_best", {}).setdefault(route_key(t), {})
+                by_m: dict[str, dict] = {}
+                for p in pts:
+                    m = p["departure_date"][:7]
+                    if m not in by_m or p["price"] < by_m[m]["price"]:
+                        by_m[m] = p
+                for m, p in by_m.items():
+                    det = kiwi.details_from_itin(p["itin"])
+                    kb[m] = {"p": p["price"], "via": (det["out"] or {}).get("via", []),
+                             "air": (det["out"] or {}).get("airlines", []), "sep": det["separate_tickets"]}
+                for m in [m for m in kb if m < today[:7]]:
+                    del kb[m]
             deals = find_deals(t, pts, hist, today)
             update_history(hist, route_key(t), pts, today)
             hub = None
