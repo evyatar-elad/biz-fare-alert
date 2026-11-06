@@ -192,6 +192,14 @@ def deal_card(d: dict) -> str:
         flights = (f'<div style="margin-top:14px;color:{MUTED};font-size:14px">'
                    "פרטי הטיסות לא נבדקו בריצה הזו. אפשר לראות אותם בקישורים.</div>")
     sisters = sorted(next((g for g in C.SISTER_CITIES if x in g), {x}) - {x})
+    cont_rows = ""
+    for c in d.get("continuations") or []:
+        cmp = (f" · ביזנס ישיר ל{name(c['to'])} בדרך כלל {ltr(f'${c['direct']:,.0f}')}"
+               + (" <b style='color:#047857'>(זול יותר בדרך הזו!)</b>" if c["total"] < c["direct"] else "")
+               ) if c.get("direct") else ""
+        cont_rows += (f'<tr><td style="padding:4px 0;color:{MUTED};vertical-align:top">המשך</td><td style="padding:4px 0">'
+                      f'מ{name(x)} ל{name(c["to"])} בתיירים (כרטיס נפרד): {ltr(f"+${c['eco']:,.0f}")} = '
+                      f'<b>{ltr(f"${c['total']:,.0f}")}</b>{cmp}</td></tr>')
     eco = d.get("economy")
     eco_row = (f'<tr><td style="padding:4px 0;color:{MUTED}">בתיירים</td><td style="padding:4px 0">'
                f'{ltr(f"${eco:,.0f}")} באותם תאריכים · הביזנס יקר פי {ltr(f"{d["price"] / eco:.1f}")}</td></tr>'
@@ -243,7 +251,7 @@ def deal_card(d: dict) -> str:
          <td style="padding:4px 0">{d["similar_dates"]} תאריכי יציאה בחודש הזה במחיר דומה</td></tr>
      <tr><td style="padding:4px 0;color:{MUTED};vertical-align:top">למה</td>
          <td style="padding:4px 0">{html.escape("; ".join(d["reasons"]))}</td></tr>
-     {eco_row}{src_row}{lca}{open_jaw}
+     {eco_row}{cont_rows}{src_row}{lca}{open_jaw}
    </table>
  </td></tr>
  <tr><td style="padding:0 20px">{flights}</td></tr>
@@ -333,6 +341,7 @@ SAMPLE = {
     "dep": "2027-03-10", "ret": "2027-03-24", "price": 1200, "effective": 1200, "ref": 4300,
     "ref_why": "הזול שנמצא לחודש הזה ב-6 בדיקות קודמות",
     "reasons": ["[בדיקה, לא מחיר אמיתי] 72% מתחת למחיר הרגיל"], "similar_dates": 4, "economy": 980,
+    "continuations": [{"to": "PVG", "eco": 180, "total": 1380, "direct": 3900}],
     "details": {"price": 1200,
         "out": {"stops": 1, "via": ["GYD"], "airlines": ["Azerbaijan Airlines"], "hours": 13.5, "mixed_cabin": False,
                 "legs": [{"from": "TLV", "to": "GYD", "airline": "Azerbaijan Airlines", "flight": "J2 82", "aircraft": "Airbus A320neo", "seat": None, "hours": 3.3},

@@ -130,8 +130,9 @@ def details_from_itin(it: dict) -> dict:
             "separate_tickets": len(tickets) > 1, "booking_url": it.get("bookingUrl")}
 
 
-def economy_price(client: Client, origin: str, dest: str, dep: str, ret: str) -> float | None:
+def economy_price(client: Client, origin: str, dest: str, dep: str, ret: str, flex: int = 0) -> float | None:
     its = client.search(flyFrom=origin, flyTo=dest, departureDate=ddmmyyyy(dep), returnDate=ddmmyyyy(ret),
+                        departureDateFlexDays=flex, returnDateFlexDays=flex,
                         cabinClass="M", currency="USD", adults=1,
                         exclude_airlines=",".join(C.EXCLUDE_AIRLINES),
                         exclude_stopover_airports=",".join(sorted(C.BANNED_AIRPORTS)))

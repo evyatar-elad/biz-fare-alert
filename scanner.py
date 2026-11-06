@@ -373,6 +373,7 @@ def main() -> int:
     detail_budget = C.MAX_DETAIL_LOOKUPS
     kc, kiwi_off = None, False
     econ_budget = C.MAX_ECONOMY_LOOKUPS
+    cont_budget = C.MAX_CONTINUATION_LOOKUPS
 
     try:
         for t in todo:
@@ -473,6 +474,25 @@ def main() -> int:
                     dl["economy"] = eco
                     if eco and dl["price"] <= eco * C.BIZ_TO_ECO_RATIO:
                         dl["reasons"].append(f"ביזנס רק פי {dl['price'] / eco:.1f} ממחיר התיירים")
+                for x in C.CONTINUATIONS.get(dl["dest"], []):
+                    if cont_budget <= 0 or kiwi_off:
+                        break
+                    cont_budget -= 1
+                    try:
+                        time.sleep(C.KIWI_PACE_SECONDS)
+                        kc = kc or kiwi.Client()
+                        nxt = (date.fromisoformat(dl["dep"]) + timedelta(days=1)).isoformat()
+                        eco = kiwi.economy_price(kc, dl["dest"], x, nxt, dl["ret"], flex=1)
+                        run["calls"] += 1
+                    except kiwi.KiwiError:
+                        eco = None
+                    if not eco:
+                        continue
+                    region_x = C.DESTINATIONS.get(x, ("", "asia", False))[1]
+                    direct, _ = reference(hist, f"TLV-{x}-{C.REGIONS[region_x]['dur']}", dl["month"], "", [])
+                    kdirect, _ = reference(hist, f"K-TLV-{x}", dl["month"], "", [])
+                    dl.setdefault("continuations", []).append(
+                        {"to": x, "eco": eco, "total": dl["price"] + eco, "direct": direct or kdirect})
                 new_deals.append(dl)
     except Blocked as e:
         run["blocked"] = True

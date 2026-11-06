@@ -198,6 +198,20 @@ PACE_SECONDS = 30
 BACKOFF_HOURS = 4
 # Detail lookups (airline, stops) per run.
 MAX_DETAIL_LOOKUPS = 2  # each one is several requests to Google
+# Continuations: a business deal to a hub city may be the best way to a nearby
+# priority destination, continuing in economy on a separate ticket (e.g. Uzbekistan
+# Airways business to Bangkok + economy Bangkok-Bali). For such a deal the email
+# also prices the economy continuation and compares the total with the usual
+# business price straight to that destination.
+CONTINUATIONS = {
+    "BKK": ["DPS", "HKT", "SGN", "HAN", "DAD"],
+    "SIN": ["DPS"], "KUL": ["DPS"],
+    "DEL": ["GOI"], "BOM": ["GOI"],
+    "HKG": ["TPE", "HAN", "DAD"],
+    "SGN": ["DAD", "HAN"], "HAN": ["DAD"],
+}
+MAX_CONTINUATION_LOOKUPS = 3
+
 # Economy price for the same dates, shown next to each deal (one request per deal).
 MAX_ECONOMY_LOOKUPS = 4
 # Business at most this many times the economy price = note it as a reason too.
