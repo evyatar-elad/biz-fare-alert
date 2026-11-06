@@ -108,7 +108,7 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 .scroll{{overflow-x:auto}}
 </style></head><body><div class="wrap">
 <header><h1>✈️ בוט מציאות ביזנס</h1>
-<div style="opacity:.8;margin-top:4px">ביזנס הלוך חזור מתל אביב. מקור: Google Flights, שמרכז את מחירי החברות ורוב הסוכנויות. עודכן {t(now.isoformat())}</div></header>
+<div style="opacity:.8;margin-top:4px">ביזנס הלוך חזור מתל אביב. מקורות: Google Flights ו-Kiwi.com, וגם ניוזלטרים של חברות תעופה ו-Fly4free. עודכן {t(now.isoformat())}</div></header>
 <div class="card"><span style="color:{color};font-weight:bold">● {health}</span></div>
 <div class="kpis" style="margin-top:14px">
  <div class="kpi"><span class=m>ריצה אחרונה הסתיימה</span><b>{t(lr.get('end') or lr.get('at'))}</b><span class=m>{lr.get('calls', 0)} בדיקות</span></div>
@@ -119,7 +119,7 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 <div class="card"><h2>התראות אחרונות</h2><div class=scroll><table>
 <tr><th>נשלח</th><th>מסלול</th><th>חודש</th><th>מחיר</th></tr>{al_rows}</table></div></div>
 {dormant_html}
-<div class="card"><h2>הזול ביותר לכל יעד (מתל אביב)</h2>
+<div class="card"><h2>הזול ביותר לכל יעד (מתל אביב, לפי Google Flights)</h2>
 <div class=m style="font-size:13px;margin-bottom:6px">⭐ יעד מועדף. "רגיל" = חציון כל הסריקות. ירוק = 35% ומטה מהרגיל.</div>
 <div class=scroll><table><tr><th>יעד</th><th></th><th>הזול</th><th>חודש</th><th>רגיל</th><th>נבדק</th></tr>
 {''.join(row(r) for r in rows)}</table></div></div>

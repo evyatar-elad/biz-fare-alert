@@ -256,7 +256,7 @@ def page(inner: str, preheader: str = "") -> str:
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" dir="rtl" style="max-width:620px;text-align:right">
 <tr><td>{inner}</td></tr>
 <tr><td style="{FONT}font-size:12px;color:{MUTED};line-height:1.6;padding:4px 6px">
-מחירים מ-Google Flights (שמרכז את מחירי החברות ורוב הסוכנויות) בדולרים, ביזנס הלוך חזור לנוסע אחד. אורך השהייה הוא רק "גשש" לזיהוי המחיר, ואפשר לשנות אותו באתר.
+מחירים מ-Google Flights ומ-Kiwi.com, בדולרים, ביזנס הלוך חזור לנוסע אחד. אורך השהייה הוא רק "גשש" לזיהוי המחיר, ואפשר לשנות אותו באתר.
 <br><a href="{STATUS_URL}" style="color:{NAVY}">דף הסטטוס של הבוט</a></td></tr>
 </table></td></tr></table></body></html>'''
 
