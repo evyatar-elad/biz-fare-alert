@@ -17,7 +17,9 @@ from urllib.parse import quote
 
 import notify
 
-BUSINESS = ["business class", "business", "ביזנס", "מחלקת עסקים", "premium", "first class", "upgrade"]
+# Not the bare word "business": newsletters have it in footers ("business address", "for business").
+BUSINESS = ["business class", "business fare", "business cabin", "fly business", "in business",
+            "business from", "ביזנס", "מחלקת עסקים", "מחלקה עסקית", "first class"]
 PROMO = ["sale", "offer", "deal", "promo", "discount", "save", "special fare", "special price", "from $",
          "from usd", "from €", "%", "מבצע", "הנחה", "מחיר מיוחד", "flash"]
 ISRAEL = ["tel aviv", "israel", "tlv", "תל אביב", "ישראל"]
