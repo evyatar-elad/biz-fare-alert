@@ -32,6 +32,11 @@ def run(extra=()):
     sys.argv = ["scanner.py", "--only", "PEK,DPS", "--dry-run", *extra]; scanner.main()
 
 SPIKE = False; run()                                  # day 1: normal prices, builds history
+h = json.loads((tmp/"history.json").read_text())   # pretend day 1 was two past days
+for rk in h:
+    for m in h[rk]:
+        row = h[rk][m][0]; h[rk][m] = [["2000-01-01"] + row[1:], ["2000-01-02"] + row[1:]]
+(tmp/"history.json").write_text(json.dumps(h))
 st = json.loads((tmp/"state.json").read_text()); st["last"] = {}; st["last_email"] = "2099-01-01T00:00:00+00:00"
 (tmp/"state.json").write_text(json.dumps(st))
 SPIKE = True; print("\n===== with promo ====="); run()      # promo appears -> email

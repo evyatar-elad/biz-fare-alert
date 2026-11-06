@@ -273,18 +273,20 @@ def update_history(hist: dict, rk: str, points: list[dict], today: str) -> None:
 
 
 def reference(hist: dict, rk: str, month: str, today: str, current: list[float]) -> tuple[float | None, str]:
-    """Usual price for this route and month. Prefers past scans (so a month long promo still stands out)."""
-    r = hist.get(rk, {})
-    past_month = [x[1] for x in r.get(month, []) if x[0] != today]
-    if len(past_month) >= 2:
-        return statistics.median(past_month), "היסטוריה של החודש"
-    past_all = [x[1] for rows in r.values() for x in rows if x[0] != today]
-    if len(past_all) >= 3:
-        return statistics.median(past_all), "היסטוריה של המסלול"
-    if len(current) >= 10:
-        return statistics.median(current), "חציון החלון הנוכחי"
-    return None, "אין עדיין מספיק נתונים"
+    """Usual CHEAPEST price for this route and month, from past scans only.
 
+    We compare the cheapest date of a month with the cheapest of past scans (history
+    column 2). Comparing with a median of all dates flagged normal prices as deals
+    (6/11: Goa every month ~$2,390 vs a median inflated by December). No past scans =
+    no relative rule (only the fixed regional cap)."""
+    r = hist.get(rk, {})
+    past_month = [x[2] for x in r.get(month, []) if x[0] != today]
+    if len(past_month) >= 2:
+        return statistics.median(past_month), "הזול הרגיל בחודש הזה"
+    past_all = [x[2] for rows in r.values() for x in rows if x[0] != today]
+    if len(past_all) >= 6:
+        return statistics.median(past_all), "הזול הרגיל במסלול"
+    return None, "אין עדיין מספיק היסטוריה"
 
 def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict]:
     rk = route_key(t)
@@ -299,10 +301,9 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
         best = min(ps, key=lambda p: p["price"])
         price = best["price"] + extra
         if t.get("src") == "kiwi":
+            # Kiwi only against Kiwi: it builds cheaper separate-ticket trips than Google
+            # shows, so Google's usual price made normal Kiwi prices look like deals (6/11).
             ref, why = reference(hist, rk, month, today, [])
-            if ref is None or ref == 0:
-                ref, why = reference(hist, tlv_rk, month, "", [])
-                why = "מחיר רגיל ב-Google Flights, " + why
         elif t["origin"] == "LCA" or t.get("via"):
             ref, why = reference(hist, tlv_rk, month, "", [])  # TLV usual price, incl. today
             if t.get("via"):
