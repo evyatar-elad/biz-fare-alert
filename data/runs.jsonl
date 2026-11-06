@@ -1,3 +1,4 @@
 {"at": "2026-11-05T20:56:21+00:00", "calls": 12, "ok": 12, "empty": 0, "deals": 0, "blocked": false}
 {"at": "2026-11-05T21:59:04+00:00", "calls": 81, "ok": 78, "empty": 3, "deals": 0, "blocked": false}
 {"at": "2026-11-05T23:35:50+00:00", "calls": 140, "ok": 88, "empty": 46, "deals": 19, "blocked": false, "kiwi": 130}
+{"at": "2026-11-06T00:40:02+00:00", "calls": 86, "ok": 74, "empty": 12, "deals": 0, "blocked": false, "end": "2026-11-06T01:25:26+00:00"}
