@@ -313,8 +313,9 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
         reasons = []
         if ref and price <= ref * (1 - C.DROP):
             reasons.append(f"{round(100 * (1 - price / ref))}% מתחת למחיר הרגיל (${ref:,.0f}, {why})")
-        if price <= region["cap"]:
-            reasons.append(f"מתחת לסף הקבוע לאזור (${region['cap']:,})")
+        cap = C.CAP_OVERRIDE.get(t["dest"], region["cap"])
+        if price <= cap:
+            reasons.append(f"מתחת לסף הקבוע (${cap:,})")
         if reasons:
             same = sum(1 for p in ps if p["price"] <= best["price"] * 1.03)
             deals.append({

@@ -9,11 +9,15 @@ POSITIONING_USD = 150  # rough round trip TLV-LCA in economy
 # the stay length is a probe, not a choice. Price barely depends on it).
 # "cap" = always alert if the round trip business price (USD) is at or below it.
 REGIONS = {
-    "europe": {"dur": 7, "cap": 450},
+    "europe": {"dur": 7, "cap": 650},   # 6/11: normal business mins are ~$700-1,100 (Athens ~$470)
     "near":   {"dur": 7, "cap": 650},    # Gulf, Caucasus, North Africa
     "asia":   {"dur": 14, "cap": 1700},
     "far":    {"dur": 14, "cap": 2200},  # Oceania, Africa south of Sahara, Latin America, Canada
 }
+
+# Destinations whose NORMAL business price is already near the regional cap get their
+# own cap (measured 6/11): Athens ~$470, Mumbai ~$1,700, Delhi ~$1,880.
+CAP_OVERRIDE = {"ATH": 380, "BOM": 1350, "DEL": 1400}
 
 # code: (name in Hebrew, region, priority). priority=True -> scanned more often.
 DESTINATIONS = {
