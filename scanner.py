@@ -282,10 +282,10 @@ def reference(hist: dict, rk: str, month: str, today: str, current: list[float])
     r = hist.get(rk, {})
     past_month = [x[2] for x in r.get(month, []) if x[0] != today]
     if len(past_month) >= 2:
-        return statistics.median(past_month), "הזול הרגיל בחודש הזה"
+        return statistics.median(past_month), f"הזול שנמצא לחודש הזה ב-{len(past_month)} בדיקות קודמות"
     past_all = [x[2] for rows in r.values() for x in rows if x[0] != today]
     if len(past_all) >= 6:
-        return statistics.median(past_all), "הזול הרגיל במסלול"
+        return statistics.median(past_all), f"הזול שנמצא במסלול הזה ב-{len(past_all)} בדיקות קודמות (כל החודשים)"
     return None, "אין עדיין מספיק היסטוריה"
 
 def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict]:
@@ -320,7 +320,7 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
             deals.append({
                 "route": rk, "origin": t["origin"], "dest": t["dest"], "dur": t["dur"],
                 "month": month, "dep": best["departure_date"], "ret": best["return_date"],
-                "price": best["price"], "effective": price, "ref": ref, "reasons": reasons,
+                "price": best["price"], "effective": price, "ref": ref, "ref_why": why, "reasons": reasons,
                 "similar_dates": same, "via": t.get("via"), "parts": best.get("parts"),
                 "src": t.get("src", "gf"), "airline_focus": t.get("airline"),
                 "details": kiwi.details_from_itin(best["itin"]) if best.get("itin") else None,

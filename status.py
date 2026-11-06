@@ -62,7 +62,7 @@ def main() -> None:
         rk = f"TLV-{code}-{C.REGIONS[region]['dur']}"
         months = hist.get(rk, {})
         latest = [(rs[-1][2], m, rs[-1][0]) for m, rs in months.items() if rs]
-        meds = [r[1] for rs in months.values() for r in rs]
+        meds = [r[2] for rs in months.values() for r in rs]  # cheapest of each scan, same basis as alerts
         if latest:
             p, m, d = min(latest)
             rows.append((hname, code, prio, p, m, statistics.median(meds), d))
@@ -130,7 +130,7 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 <tr><th>נשלח</th><th>מסלול</th><th>חודש</th><th>מחיר</th></tr>{al_rows}</table></div></div>
 {dormant_html}
 <div class="card"><h2>הזול ביותר לכל יעד (מתל אביב, לפי Google Flights)</h2>
-<div class=m style="font-size:13px;margin-bottom:6px">⭐ יעד מועדף. "רגיל" = חציון כל הסריקות. ירוק = 35% ומטה מהרגיל.</div>
+<div class=m style="font-size:13px;margin-bottom:6px">⭐ יעד מועדף. "רגיל" = הזול שנמצא בכל בדיקה, בממוצע (חציון), כמו בהתראות. ירוק = 35% ומטה מהרגיל.</div>
 <div class=scroll><table><tr><th>יעד</th><th></th><th>הזול</th><th>חודש</th><th>רגיל</th><th>נבדק</th></tr>
 {''.join(row(r) for r in rows)}</table></div></div>
 <p class=m style="font-size:12px">הנתונים נשמרים בסוף כל ריצה (ריצה = כ-45 דקות סריקה, אחת לשעה בערך), והדף נטען מחדש לבד כל 10 דקות. <a href="https://github.com/evyatar-elad/biz-fare-alert/actions" style="color:inherit">ריצות</a></p>

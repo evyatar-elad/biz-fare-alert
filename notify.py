@@ -176,7 +176,9 @@ def deal_card(d: dict) -> str:
     badge = (f'<span style="background:{GREEN_BG};color:{GREEN};font-size:13px;font-weight:bold;'
              f'padding:3px 10px;border-radius:12px">{ltr(f"-{pct}%")} מהרגיל</span>') if pct and pct > 0 else ""
     usual = (f'<div style="color:{MUTED};font-size:14px;margin-top:2px">בדרך כלל '
-             f'<s>{ltr(f"${d["ref"]:,.0f}")}</s></div>') if d.get("ref") else ""
+             f'<s>{ltr(f"${d["ref"]:,.0f}")}</s></div>'
+             f'<div style="color:{MUTED};font-size:12px">{html.escape(d.get("ref_why") or "")}</div>'
+             ) if d.get("ref") else ""
     lca = (f'<tr><td style="padding:4px 0;color:{MUTED};width:90px">לרנקה</td><td style="padding:4px 0">'
            f'צריך גם טיסה לקפריסין. כולל הערכה של {ltr(f"${C.POSITIONING_USD}")}: '
            f'<b>{ltr(f"${d["effective"]:,.0f}")}</b></td></tr>') if o == "LCA" else ""
@@ -329,6 +331,7 @@ def send_heartbeat(state: dict, hist: dict, dry_run: bool = False) -> bool:
 SAMPLE = {
     "route": "TLV-PEK-14", "origin": "TLV", "dest": "PEK", "dur": 14, "month": "2027-03",
     "dep": "2027-03-10", "ret": "2027-03-24", "price": 1200, "effective": 1200, "ref": 4300,
+    "ref_why": "הזול שנמצא לחודש הזה ב-6 בדיקות קודמות",
     "reasons": ["[בדיקה, לא מחיר אמיתי] 72% מתחת למחיר הרגיל"], "similar_dates": 4, "economy": 980,
     "details": {"price": 1200,
         "out": {"stops": 1, "via": ["GYD"], "airlines": ["Azerbaijan Airlines"], "hours": 13.5, "mixed_cabin": False,
