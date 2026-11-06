@@ -64,13 +64,29 @@ def snippet(text: str, words: list[str], n: int = 220) -> str:
     return text[:n] + "…"
 
 
+PRICE = re.compile(r"(?:[$€£₪]\s?\d[\d,.]*|\d[\d,.]*\s?(?:usd|eur|ils|nis|ש\"ח|שח|₪|\$|€))", re.I)
+WELCOME = re.compile(r"(welcome|thanks for (signing|subscrib)|thank you for (signing|subscrib)|ברוכים|תודה שנרשמת)", re.I)
+NEAR = 200  # a business word and a price within this many characters
+
+
+def clean(text: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"https?://\S+|\S{40,}", " ", text))
+
+
 def classify(subject: str, text: str) -> dict | None:
-    low = (subject + " " + text).lower()
-    biz = [w for w in BUSINESS if w in low]
-    promo = [w for w in PROMO if w in low]
-    if not biz or not promo:
+    """Business class promo = a business-class word with a price close to it (not just
+    both words somewhere in the mail: footers and welcome mails matched before, 6/11)."""
+    if WELCOME.search(subject):
         return None
-    return {"biz": biz, "promo": promo, "israel": any(w in low for w in ISRAEL)}
+    body = clean(subject + " . " + text)
+    low = body.lower()
+    prices = [m.start() for m in PRICE.finditer(low)]
+    for w in BUSINESS:
+        for m in re.finditer(re.escape(w), low):
+            if any(abs(p - m.start()) <= NEAR for p in prices):
+                return {"biz": [w], "promo": [], "israel": any(x in low for x in ISRAEL), "at": m.start(),
+                        "text": body}
+    return None
 
 
 def check_feeds(dry_run: bool) -> None:
@@ -155,7 +171,8 @@ def read_folder(m, ids, dry_run: bool) -> list[dict]:
         if not c and CONFIRM.search(subj):
             c = {"biz": [], "promo": [], "israel": False, "confirm": True}
         if c:
-            hits.append({"from": frm, "subject": subj, "c": c, "snip": snippet(text, c["biz"]),
+            src = c.get("text") or clean(text)
+            hits.append({"from": frm, "subject": subj, "c": c, "snip": snippet(src, c["biz"]),
                          "msgid": (msg.get("Message-ID") or "").strip("<>")})
         if not dry_run:
             m.store(i, "+FLAGS", "\\Seen")

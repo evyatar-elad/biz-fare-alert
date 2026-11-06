@@ -85,8 +85,18 @@ def main() -> None:
                     + ", ".join(html.escape(f"{name(k.split('-')[0])}-{name(k.split('-')[1])}") for k in dormant)
                     + "</div></div>") if dormant else ""
     al = sorted(alerts.items(), key=lambda kv: kv[1]["at"], reverse=True)[:15]
+    def route_label(k: str) -> str:
+        parts = k.split("|")[0].split("-")
+        src = "Google Flights"
+        if parts[0] == "K":
+            src, parts = "Kiwi.com", parts[1:]
+            if len(parts) > 2:
+                src += f" ({parts[2]})"
+        o, d = parts[0], parts[1]
+        return f"{html.escape(name(o))} - {html.escape(name(d))} <span class=m>· {src}</span>"
+
     al_rows = "".join(
-        f"<tr><td>{t(v['at'])}</td><td>{html.escape(name(k.split('-')[0]))} - {html.escape(name(k.split('-')[1]))}</td>"
+        f"<tr><td>{t(v['at'])}</td><td>{route_label(k)}</td>"
         f"<td>{k.split('|')[1]}</td><td><b>${v['price']:,.0f}</b></td></tr>" for k, v in al
     ) or "<tr><td colspan=4 class=m>עוד לא נשלחו התראות</td></tr>"
 
