@@ -115,6 +115,36 @@ def main() -> None:
         f"<td>{k.split('|')[1]}</td><td><b>${v['price']:,.0f}</b></td></tr>" for k, v in al
     ) or "<tr><td colspan=4 class=m>עוד לא נשלחו התראות</td></tr>"
 
+    import json as _j
+    def jload(name, default):
+        try:
+            return _j.loads((scanner.DATA / name).read_text(encoding="utf-8"))
+        except (FileNotFoundError, ValueError):
+            return default
+    nstats = jload("news_stats.json", {})
+    nlog = jload("news_log.json", [])
+    nwait = jload("pending_news.json", [])
+    days = sorted(nstats)[-7:]
+    n_read = sum(nstats[d]["read"] for d in days)
+    n_match = sum(nstats[d]["matched"] for d in days)
+    senders = {}
+    for d in days:
+        for k, v in nstats[d]["senders"].items():
+            senders[k] = senders.get(k, 0) + v
+    sender_rows = "".join(f"<tr><td>{html.escape(k)}</td><td>{v}</td></tr>"
+                          for k, v in sorted(senders.items(), key=lambda kv: -kv[1])[:15]) \
+        or "<tr><td colspan=2 class=m>עוד אין נתונים (נאספים מ-9/11)</td></tr>"
+    log_rows = "".join(
+        f"<tr><td class=m>{t(x['at'])}</td><td>{html.escape(x.get('from',''))}</td>"
+        f"<td>{html.escape(x.get('subject',''))}"
+        + (f"<br><span class=m style='font-size:13px'>{html.escape(x['snip'][:160])}</span>" if x.get('snip') else "")
+        + (f" <a href='{html.escape(x['link'])}' style='color:inherit'>לפוסט</a>" if x.get('link') else "")
+        + "</td></tr>" for x in reversed(nlog[-12:])) \
+        or "<tr><td colspan=3 class=m>עוד לא נמצא שום מבצע ביזנס עם מחיר בניוזלטרים</td></tr>"
+    waiting = state.get("pending", [])
+    wait_txt = (", ".join(f"{html.escape(name(d['dest']))} ${d['price']:,.0f}" for d in waiting)
+                if waiting else "אין")
+
     page = f"""<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="600"><title>בוט מציאות ביזנס</title>
 <style>
@@ -135,17 +165,34 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 <header><h1>✈️ בוט מציאות ביזנס</h1>
 <div style="opacity:.8;margin-top:4px">ביזנס הלוך חזור מתל אביב. מקורות: Google Flights ו-Kiwi.com, וגם ניוזלטרים של חברות תעופה ו-Fly4free. עודכן {t(now.isoformat())}</div></header>
 <div class="card"><span style="color:{color};font-weight:bold">● {health}</span></div>
+<details class="card"><summary style="cursor:pointer;font-weight:bold">איך הבוט עובד? (לחץ להסבר)</summary>
+<ul style="line-height:1.7;margin:10px 0 0;padding-right:18px">
+<li>כל שעה הבוט רץ כ-45 דקות ובודק מחירי ביזנס הלוך חזור מתל אביב לכ-70 יעדים, עד כ-10 חודשים קדימה, בשני מקורות: Google Flights ו-Kiwi.com.</li>
+<li>לכל יעד ולכל חודש הוא שומר את <b>המחיר הזול ביותר</b> שמצא בכל בדיקה. "המחיר הרגיל" הוא האמצע של המחירים האלה מבדיקות קודמות.</li>
+<li><b>מציאה</b> = מחיר עד $2,000, וגם: נמוך ב-35% לפחות מהרגיל לאותו חודש, או מתחת לסף קבוע לאזור (אירופה וקרובות $650, אסיה $1,700).</li>
+<li>מציאות, וגם מבצעי ביזנס מהניוזלטרים ומאתרי מציאות, נאספים ונשלחים ב<b>מייל אחד ביום</b> מ-09:00, רק אם יש משהו.</li>
+<li>הבוט לא עוקף חסימות. אם גוגל מבקש להאט, הוא עוצר ל-4 שעות וממשיך לבד.</li>
+</ul></details>
 <div class="kpis" style="margin-top:14px">
- <div class="kpi"><span class=m>ריצה אחרונה הסתיימה</span><b>{t(lr.get('end') or lr.get('at'))}</b><span class=m>{lr.get('calls', 0)} בדיקות</span></div>
- <div class="kpi"><span class=m>בדיקות ב-24 שעות</span><b>{calls_24h:,}</b><span class=m>{blocks_24h} חסימות</span></div>
- <div class="kpi"><span class=m>כיסוי עדכני</span><b>{100 * fresh // max(1, len(tasks))}%</b><span class=m>{fresh:,} מתוך {len(tasks):,} חלונות</span></div>
- <div class="kpi"><span class=m>נסרקו אי פעם</span><b>{100 * ever // max(1, len(tasks))}%</b><span class=m>מהחלונות</span></div>
+ <div class="kpi"><span class=m>הריצה האחרונה הסתיימה</span><b>{t(lr.get('end') or lr.get('at'))}</b><span class=m>{lr.get('calls', 0)} חיפושים בה</span></div>
+ <div class="kpi"><span class=m>חיפושים ב-24 שעות</span><b>{calls_24h:,}</b><span class=m>{"בלי חסימות" if not blocks_24h else f"{blocks_24h} פעמים גוגל ביקש להאט"}</span></div>
+ <div class="kpi"><span class=m>הנתונים עדכניים</span><b>{100 * fresh // max(1, len(tasks))}%</b><span class=m>מכל החיפושים המתוכננים נבדקו בזמן</span></div>
+ <div class="kpi"><span class=m>ממתין למייל היומי</span><b>{len(waiting)} מציאות</b><span class=m>{len(nwait)} פריטים מניוזלטרים</span></div>
 </div>
-<div class="card"><h2>התראות אחרונות</h2><div class=scroll><table>
+<div class="card"><h2>מציאות שנשלחו במייל</h2>
+<div class=m style="font-size:13px;margin-bottom:6px">כל מסלול נשלח פעם אחת, ושוב רק אם המחיר ירד ב-7% נוספים או שעברו 14 יום. ממתינות למייל הבא: {wait_txt}.</div>
+<div class=scroll><table>
 <tr><th>נשלח</th><th>מסלול</th><th>חודש</th><th>מחיר</th></tr>{al_rows}</table></div></div>
+<div class="card"><h2>ניוזלטרים ואתרי מציאות</h2>
+<div class=m style="font-size:13px;margin-bottom:8px">הבוט קורא בכל ריצה את התיבה הייעודית ואת אתר Fly4free. נשלח במייל היומי רק מה שמזכיר ביזנס עם מחיר (בקרוב: קריאה חכמה עם AI).</div>
+<div class="kpis"><div class="kpi"><span class=m>נקראו ב-7 ימים</span><b>{n_read}</b><span class=m>מיילים</span></div>
+<div class="kpi"><span class=m>עם ביזנס ומחיר</span><b>{n_match}</b><span class=m>נכנסו למייל היומי</span></div></div>
+<div class=scroll style="margin-top:10px"><table><tr><th>מי שולח (7 ימים)</th><th>מיילים</th></tr>{sender_rows}</table></div>
+<h2 style="margin-top:14px">מה נמצא לאחרונה</h2>
+<div class=scroll><table><tr><th>מתי</th><th>מאת</th><th>מה</th></tr>{log_rows}</table></div></div>
 {dormant_html}
-<div class="card"><h2>הזול ביותר לכל יעד (מתל אביב)</h2>
-<div class=m style="font-size:13px;margin-bottom:6px">⭐ יעד מועדף. "רגיל לחודש" = הזול שנמצא באותו חודש בבדיקות קודמות (חציון), כמו בהתראות; "עוד אין" = פחות משתי בדיקות קודמות. ירוק = 35% ומטה מהרגיל, כלומר מציאה. מסלול (ישירה / דרך) ידוע רק ב-Kiwi; ב-Google הוא מופיע במייל של מציאה.</div>
+<div class="card"><h2>המחירים לכל יעד (ביזנס הלוך חזור מתל אביב)</h2>
+<div class=m style="font-size:13px;margin-bottom:6px">לכל יעד: החודש עם המחיר הזול ביותר שנמצא. ⭐ יעד מועדף (נבדק בתדירות גבוהה יותר). "רגיל לחודש" = הזול שנמצא באותו חודש בבדיקות קודמות (חציון), כמו בהתראות; "עוד אין" = פחות משתי בדיקות קודמות. ירוק = 35% ומטה מהרגיל, כלומר מציאה. מסלול (ישירה / דרך) ידוע רק ב-Kiwi; ב-Google הוא מופיע במייל של מציאה.</div>
 <div class=scroll><table><tr><th></th><th colspan=2>Google Flights</th><th colspan=2>Kiwi.com</th></tr>
 <tr><th>יעד</th><th>הזול</th><th>רגיל לחודש</th><th>הזול</th><th>רגיל לחודש</th></tr>
 {''.join(row(r) for r in rows)}</table></div></div>

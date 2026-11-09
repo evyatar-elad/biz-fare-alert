@@ -36,6 +36,20 @@ def queue(kind: str, title: str, html_block: str) -> None:
     PENDING_F.write_text(_json.dumps(items, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+LOG_F = Path(__file__).parent / "data" / "news_log.json"
+
+
+def log_items(items: list[dict]) -> None:
+    """Last 60 matched newsletter / feed items, for the status page."""
+    try:
+        log = _json.loads(LOG_F.read_text(encoding="utf-8"))
+    except (FileNotFoundError, ValueError):
+        log = []
+    at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    log += [{**x, "at": at} for x in items]
+    LOG_F.write_text(_json.dumps(log[-60:], ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def add_stats(read: int, matched: int, senders: list[str]) -> None:
     try:
         st = _json.loads(STATS_F.read_text(encoding="utf-8"))
@@ -164,6 +178,7 @@ def check_feeds(dry_run: bool) -> None:
                 f'<table role="presentation" width="100%" style="background:#fff;border:1px solid {notify.LINE};'
                 f'border-radius:12px;padding:6px 14px">{rows}</table>')
         queue("feed", hits[0][1], rows)
+        log_items([{"kind": "feed", "from": n, "subject": t, "link": l} for n, t, l in hits])
 
 
 def main(dry_run: bool = False) -> int:
@@ -245,6 +260,9 @@ def finish(hits: list[dict], user: str, dry_run: bool) -> None:
     head = (f'<div style="{notify.FONT}font-size:20px;font-weight:bold;color:{notify.INK};margin:0 4px 12px">'
             f'📬 מבצעי ביזנס בניוזלטרים ({len(hits)})</div>')
     queue("news", hits[0]["subject"], cards)
+    log_items([{"kind": "news", "from": re.sub(r"\s*<.*", "", h["from"]).strip('" '), "subject": h["subject"],
+                "snip": h["snip"][:300], "israel": h["c"].get("israel"), "confirm": h["c"].get("confirm", False)}
+               for h in hits])
 
 
 if __name__ == "__main__":
