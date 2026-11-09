@@ -51,6 +51,16 @@ def save(p: Path, obj) -> None:
 
 
 # ---------------------------------------------------------------- tasks
+def month_windows(start: date, end: date):
+    """Calendar-month windows [max(start, 1st) .. min(end, last day)], so each month is
+    always measured over the same dates (shifting windows made month minimums noisy)."""
+    d = start
+    while d <= end:
+        nxt = (d.replace(day=1) + timedelta(days=32)).replace(day=1)
+        yield d, min(nxt - timedelta(days=1), end)
+        d = nxt
+
+
 def build_tasks(only: set[str] | None) -> list[dict]:
     """Near months: 61-day calendar windows. Far months (and LCA): one anchor date per
     FAR_STEP_DAYS slot, shifted by one day each day so all dates get covered over time."""
@@ -71,13 +81,10 @@ def build_tasks(only: set[str] | None) -> list[dict]:
                     "region": region, "prio": prio}
             far_start = first
             if origin != "LCA":  # Google has no cached LCA calendar, so LCA is anchors only
-                start, w = first, 0
-                while start <= dense_end:
-                    end = min(start + timedelta(days=C.WINDOW_DAYS - 1), dense_end)
-                    tasks.append({**base, "key": f"{origin}-{code}-d{w}",
-                                  "from": start.isoformat(), "to": end.isoformat(),
+                for ws, we in month_windows(first, dense_end):
+                    tasks.append({**base, "key": f"{origin}-{code}-M{ws.isoformat()[:7]}",
+                                  "from": ws.isoformat(), "to": we.isoformat(),
                                   "due_h": C.DUE_HOURS[kind]})
-                    start, w = end + timedelta(days=1), w + 1
                 far_start = dense_end + timedelta(days=1)
             k = 0
             while True:
@@ -96,15 +103,12 @@ def build_tasks(only: set[str] | None) -> list[dict]:
             if only and code not in only:
                 continue
             name_, region, prio = C.DESTINATIONS.get(code, ("", "asia", False))
-            start, i = first, 0
-            while start <= end_all:
-                end = min(start + timedelta(days=C.KIWI_WINDOW_DAYS - 1), end_all)
+            for ws, we in month_windows(first, end_all):
                 tasks.append({"src": "kiwi", "origin": "TLV", "dest": code, "airline": al,
                               "dur": C.REGIONS[region]["dur"], "region": region, "prio": prio,
-                              "key": f"K-{al or 'ALL'}-{code}-m{i}", "from": start.isoformat(),
-                              "to": end.isoformat(),
+                              "key": f"K-{al or 'ALL'}-{code}-M{ws.isoformat()[:7]}", "from": ws.isoformat(),
+                              "to": we.isoformat(),
                               "due_h": C.KIWI_DUE_HOURS["priority" if prio else "normal"]})
-                start, i = end + timedelta(days=1), i + 1
 
     # hub legs: TAS -> east, that hub airline only (TLV -> TAS is a normal destination)
     for hub, h in C.HUBS.items():
@@ -272,21 +276,19 @@ def update_history(hist: dict, rk: str, points: list[dict], today: str) -> None:
         r[m] = rows[-30:]
 
 
-def reference(hist: dict, rk: str, month: str, today: str, current: list[float]) -> tuple[float | None, str]:
-    """Usual CHEAPEST price for this route and month, from past scans only.
+def reference(hist: dict, rk: str, month: str, today: str, current: list[float],
+              min_points: int = 10) -> tuple[float | None, str]:
+    """Usual CHEAPEST price for this route and month, from past scans that covered the
+    month well (>= min_points dates/itineraries).
 
-    We compare the cheapest date of a month with the cheapest of past scans (history
-    column 2). Comparing with a median of all dates flagged normal prices as deals
-    (6/11: Goa every month ~$2,390 vs a median inflated by December). No past scans =
-    no relative rule (only the fixed regional cap)."""
-    r = hist.get(rk, {})
-    past_month = [x[2] for x in r.get(month, []) if x[0] != today]
-    if len(past_month) >= 2:
-        return statistics.median(past_month), f"הזול שנמצא לחודש הזה ב-{len(past_month)} בדיקות קודמות"
-    past_all = [x[2] for rows in r.values() for x in rows if x[0] != today]
-    if len(past_all) >= 6:
-        return statistics.median(past_all), f"הזול שנמצא במסלול הזה ב-{len(past_all)} בדיקות קודמות (כל החודשים)"
+    History (9/11): single far-month anchor dates (1 point) vary wildly between scans
+    (Dubai March $2,517 one day, $1,654 another), and a route-wide fallback mixed seasons.
+    Both produced false deals, so they are not used as a reference any more."""
+    rows = [x for x in hist.get(rk, {}).get(month, []) if x[0] != today and x[3] >= min_points]
+    if len(rows) >= 2:
+        return statistics.median(x[2] for x in rows), f"הזול שנמצא לחודש הזה ב-{len(rows)} בדיקות קודמות"
     return None, "אין עדיין מספיק היסטוריה"
+
 
 def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict]:
     rk = route_key(t)
@@ -300,20 +302,25 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
     for month, ps in by_month.items():
         best = min(ps, key=lambda p: p["price"])
         price = best["price"] + extra
-        if t.get("src") == "kiwi":
+        if price > C.MAX_PRICE:
+            continue
+        min_pts = C.KIWI_MIN_POINTS if t.get("src") == "kiwi" else C.GF_MIN_POINTS
+        if len(ps) < min_pts:
+            ref, why = None, "מעט תאריכים בבדיקה"  # e.g. one far-month anchor date: cap rule only
+        elif t.get("src") == "kiwi":
             # Kiwi only against Kiwi: it builds cheaper separate-ticket trips than Google
             # shows, so Google's usual price made normal Kiwi prices look like deals (6/11).
-            ref, why = reference(hist, rk, month, today, [])
+            ref, why = reference(hist, rk, month, today, [], min_pts)
         elif t["origin"] == "LCA" or t.get("via"):
-            ref, why = reference(hist, tlv_rk, month, "", [])  # TLV usual price, incl. today
+            ref, why = reference(hist, tlv_rk, month, "", [], min_pts)  # TLV usual price
             if t.get("via"):
                 why = "מחיר רגיל בטיסה מתל אביב, " + why
         else:
-            ref, why = reference(hist, rk, month, today, [p["price"] for p in points])
+            ref, why = reference(hist, rk, month, today, [], min_pts)
         reasons = []
         if ref and price <= ref * (1 - C.DROP):
             reasons.append(f"{round(100 * (1 - price / ref))}% מתחת למחיר הרגיל (${ref:,.0f}, {why})")
-        cap = C.CAP_OVERRIDE.get(t["dest"], region["cap"])
+        cap = min(C.CAP_OVERRIDE.get(t["dest"], region["cap"]), C.MAX_PRICE)
         if price <= cap:
             reasons.append(f"מתחת לסף הקבוע (${cap:,})")
         if reasons:
@@ -330,7 +337,7 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
 
 
 def is_new(deal: dict, alerts: dict) -> bool:
-    k = f"{deal['route']}|{deal['month']}"
+    k = deal["route"]
     a = alerts.get(k)
     if not a:
         return True
@@ -443,8 +450,11 @@ def main() -> int:
                     deals += vdeals
             lo = min(p["price"] for p in pts)
             print(f"  {t['key']} {t['from']}..{t['to']}: {len(pts)} תאריכים, הזול ${lo:,.0f}, מציאות: {len(deals)}")
+            pending_routes = {d["route"] for d in state.get("pending", [])}
             for dl in deals:
                 if not is_new(dl, alerts):
+                    continue
+                if dl["route"] in pending_routes:  # already waiting for today's digest
                     continue
                 if detail_budget > 0 and not dl.get("via") and not dl.get("details"):
                     detail_budget -= 1
@@ -501,15 +511,18 @@ def main() -> int:
         print(f"נחסם / הוגבל ({e}). עוצרים עד {state['backoff_until']}.")
 
     run["deals"] = len(new_deals)
+    # One card per route: the cheapest month, the other months listed in it.
+    pend = {d["route"]: d for d in state.get("pending", [])}
+    for dl in sorted(new_deals, key=lambda d: d["price"]):
+        cur = pend.get(dl["route"])
+        if cur is None:
+            dl["other_months"] = []
+            pend[dl["route"]] = dl
+        elif dl["month"] != cur["month"] and dl["month"] not in [m for m, _ in cur.get("other_months", [])]:
+            cur.setdefault("other_months", []).append([dl["month"], dl["price"]])
+    state["pending"] = sorted(pend.values(), key=lambda d: d["price"])
     if new_deals:
-        sent = notify.send_deals(new_deals, dry_run=a.dry_run)
-        if sent:
-            for dl in new_deals:
-                alerts[f"{dl['route']}|{dl['month']}"] = {"price": dl["price"], "at": now_utc().isoformat(timespec="seconds")}
-            state["last_email"] = now_utc().isoformat(timespec="seconds")
-    elif notify.heartbeat_due(state.get("last_email")):
-        if notify.send_heartbeat(state, hist, dry_run=a.dry_run):
-            state["last_email"] = now_utc().isoformat(timespec="seconds")
+        print(f"{len(new_deals)} מציאות נוספו לסיכום היומי ({len(state['pending'])} מסלולים ממתינים)")
 
     save(STATE_F, state)
     save(HIST_F, hist)

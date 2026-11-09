@@ -16,6 +16,40 @@ from email.header import decode_header, make_header
 from urllib.parse import quote
 
 import notify
+import json as _json
+from datetime import datetime, timezone
+from pathlib import Path
+
+PENDING_F = Path(__file__).parent / "data" / "pending_news.json"
+STATS_F = Path(__file__).parent / "data" / "news_stats.json"
+
+
+def queue(kind: str, title: str, html_block: str) -> None:
+    """Newsletter / feed items wait for the daily digest (digest.py) instead of a mail each."""
+    try:
+        items = _json.loads(PENDING_F.read_text(encoding="utf-8"))
+    except (FileNotFoundError, ValueError):
+        items = []
+    items.append({"kind": kind, "title": title, "html": html_block,
+                  "at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
+    PENDING_F.parent.mkdir(exist_ok=True)
+    PENDING_F.write_text(_json.dumps(items, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
+def add_stats(read: int, matched: int, senders: list[str]) -> None:
+    try:
+        st = _json.loads(STATS_F.read_text(encoding="utf-8"))
+    except (FileNotFoundError, ValueError):
+        st = {}
+    day = datetime.now(timezone.utc).date().isoformat()
+    d = st.setdefault(day, {"read": 0, "matched": 0, "senders": {}})
+    d["read"] += read
+    d["matched"] += matched
+    for x in senders:
+        name = re.sub(r"\s*<.*", "", x).strip('" ') or x
+        d["senders"][name] = d["senders"].get(name, 0) + 1
+    st = dict(sorted(st.items())[-30:])
+    STATS_F.write_text(_json.dumps(st, ensure_ascii=False, indent=1), encoding="utf-8")
 
 # Not the bare word "business": newsletters have it in footers ("business address", "for business").
 BUSINESS = ["business class", "business fare", "business cabin", "fly business", "in business",
@@ -129,7 +163,7 @@ def check_feeds(dry_run: bool) -> None:
         body = (f'<div style="{notify.FONT}font-size:20px;font-weight:bold;margin:0 4px 12px">📰 דילים מאתרי מציאות</div>'
                 f'<table role="presentation" width="100%" style="background:#fff;border:1px solid {notify.LINE};'
                 f'border-radius:12px;padding:6px 14px">{rows}</table>')
-        notify._send(f"📰 דילים מאתרי מציאות: {len(hits)}", notify.page(body, hits[0][1]), dry_run)
+        queue("feed", hits[0][1], rows)
 
 
 def main(dry_run: bool = False) -> int:
@@ -148,16 +182,23 @@ def main(dry_run: bool = False) -> int:
         row = row.decode(errors="replace")
         if "\\Junk" in row:
             folders.append(row.rsplit(' "/" ', 1)[-1].strip())
-    hits = []
+    hits, total_read = [], 0
+    senders_all.clear()
     for folder in folders:
         m.select(folder)
         _, data = m.search(None, "UNSEEN")
         ids = data[0].split()[:MAX_PER_RUN]
         print(f"newsletters: {folder}: {len(ids)} unread")
-        hits += read_folder(m, ids, dry_run)
+        got = read_folder(m, ids, dry_run)
+        hits += got
+        total_read += len(ids)
     m.logout()
+    add_stats(total_read, len(hits), senders_all)
     finish(hits, user, dry_run)
     return 0
+
+
+senders_all: list[str] = []
 
 
 def read_folder(m, ids, dry_run: bool) -> list[dict]:
@@ -166,6 +207,7 @@ def read_folder(m, ids, dry_run: bool) -> list[dict]:
         _, raw = m.fetch(i, "(BODY.PEEK[])")
         msg = email.message_from_bytes(raw[0][1])
         subj, frm = dec(msg.get("Subject")), dec(msg.get("From"))
+        senders_all.append(frm)
         text = body_text(msg)
         c = classify(subj, text)
         if not c and CONFIRM.search(subj):
@@ -202,7 +244,7 @@ def finish(hits: list[dict], user: str, dry_run: bool) -> None:
             f'</td></tr></table>')
     head = (f'<div style="{notify.FONT}font-size:20px;font-weight:bold;color:{notify.INK};margin:0 4px 12px">'
             f'📬 מבצעי ביזנס בניוזלטרים ({len(hits)})</div>')
-    notify._send(f"📬 מבצעי ביזנס בניוזלטרים: {len(hits)}", notify.page(head + cards, hits[0]["subject"]), dry_run)
+    queue("news", hits[0]["subject"], cards)
 
 
 if __name__ == "__main__":

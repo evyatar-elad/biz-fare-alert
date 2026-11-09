@@ -2,7 +2,7 @@
 import json, random, shutil, tempfile
 from datetime import date, timedelta
 from pathlib import Path
-import scanner, config as C
+import scanner, digest, config as C
 
 def fake_fli(args, timeout=180):
     if args[0] == "flights":
@@ -28,8 +28,13 @@ scanner.DATA = tmp; scanner.STATE_F = tmp/"state.json"; scanner.HIST_F = tmp/"hi
 scanner.ALERTS_F = tmp/"alerts.json"; scanner.LOG_F = tmp/"runs.jsonl"
 scanner.fli = fake_fli; C.PACE_SECONDS = 0; C.KIWI_ENABLED = False
 import sys
+import notify
+_orig_send = notify._send
+notify._send = lambda subj, body, dry: (print("---- SENT ----", subj), True)[1]
+digest.DATA = tmp; digest.NEWS_F = tmp/"news.json"; digest.STATS_F = tmp/"stats.json"
 def run(extra=()):
     sys.argv = ["scanner.py", "--only", "PEK,DPS", "--dry-run", *extra]; scanner.main()
+    digest.main(dry_run=False, force=True)   # "sends" (no SMTP secrets = printed) and clears pending
 
 SPIKE = False; run()                                  # day 1: normal prices, builds history
 h = json.loads((tmp/"history.json").read_text())   # pretend day 1 was two past days

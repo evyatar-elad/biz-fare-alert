@@ -192,6 +192,9 @@ def deal_card(d: dict) -> str:
         flights = (f'<div style="margin-top:14px;color:{MUTED};font-size:14px">'
                    "פרטי הטיסות לא נבדקו בריצה הזו. אפשר לראות אותם בקישורים.</div>")
     sisters = sorted(next((g for g in C.SISTER_CITIES if x in g), {x}) - {x})
+    om = d.get("other_months") or []
+    more_row = (f'<tr><td style="padding:4px 0;color:{MUTED};vertical-align:top">עוד חודשים</td><td style="padding:4px 0">'
+                + " · ".join(f'{ltr(m)} {ltr(f"${p:,.0f}")}' for m, p in sorted(om)) + '</td></tr>') if om else ""
     cont_rows = ""
     for c in d.get("continuations") or []:
         cmp = (f" · ביזנס ישיר ל{name(c['to'])} בדרך כלל {ltr(f'${c['direct']:,.0f}')}"
@@ -251,7 +254,7 @@ def deal_card(d: dict) -> str:
          <td style="padding:4px 0">{d["similar_dates"]} תאריכי יציאה בחודש הזה במחיר דומה</td></tr>
      <tr><td style="padding:4px 0;color:{MUTED};vertical-align:top">למה</td>
          <td style="padding:4px 0">{html.escape("; ".join(d["reasons"]))}</td></tr>
-     {eco_row}{cont_rows}{src_row}{lca}{open_jaw}
+     {more_row}{eco_row}{cont_rows}{src_row}{lca}{open_jaw}
    </table>
  </td></tr>
  <tr><td style="padding:0 20px">{flights}</td></tr>
@@ -305,7 +308,7 @@ def heartbeat_due(last_email: str | None) -> bool:
     return (datetime.now(timezone.utc) - datetime.fromisoformat(last_email)).days >= HEARTBEAT_DAYS
 
 
-def send_heartbeat(state: dict, hist: dict, dry_run: bool = False) -> bool:
+def send_heartbeat(state: dict, hist: dict, dry_run: bool = False, extra: str = "") -> bool:
     """Weekly 'still alive' mail with the cheapest price seen per destination (from TLV)."""
     rows = []
     for rk, months in hist.items():
@@ -332,6 +335,7 @@ def send_heartbeat(state: dict, hist: dict, dry_run: bool = False) -> bool:
 <tr><td style="padding:16px 20px;{FONT}font-size:14px;color:{INK}">
 <p style="margin-top:0">לא נמצאו מציאות חדשות השבוע. כך נראים המחירים הזולים ביותר שראיתי (ביזנס הלוך חזור מתל אביב):</p>{blocked}
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">{trs}</table>
+<p style="color:{MUTED};font-size:13px">{extra}</p>
 </td></tr></table>'''
     return _send("✈️ סיכום שבועי: בוט הביזנס פעיל", page(inner, "הבוט פעיל, אין מציאות חדשות"), dry_run)
 

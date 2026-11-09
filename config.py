@@ -190,6 +190,16 @@ BANNED_AIRPORTS = {
     "SAH", "ADE", "KHI", "LHE", "ISB", "ALG",   # Yemen, Pakistan, Algeria
 }
 
+# Never alert above this round trip price (user, 9/11: "I won't fly business for more
+# than $2,000 anyway").
+MAX_PRICE = 2000
+# The "35% below usual" rule needs a month that was measured over many dates, now and
+# in at least two past scans (Google calendar dates / Kiwi itineraries).
+GF_MIN_POINTS = 10
+KIWI_MIN_POINTS = 5
+# Daily digest: one email per day (Israel time), from this hour, only if there is news.
+DIGEST_HOUR_IL = 9
+
 # Deal rule: price at least this fraction below the reference price.
 DROP = 0.35
 # Seconds between requests to Google. Slow on purpose: ~20 quick calls got HTTP 429.

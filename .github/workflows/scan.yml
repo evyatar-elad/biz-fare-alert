@@ -59,6 +59,13 @@ jobs:
           NEWS_USER: ${{ secrets.NEWS_USER }}
           NEWS_PASS: ${{ secrets.NEWS_PASS }}
         run: python newsletters.py
+      - name: daily digest
+        if: always() && inputs.test_email != true
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python digest.py ${{ inputs.dry_run && '--dry-run' || '' }}
       - name: status page
         if: always()
         run: python status.py || true
