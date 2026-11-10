@@ -139,19 +139,19 @@
   "K-TLV-AMS": {
    "2026-11": {
     "air": [
-     "Austrian Airlines"
+     "Aegean"
     ],
-    "p": 1327.0,
-    "sep": false,
+    "p": 1259.0,
+    "sep": true,
     "via": [
-     "VIE"
+     "ATH"
     ]
    },
    "2026-12": {
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1034.0,
+    "p": 1033.0,
     "sep": false,
     "via": [
      "WAW"
@@ -161,7 +161,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1037.0,
+    "p": 1057.0,
     "sep": false,
     "via": [
      "WAW"
@@ -171,7 +171,7 @@
     "air": [
      "Aegean"
     ],
-    "p": 1255.0,
+    "p": 1260.0,
     "sep": true,
     "via": [
      "ATH"
@@ -181,7 +181,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1057.0,
+    "p": 1056.0,
     "sep": false,
     "via": [
      "WAW"
@@ -191,7 +191,7 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 972.0,
+    "p": 993.0,
     "sep": false,
     "via": [
      "LIS"
@@ -199,19 +199,19 @@
    },
    "2027-05": {
     "air": [
-     "LOT Polish Airlines"
+     "TAP Portugal"
     ],
-    "p": 1105.0,
+    "p": 996.0,
     "sep": false,
     "via": [
-     "WAW"
+     "LIS"
     ]
    },
    "2027-06": {
     "air": [
      "TAP Portugal"
     ],
-    "p": 964.0,
+    "p": 993.0,
     "sep": false,
     "via": [
      "LIS"
@@ -221,8 +221,8 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 1259.0,
-    "sep": true,
+    "p": 996.0,
+    "sep": false,
     "via": [
      "LIS"
     ]
@@ -231,8 +231,8 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 1431.0,
-    "sep": true,
+    "p": 1113.0,
+    "sep": false,
     "via": [
      "LIS"
     ]
@@ -241,7 +241,7 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 1473.0,
+    "p": 1497.0,
     "sep": true,
     "via": [
      "LIS"
@@ -540,39 +540,39 @@
   "K-TLV-BCN": {
    "2026-11": {
     "air": [
-     "Iberia Airlines"
+     "LOT Polish Airlines"
     ],
-    "p": 919.0,
+    "p": 820.0,
     "sep": false,
     "via": [
-     "MAD"
+     "WAW"
     ]
    },
    "2026-12": {
     "air": [
      "Iberia Airlines"
     ],
-    "p": 1107.0,
-    "sep": true,
+    "p": 924.0,
+    "sep": false,
     "via": [
      "MAD"
     ]
    },
    "2027-01": {
     "air": [
-     "Iberia Airlines"
+     "LOT Polish Airlines"
     ],
-    "p": 923.0,
+    "p": 824.0,
     "sep": false,
     "via": [
-     "MAD"
+     "WAW"
     ]
    },
    "2027-02": {
     "air": [
      "Iberia Airlines"
     ],
-    "p": 923.0,
+    "p": 927.0,
     "sep": false,
     "via": [
      "MAD"
@@ -580,72 +580,72 @@
    },
    "2027-03": {
     "air": [
-     "LOT Polish Airlines"
+     "Iberia Airlines"
     ],
-    "p": 1126.0,
-    "sep": true,
+    "p": 927.0,
+    "sep": false,
     "via": [
-     "WAW"
+     "MAD"
     ]
    },
    "2027-04": {
     "air": [
-     "TAP Portugal"
+     "Iberia Airlines"
     ],
-    "p": 898.0,
+    "p": 927.0,
     "sep": false,
     "via": [
-     "LIS"
+     "MAD"
     ]
    },
    "2027-05": {
     "air": [
-     "TAP Portugal"
+     "Iberia Airlines"
     ],
-    "p": 892.0,
+    "p": 927.0,
     "sep": false,
     "via": [
-     "LIS"
+     "MAD"
     ]
    },
    "2027-06": {
     "air": [
-     "Condor"
+     "Iberia Airlines"
     ],
-    "p": 1121.0,
+    "p": 927.0,
     "sep": false,
     "via": [
-     "FRA"
+     "MAD"
     ]
    },
    "2027-07": {
     "air": [
-     "Condor"
+     "Iberia Airlines"
     ],
-    "p": 1119.0,
+    "p": 927.0,
     "sep": false,
     "via": [
-     "FRA"
+     "MAD"
     ]
    },
    "2027-08": {
     "air": [
-     "TAP Portugal"
+     "Iberia Airlines"
     ],
-    "p": 898.0,
+    "p": 928.0,
     "sep": false,
     "via": [
-     "LIS"
+     "MAD"
     ]
    },
    "2027-09": {
     "air": [
-     "Aegean"
+     "Iberia Airlines"
     ],
-    "p": 1357.0,
+    "p": 1098.0,
     "sep": true,
     "via": [
-     "ATH"
+     "MAD"
     ]
    }
   },
@@ -654,7 +654,7 @@
     "air": [
      "Condor"
     ],
-    "p": 1024.0,
+    "p": 1026.0,
     "sep": true,
     "via": [
      "FRA"
@@ -664,7 +664,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 902.0,
+    "p": 912.0,
     "sep": false,
     "via": [
      "WAW"
@@ -674,7 +674,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 800.0,
+    "p": 846.0,
     "sep": false,
     "via": [
      "WAW"
@@ -684,7 +684,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 815.0,
+    "p": 817.0,
     "sep": false,
     "via": [
      "WAW"
@@ -692,19 +692,19 @@
    },
    "2027-03": {
     "air": [
-     "LOT Polish Airlines"
+     "Condor"
     ],
-    "p": 815.0,
-    "sep": false,
+    "p": 1030.0,
+    "sep": true,
     "via": [
-     "WAW"
+     "FRA"
     ]
    },
    "2027-04": {
     "air": [
      "TAP Portugal"
     ],
-    "p": 983.0,
+    "p": 1015.0,
     "sep": false,
     "via": [
      "LIS"
@@ -714,8 +714,8 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1130.0,
-    "sep": true,
+    "p": 983.0,
+    "sep": false,
     "via": [
      "WAW"
     ]
@@ -724,8 +724,8 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1104.0,
-    "sep": true,
+    "p": 917.0,
+    "sep": false,
     "via": [
      "WAW"
     ]
@@ -734,17 +734,27 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1132.0,
+    "p": 1150.0,
     "sep": true,
     "via": [
      "WAW"
+    ]
+   },
+   "2027-08": {
+    "air": [
+     "Condor"
+    ],
+    "p": 1157.0,
+    "sep": false,
+    "via": [
+     "FRA"
     ]
    },
    "2027-09": {
     "air": [
      "TAP Portugal"
     ],
-    "p": 983.0,
+    "p": 1020.0,
     "sep": false,
     "via": [
      "LIS"
@@ -2715,7 +2725,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 889.0,
+    "p": 888.0,
     "sep": false,
     "via": [
      "WAW"
@@ -2725,7 +2735,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 895.0,
+    "p": 893.0,
     "sep": false,
     "via": [
      "WAW"
@@ -2733,19 +2743,19 @@
    },
    "2027-02": {
     "air": [
-     "LOT Polish Airlines"
+     "Aegean"
     ],
-    "p": 895.0,
-    "sep": false,
+    "p": 1027.0,
+    "sep": true,
     "via": [
-     "WAW"
+     "ATH"
     ]
    },
    "2027-03": {
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 896.0,
+    "p": 893.0,
     "sep": false,
     "via": [
      "WAW"
@@ -2755,7 +2765,7 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 729.0,
+    "p": 754.0,
     "sep": false,
     "via": [
      "LIS"
@@ -2765,8 +2775,8 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 990.0,
-    "sep": true,
+    "p": 750.0,
+    "sep": false,
     "via": [
      "LIS"
     ]
@@ -2775,8 +2785,8 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 1141.0,
-    "sep": true,
+    "p": 750.0,
+    "sep": false,
     "via": [
      "LIS"
     ]
@@ -2785,7 +2795,7 @@
     "air": [
      "Condor"
     ],
-    "p": 1139.0,
+    "p": 1136.0,
     "sep": false,
     "via": [
      "FRA"
@@ -2795,7 +2805,7 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 732.0,
+    "p": 758.0,
     "sep": false,
     "via": [
      "LIS"
@@ -2805,7 +2815,7 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 990.0,
+    "p": 1010.0,
     "sep": true,
     "via": [
      "LIS"
@@ -2817,7 +2827,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 869.0,
+    "p": 862.0,
     "sep": false,
     "via": [
      "WAW"
@@ -2827,7 +2837,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 869.0,
+    "p": 868.0,
     "sep": false,
     "via": [
      "WAW"
@@ -2837,17 +2847,17 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 867.0,
+    "p": 858.0,
     "sep": false,
     "via": [
-     "WAW"
+     "KRK"
     ]
    },
    "2027-02": {
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 873.0,
+    "p": 872.0,
     "sep": false,
     "via": [
      "WAW"
@@ -2857,7 +2867,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 933.0,
+    "p": 858.0,
     "sep": false,
     "via": [
      "KRK"
@@ -2867,7 +2877,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 945.0,
+    "p": 944.0,
     "sep": false,
     "via": [
      "WAW"
@@ -2877,7 +2887,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 847.0,
+    "p": 846.0,
     "sep": false,
     "via": [
      "KRK"
@@ -2887,7 +2897,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1138.0,
+    "p": 1140.0,
     "sep": true,
     "via": [
      "KRK"
@@ -2897,7 +2907,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1138.0,
+    "p": 1140.0,
     "sep": true,
     "via": [
      "KRK"
@@ -2905,17 +2915,19 @@
    },
    "2027-08": {
     "air": [
-     "Condor"
+     "TAP Portugal"
     ],
-    "p": 1285.0,
+    "p": 1049.0,
     "sep": false,
-    "via": []
+    "via": [
+     "LIS"
+    ]
    },
    "2027-09": {
     "air": [
      "Condor"
     ],
-    "p": 1308.0,
+    "p": 1318.0,
     "sep": true,
     "via": []
    }
@@ -3171,7 +3183,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 870.0,
+    "p": 869.0,
     "sep": false,
     "via": [
      "WAW"
@@ -3181,8 +3193,8 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1219.0,
-    "sep": true,
+    "p": 847.0,
+    "sep": false,
     "via": [
      "WAW"
     ]
@@ -3191,7 +3203,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 841.0,
+    "p": 868.0,
     "sep": false,
     "via": [
      "WAW"
@@ -3201,8 +3213,8 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1223.0,
-    "sep": true,
+    "p": 1033.0,
+    "sep": false,
     "via": [
      "WAW"
     ]
@@ -3211,8 +3223,8 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1223.0,
-    "sep": true,
+    "p": 852.0,
+    "sep": false,
     "via": [
      "WAW"
     ]
@@ -3221,7 +3233,7 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 1090.0,
+    "p": 1109.0,
     "sep": false,
     "via": [
      "OPO"
@@ -3229,19 +3241,19 @@
    },
    "2027-05": {
     "air": [
-     "LOT Polish Airlines"
+     "TAP Portugal"
     ],
-    "p": 1165.0,
-    "sep": true,
+    "p": 1111.0,
+    "sep": false,
     "via": [
-     "WAW"
+     "OPO"
     ]
    },
    "2027-06": {
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1165.0,
+    "p": 1179.0,
     "sep": true,
     "via": [
      "WAW"
@@ -3251,7 +3263,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1163.0,
+    "p": 1168.0,
     "sep": true,
     "via": [
      "WAW"
@@ -3261,7 +3273,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1312.0,
+    "p": 1313.0,
     "sep": true,
     "via": [
      "WAW"
@@ -3271,7 +3283,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1224.0,
+    "p": 1172.0,
     "sep": true,
     "via": [
      "WAW"
@@ -4690,7 +4702,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 868.0,
+    "p": 867.0,
     "sep": false,
     "via": [
      "WAW"
@@ -4700,7 +4712,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 868.0,
+    "p": 867.0,
     "sep": false,
     "via": [
      "WAW"
@@ -4710,7 +4722,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 871.0,
+    "p": 870.0,
     "sep": false,
     "via": [
      "WAW"
@@ -4718,70 +4730,69 @@
    },
    "2027-02": {
     "air": [
+     "LOT Polish Airlines"
+    ],
+    "p": 870.0,
+    "sep": false,
+    "via": [
+     "WAW"
+    ]
+   },
+   "2027-03": {
+    "air": [
      "Iberia Airlines"
     ],
-    "p": 1136.0,
+    "p": 929.0,
     "sep": false,
     "via": [
      "MAD"
     ]
    },
-   "2027-03": {
-    "air": [
-     "Aegean"
-    ],
-    "p": 1157.0,
-    "sep": true,
-    "via": [
-     "ATH"
-    ]
-   },
    "2027-04": {
     "air": [
-     "LOT Polish Airlines"
+     "Iberia Airlines"
     ],
-    "p": 1344.0,
-    "sep": true,
+    "p": 929.0,
+    "sep": false,
     "via": [
-     "WAW"
+     "MAD"
     ]
    },
    "2027-05": {
     "air": [
-     "Aegean"
+     "Iberia Airlines"
     ],
-    "p": 1157.0,
-    "sep": true,
+    "p": 929.0,
+    "sep": false,
     "via": [
-     "ATH"
+     "MAD"
     ]
    },
    "2027-06": {
     "air": [
-     "Aegean"
+     "Iberia Airlines"
     ],
-    "p": 1308.0,
+    "p": 1110.0,
     "sep": true,
     "via": [
-     "ATH"
+     "MAD"
     ]
    },
    "2027-07": {
     "air": [
-     "Aegean",
-     "TAP Portugal"
+     "Iberia Airlines"
     ],
-    "p": 1272.0,
-    "sep": true,
+    "p": 929.0,
+    "sep": false,
     "via": [
-     "ATH"
+     "MAD"
     ]
    },
    "2027-08": {
     "air": [
      "Aegean"
     ],
-    "p": 1310.0,
+    "p": 1313.0,
     "sep": true,
     "via": [
      "ATH"
@@ -4791,7 +4802,7 @@
     "air": [
      "Aegean"
     ],
-    "p": 1362.0,
+    "p": 1367.0,
     "sep": true,
     "via": [
      "ATH"
@@ -4803,7 +4814,7 @@
     "air": [
      "Iberia Airlines"
     ],
-    "p": 811.0,
+    "p": 810.0,
     "sep": false,
     "via": []
    },
@@ -4819,7 +4830,7 @@
     "air": [
      "Iberia Airlines"
     ],
-    "p": 795.0,
+    "p": 802.0,
     "sep": false,
     "via": []
    },
@@ -4827,7 +4838,7 @@
     "air": [
      "Iberia Airlines"
     ],
-    "p": 793.0,
+    "p": 814.0,
     "sep": false,
     "via": []
    },
@@ -4835,7 +4846,7 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 682.0,
+    "p": 709.0,
     "sep": false,
     "via": [
      "LIS"
@@ -4845,7 +4856,7 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 681.0,
+    "p": 709.0,
     "sep": false,
     "via": [
      "LIS"
@@ -4855,7 +4866,7 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 682.0,
+    "p": 709.0,
     "sep": false,
     "via": [
      "LIS"
@@ -4865,7 +4876,7 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 681.0,
+    "p": 708.0,
     "sep": false,
     "via": [
      "LIS"
@@ -4875,7 +4886,7 @@
     "air": [
      "TAP Portugal"
     ],
-    "p": 692.0,
+    "p": 710.0,
     "sep": false,
     "via": [
      "LIS"
@@ -4883,17 +4894,19 @@
    },
    "2027-08": {
     "air": [
-     "Air Europa"
+     "TAP Portugal"
     ],
-    "p": 943.0,
-    "sep": true,
-    "via": []
+    "p": 710.0,
+    "sep": false,
+    "via": [
+     "LIS"
+    ]
    },
    "2027-09": {
     "air": [
      "TAP Portugal"
     ],
-    "p": 682.0,
+    "p": 710.0,
     "sep": false,
     "via": [
      "LIS"
@@ -5516,19 +5529,19 @@
   "K-TLV-MUC": {
    "2026-11": {
     "air": [
-     "LOT Polish Airlines"
+     "Condor"
     ],
-    "p": 925.0,
+    "p": 968.0,
     "sep": false,
     "via": [
-     "WAW"
+     "FRA"
     ]
    },
    "2026-12": {
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 858.0,
+    "p": 929.0,
     "sep": false,
     "via": [
      "WAW"
@@ -5538,7 +5551,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 837.0,
+    "p": 844.0,
     "sep": false,
     "via": [
      "WAW"
@@ -5546,29 +5559,29 @@
    },
    "2027-02": {
     "air": [
-     "Condor"
+     "LOT Polish Airlines"
     ],
-    "p": 972.0,
+    "p": 850.0,
     "sep": false,
     "via": [
-     "FRA"
+     "WAW"
     ]
    },
    "2027-03": {
     "air": [
-     "Condor"
+     "LOT Polish Airlines"
     ],
-    "p": 1025.0,
+    "p": 850.0,
     "sep": false,
     "via": [
-     "FRA"
+     "WAW"
     ]
    },
    "2027-04": {
     "air": [
      "TAP Portugal"
     ],
-    "p": 959.0,
+    "p": 987.0,
     "sep": false,
     "via": [
      "LIS"
@@ -5576,19 +5589,19 @@
    },
    "2027-05": {
     "air": [
-     "TAP Portugal"
+     "Condor"
     ],
-    "p": 1147.0,
-    "sep": true,
+    "p": 969.0,
+    "sep": false,
     "via": [
-     "LIS"
+     "FRA"
     ]
    },
    "2027-06": {
     "air": [
      "TAP Portugal"
     ],
-    "p": 959.0,
+    "p": 997.0,
     "sep": false,
     "via": [
      "LIS"
@@ -5598,7 +5611,7 @@
     "air": [
      "Condor"
     ],
-    "p": 1078.0,
+    "p": 1085.0,
     "sep": false,
     "via": [
      "FRA"
@@ -5608,7 +5621,7 @@
     "air": [
      "Condor"
     ],
-    "p": 1070.0,
+    "p": 1074.0,
     "sep": false,
     "via": [
      "FRA"
@@ -5618,7 +5631,7 @@
     "air": [
      "Aegean"
     ],
-    "p": 1559.0,
+    "p": 1498.0,
     "sep": true,
     "via": [
      "ATH"
@@ -5628,19 +5641,19 @@
   "K-TLV-MXP": {
    "2026-11": {
     "air": [
-     "LOT Polish Airlines"
+     "Condor"
     ],
-    "p": 912.0,
-    "sep": false,
+    "p": 998.0,
+    "sep": true,
     "via": [
-     "WAW"
+     "FRA"
     ]
    },
    "2026-12": {
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 984.0,
+    "p": 908.0,
     "sep": false,
     "via": [
      "WAW"
@@ -5650,7 +5663,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 914.0,
+    "p": 913.0,
     "sep": false,
     "via": [
      "WAW"
@@ -5658,19 +5671,19 @@
    },
    "2027-02": {
     "air": [
-     "Condor"
+     "Aegean"
     ],
-    "p": 1000.0,
+    "p": 1021.0,
     "sep": true,
     "via": [
-     "FRA"
+     "ATH"
     ]
    },
    "2027-03": {
     "air": [
      "Condor"
     ],
-    "p": 999.0,
+    "p": 1003.0,
     "sep": true,
     "via": [
      "FRA"
@@ -5680,7 +5693,7 @@
     "air": [
      "Condor"
     ],
-    "p": 1127.0,
+    "p": 1074.0,
     "sep": false,
     "via": [
      "FRA"
@@ -5690,7 +5703,7 @@
     "air": [
      "Condor"
     ],
-    "p": 1000.0,
+    "p": 1008.0,
     "sep": true,
     "via": [
      "FRA"
@@ -5700,7 +5713,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1012.0,
+    "p": 989.0,
     "sep": false,
     "via": [
      "WAW"
@@ -5708,19 +5721,19 @@
    },
    "2027-07": {
     "air": [
-     "LOT Polish Airlines"
+     "TAP Portugal"
     ],
-    "p": 1244.0,
-    "sep": true,
+    "p": 1157.0,
+    "sep": false,
     "via": [
-     "WAW"
+     "LIS"
     ]
    },
    "2027-08": {
     "air": [
      "Condor"
     ],
-    "p": 1116.0,
+    "p": 1120.0,
     "sep": false,
     "via": [
      "FRA"
@@ -5730,8 +5743,8 @@
     "air": [
      "Condor"
     ],
-    "p": 1021.0,
-    "sep": false,
+    "p": 1009.0,
+    "sep": true,
     "via": [
      "FRA"
     ]
@@ -6328,7 +6341,7 @@
     "air": [
      "Condor"
     ],
-    "p": 1015.0,
+    "p": 1020.0,
     "sep": false,
     "via": [
      "FRA"
@@ -7527,7 +7540,7 @@
     "air": [
      "Condor"
     ],
-    "p": 931.0,
+    "p": 938.0,
     "sep": false,
     "via": [
      "FRA"
@@ -7537,7 +7550,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 837.0,
+    "p": 839.0,
     "sep": false,
     "via": [
      "WAW"
@@ -7547,7 +7560,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 856.0,
+    "p": 836.0,
     "sep": false,
     "via": [
      "WAW"
@@ -7557,27 +7570,27 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 848.0,
+    "p": 841.0,
     "sep": false,
     "via": [
-     "WAW"
+     "KRK"
     ]
    },
    "2027-03": {
     "air": [
-     "LOT Polish Airlines"
+     "Condor"
     ],
-    "p": 1067.0,
-    "sep": true,
+    "p": 941.0,
+    "sep": false,
     "via": [
-     "KRK"
+     "FRA"
     ]
    },
    "2027-04": {
     "air": [
      "Condor"
     ],
-    "p": 994.0,
+    "p": 990.0,
     "sep": false,
     "via": [
      "FRA"
@@ -7587,7 +7600,7 @@
     "air": [
      "Condor"
     ],
-    "p": 994.0,
+    "p": 990.0,
     "sep": false,
     "via": [
      "FRA"
@@ -7597,7 +7610,7 @@
     "air": [
      "Aegean"
     ],
-    "p": 1100.0,
+    "p": 1064.0,
     "sep": true,
     "via": [
      "ATH"
@@ -7605,20 +7618,19 @@
    },
    "2027-07": {
     "air": [
-     "Condor",
-     "Lufthansa"
+     "LOT Polish Airlines"
     ],
-    "p": 1110.0,
+    "p": 845.0,
     "sep": false,
     "via": [
-     "FRA"
+     "KRK"
     ]
    },
    "2027-08": {
     "air": [
      "Condor"
     ],
-    "p": 1045.0,
+    "p": 1044.0,
     "sep": false,
     "via": [
      "FRA"
@@ -7628,7 +7640,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 1140.0,
+    "p": 1260.0,
     "sep": true,
     "via": [
      "WAW"
@@ -7980,7 +7992,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 711.0,
+    "p": 710.0,
     "sep": false,
     "via": [
      "WAW"
@@ -7990,7 +8002,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 710.0,
+    "p": 709.0,
     "sep": false,
     "via": [
      "WAW"
@@ -8000,7 +8012,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 695.0,
+    "p": 700.0,
     "sep": false,
     "via": [
      "KRK"
@@ -8010,7 +8022,7 @@
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 715.0,
+    "p": 714.0,
     "sep": false,
     "via": [
      "WAW"
@@ -8018,39 +8030,39 @@
    },
    "2027-03": {
     "air": [
-     "Condor"
+     "LOT Polish Airlines"
     ],
-    "p": 1024.0,
+    "p": 694.0,
     "sep": false,
     "via": [
-     "FRA"
+     "KRK"
     ]
    },
    "2027-04": {
     "air": [
-     "TAP Portugal"
+     "LOT Polish Airlines"
     ],
-    "p": 852.0,
+    "p": 708.0,
     "sep": false,
     "via": [
-     "OPO"
+     "KRK"
     ]
    },
    "2027-05": {
     "air": [
-     "Condor"
+     "TAP Portugal"
     ],
-    "p": 920.0,
+    "p": 887.0,
     "sep": false,
     "via": [
-     "FRA"
+     "OPO"
     ]
    },
    "2027-06": {
     "air": [
      "Condor"
     ],
-    "p": 972.0,
+    "p": 975.0,
     "sep": false,
     "via": [
      "FRA"
@@ -8058,19 +8070,19 @@
    },
    "2027-07": {
     "air": [
-     "TAP Portugal"
+     "Condor"
     ],
-    "p": 1364.0,
-    "sep": true,
+    "p": 1031.0,
+    "sep": false,
     "via": [
-     "LIS"
+     "FRA"
     ]
    },
    "2027-08": {
     "air": [
      "Condor"
     ],
-    "p": 1033.0,
+    "p": 1027.0,
     "sep": false,
     "via": [
      "FRA"
@@ -8081,7 +8093,7 @@
      "Aegean",
      "Condor"
     ],
-    "p": 1401.0,
+    "p": 1397.0,
     "sep": true,
     "via": [
      "LCA"
@@ -8090,6 +8102,39 @@
   }
  },
  "last": {
+  "K-ALL-AMS-M2026-11": "2026-11-10T04:15:59+00:00",
+  "K-ALL-AMS-M2026-12": "2026-11-10T04:16:20+00:00",
+  "K-ALL-AMS-M2027-01": "2026-11-10T04:16:38+00:00",
+  "K-ALL-AMS-M2027-02": "2026-11-10T04:16:57+00:00",
+  "K-ALL-AMS-M2027-03": "2026-11-10T04:17:15+00:00",
+  "K-ALL-AMS-M2027-04": "2026-11-10T04:17:40+00:00",
+  "K-ALL-AMS-M2027-05": "2026-11-10T04:17:57+00:00",
+  "K-ALL-AMS-M2027-06": "2026-11-10T04:18:17+00:00",
+  "K-ALL-AMS-M2027-07": "2026-11-10T04:18:42+00:00",
+  "K-ALL-AMS-M2027-08": "2026-11-10T04:19:01+00:00",
+  "K-ALL-AMS-M2027-09": "2026-11-10T04:19:25+00:00",
+  "K-ALL-BCN-M2026-11": "2026-11-10T04:04:46+00:00",
+  "K-ALL-BCN-M2026-12": "2026-11-10T04:05:08+00:00",
+  "K-ALL-BCN-M2027-01": "2026-11-10T04:05:27+00:00",
+  "K-ALL-BCN-M2027-02": "2026-11-10T04:05:48+00:00",
+  "K-ALL-BCN-M2027-03": "2026-11-10T04:06:09+00:00",
+  "K-ALL-BCN-M2027-04": "2026-11-10T04:06:29+00:00",
+  "K-ALL-BCN-M2027-05": "2026-11-10T04:06:47+00:00",
+  "K-ALL-BCN-M2027-06": "2026-11-10T04:07:07+00:00",
+  "K-ALL-BCN-M2027-07": "2026-11-10T04:07:29+00:00",
+  "K-ALL-BCN-M2027-08": "2026-11-10T04:07:53+00:00",
+  "K-ALL-BCN-M2027-09": "2026-11-10T04:08:15+00:00",
+  "K-ALL-BER-M2026-11": "2026-11-10T04:27:32+00:00",
+  "K-ALL-BER-M2026-12": "2026-11-10T04:27:52+00:00",
+  "K-ALL-BER-M2027-01": "2026-11-10T04:28:13+00:00",
+  "K-ALL-BER-M2027-02": "2026-11-10T04:28:34+00:00",
+  "K-ALL-BER-M2027-03": "2026-11-10T04:28:50+00:00",
+  "K-ALL-BER-M2027-04": "2026-11-10T04:29:12+00:00",
+  "K-ALL-BER-M2027-05": "2026-11-10T04:29:31+00:00",
+  "K-ALL-BER-M2027-06": "2026-11-10T04:29:50+00:00",
+  "K-ALL-BER-M2027-07": "2026-11-10T04:30:13+00:00",
+  "K-ALL-BER-M2027-08": "2026-11-10T04:30:32+00:00",
+  "K-ALL-BER-M2027-09": "2026-11-10T04:30:52+00:00",
   "K-ALL-BOM-M2026-11": "2026-11-10T00:56:15+00:00",
   "K-ALL-BOM-M2026-12": "2026-11-10T00:56:34+00:00",
   "K-ALL-BOM-M2027-01": "2026-11-10T00:56:57+00:00",
@@ -8146,6 +8191,27 @@
   "K-ALL-DPS-M2027-08": "2026-11-10T00:47:52+00:00",
   "K-ALL-DPS-M2027-09": "2026-11-10T00:48:13+00:00",
   "K-ALL-FCO-M2026-11": "2026-11-10T03:47:02+00:00",
+  "K-ALL-FCO-M2026-12": "2026-11-10T03:57:17+00:00",
+  "K-ALL-FCO-M2027-01": "2026-11-10T03:57:38+00:00",
+  "K-ALL-FCO-M2027-02": "2026-11-10T03:58:01+00:00",
+  "K-ALL-FCO-M2027-03": "2026-11-10T03:58:21+00:00",
+  "K-ALL-FCO-M2027-04": "2026-11-10T03:58:45+00:00",
+  "K-ALL-FCO-M2027-05": "2026-11-10T03:59:03+00:00",
+  "K-ALL-FCO-M2027-06": "2026-11-10T03:59:24+00:00",
+  "K-ALL-FCO-M2027-07": "2026-11-10T03:59:46+00:00",
+  "K-ALL-FCO-M2027-08": "2026-11-10T04:00:07+00:00",
+  "K-ALL-FCO-M2027-09": "2026-11-10T04:00:24+00:00",
+  "K-ALL-FRA-M2026-11": "2026-11-10T04:19:43+00:00",
+  "K-ALL-FRA-M2026-12": "2026-11-10T04:20:03+00:00",
+  "K-ALL-FRA-M2027-01": "2026-11-10T04:20:22+00:00",
+  "K-ALL-FRA-M2027-02": "2026-11-10T04:20:43+00:00",
+  "K-ALL-FRA-M2027-03": "2026-11-10T04:21:02+00:00",
+  "K-ALL-FRA-M2027-04": "2026-11-10T04:21:26+00:00",
+  "K-ALL-FRA-M2027-05": "2026-11-10T04:21:47+00:00",
+  "K-ALL-FRA-M2027-06": "2026-11-10T04:22:08+00:00",
+  "K-ALL-FRA-M2027-07": "2026-11-10T04:22:33+00:00",
+  "K-ALL-FRA-M2027-08": "2026-11-10T04:22:56+00:00",
+  "K-ALL-FRA-M2027-09": "2026-11-10T04:23:17+00:00",
   "K-ALL-GOI-M2026-11": "2026-11-10T00:59:52+00:00",
   "K-ALL-GOI-M2026-12": "2026-11-10T01:00:13+00:00",
   "K-ALL-GOI-M2027-01": "2026-11-10T01:00:36+00:00",
@@ -8157,6 +8223,17 @@
   "K-ALL-GOI-M2027-07": "2026-11-10T01:12:22+00:00",
   "K-ALL-GOI-M2027-08": "2026-11-10T01:12:42+00:00",
   "K-ALL-GOI-M2027-09": "2026-11-10T01:12:57+00:00",
+  "K-ALL-GVA-M2026-11": "2026-11-10T04:35:03+00:00",
+  "K-ALL-GVA-M2026-12": "2026-11-10T04:35:23+00:00",
+  "K-ALL-GVA-M2027-01": "2026-11-10T04:35:45+00:00",
+  "K-ALL-GVA-M2027-02": "2026-11-10T04:36:05+00:00",
+  "K-ALL-GVA-M2027-03": "2026-11-10T04:36:22+00:00",
+  "K-ALL-GVA-M2027-04": "2026-11-10T04:36:46+00:00",
+  "K-ALL-GVA-M2027-05": "2026-11-10T04:37:06+00:00",
+  "K-ALL-GVA-M2027-06": "2026-11-10T04:37:27+00:00",
+  "K-ALL-GVA-M2027-07": "2026-11-10T04:37:45+00:00",
+  "K-ALL-GVA-M2027-08": "2026-11-10T04:38:04+00:00",
+  "K-ALL-GVA-M2027-09": "2026-11-10T04:38:24+00:00",
   "K-ALL-HAN-M2026-11": "2026-11-10T00:37:37+00:00",
   "K-ALL-HAN-M2026-12": "2026-11-10T00:37:57+00:00",
   "K-ALL-HAN-M2027-01": "2026-11-10T00:38:20+00:00",
@@ -8179,6 +8256,51 @@
   "K-ALL-LHR-M2027-07": "2026-11-10T03:42:19+00:00",
   "K-ALL-LHR-M2027-08": "2026-11-10T03:42:42+00:00",
   "K-ALL-LHR-M2027-09": "2026-11-10T03:43:02+00:00",
+  "K-ALL-LIS-M2026-11": "2026-11-10T04:12:11+00:00",
+  "K-ALL-LIS-M2026-12": "2026-11-10T04:12:34+00:00",
+  "K-ALL-LIS-M2027-01": "2026-11-10T04:12:54+00:00",
+  "K-ALL-LIS-M2027-02": "2026-11-10T04:13:14+00:00",
+  "K-ALL-LIS-M2027-03": "2026-11-10T04:13:30+00:00",
+  "K-ALL-LIS-M2027-04": "2026-11-10T04:13:50+00:00",
+  "K-ALL-LIS-M2027-05": "2026-11-10T04:14:09+00:00",
+  "K-ALL-LIS-M2027-06": "2026-11-10T04:14:31+00:00",
+  "K-ALL-LIS-M2027-07": "2026-11-10T04:14:50+00:00",
+  "K-ALL-LIS-M2027-08": "2026-11-10T04:15:13+00:00",
+  "K-ALL-LIS-M2027-09": "2026-11-10T04:15:33+00:00",
+  "K-ALL-MAD-M2026-11": "2026-11-10T04:08:37+00:00",
+  "K-ALL-MAD-M2026-12": "2026-11-10T04:08:55+00:00",
+  "K-ALL-MAD-M2027-01": "2026-11-10T04:09:12+00:00",
+  "K-ALL-MAD-M2027-02": "2026-11-10T04:09:32+00:00",
+  "K-ALL-MAD-M2027-03": "2026-11-10T04:09:50+00:00",
+  "K-ALL-MAD-M2027-04": "2026-11-10T04:10:09+00:00",
+  "K-ALL-MAD-M2027-05": "2026-11-10T04:10:31+00:00",
+  "K-ALL-MAD-M2027-06": "2026-11-10T04:10:50+00:00",
+  "K-ALL-MAD-M2027-07": "2026-11-10T04:11:08+00:00",
+  "K-ALL-MAD-M2027-08": "2026-11-10T04:11:26+00:00",
+  "K-ALL-MAD-M2027-09": "2026-11-10T04:11:47+00:00",
+  "K-ALL-MUC-M2026-11": "2026-11-10T04:23:40+00:00",
+  "K-ALL-MUC-M2026-12": "2026-11-10T04:24:00+00:00",
+  "K-ALL-MUC-M2027-01": "2026-11-10T04:24:20+00:00",
+  "K-ALL-MUC-M2027-02": "2026-11-10T04:24:44+00:00",
+  "K-ALL-MUC-M2027-03": "2026-11-10T04:25:01+00:00",
+  "K-ALL-MUC-M2027-04": "2026-11-10T04:25:24+00:00",
+  "K-ALL-MUC-M2027-05": "2026-11-10T04:25:46+00:00",
+  "K-ALL-MUC-M2027-06": "2026-11-10T04:26:06+00:00",
+  "K-ALL-MUC-M2027-07": "2026-11-10T04:26:24+00:00",
+  "K-ALL-MUC-M2027-08": "2026-11-10T04:26:46+00:00",
+  "K-ALL-MUC-M2027-09": "2026-11-10T04:27:07+00:00",
+  "K-ALL-MXP-M2026-11": "2026-11-10T04:00:47+00:00",
+  "K-ALL-MXP-M2026-12": "2026-11-10T04:01:08+00:00",
+  "K-ALL-MXP-M2027-01": "2026-11-10T04:01:29+00:00",
+  "K-ALL-MXP-M2027-02": "2026-11-10T04:01:50+00:00",
+  "K-ALL-MXP-M2027-03": "2026-11-10T04:02:08+00:00",
+  "K-ALL-MXP-M2027-04": "2026-11-10T04:02:28+00:00",
+  "K-ALL-MXP-M2027-05": "2026-11-10T04:02:47+00:00",
+  "K-ALL-MXP-M2027-06": "2026-11-10T04:03:11+00:00",
+  "K-ALL-MXP-M2027-07": "2026-11-10T04:03:34+00:00",
+  "K-ALL-MXP-M2027-08": "2026-11-10T04:03:59+00:00",
+  "K-ALL-MXP-M2027-09": "2026-11-10T04:04:23+00:00",
+  "K-ALL-PRG-M2026-11": "2026-11-10T04:42:22+00:00",
   "K-ALL-SGN-M2026-11": "2026-11-10T00:33:34+00:00",
   "K-ALL-SGN-M2026-12": "2026-11-10T00:33:56+00:00",
   "K-ALL-SGN-M2027-01": "2026-11-10T00:34:20+00:00",
@@ -8201,6 +8323,28 @@
   "K-ALL-TPE-M2027-07": "2026-11-10T00:51:29+00:00",
   "K-ALL-TPE-M2027-08": "2026-11-10T00:51:49+00:00",
   "K-ALL-TPE-M2027-09": "2026-11-10T00:52:13+00:00",
+  "K-ALL-VIE-M2026-11": "2026-11-10T04:38:46+00:00",
+  "K-ALL-VIE-M2026-12": "2026-11-10T04:39:03+00:00",
+  "K-ALL-VIE-M2027-01": "2026-11-10T04:39:23+00:00",
+  "K-ALL-VIE-M2027-02": "2026-11-10T04:39:42+00:00",
+  "K-ALL-VIE-M2027-03": "2026-11-10T04:39:59+00:00",
+  "K-ALL-VIE-M2027-04": "2026-11-10T04:40:20+00:00",
+  "K-ALL-VIE-M2027-05": "2026-11-10T04:40:40+00:00",
+  "K-ALL-VIE-M2027-06": "2026-11-10T04:41:02+00:00",
+  "K-ALL-VIE-M2027-07": "2026-11-10T04:41:23+00:00",
+  "K-ALL-VIE-M2027-08": "2026-11-10T04:41:40+00:00",
+  "K-ALL-VIE-M2027-09": "2026-11-10T04:41:59+00:00",
+  "K-ALL-ZRH-M2026-11": "2026-11-10T04:31:14+00:00",
+  "K-ALL-ZRH-M2026-12": "2026-11-10T04:31:35+00:00",
+  "K-ALL-ZRH-M2027-01": "2026-11-10T04:31:55+00:00",
+  "K-ALL-ZRH-M2027-02": "2026-11-10T04:32:18+00:00",
+  "K-ALL-ZRH-M2027-03": "2026-11-10T04:32:37+00:00",
+  "K-ALL-ZRH-M2027-04": "2026-11-10T04:32:57+00:00",
+  "K-ALL-ZRH-M2027-05": "2026-11-10T04:33:15+00:00",
+  "K-ALL-ZRH-M2027-06": "2026-11-10T04:33:37+00:00",
+  "K-ALL-ZRH-M2027-07": "2026-11-10T04:33:57+00:00",
+  "K-ALL-ZRH-M2027-08": "2026-11-10T04:34:21+00:00",
+  "K-ALL-ZRH-M2027-09": "2026-11-10T04:34:39+00:00",
   "K-HY-DEL-M2026-11": "2026-11-10T01:13:14+00:00",
   "K-HY-DEL-M2026-12": "2026-11-10T01:13:29+00:00",
   "K-HY-DEL-M2027-01": "2026-11-10T01:13:51+00:00",
@@ -10839,7 +10983,7 @@
   },
   "K-ALL-AMS": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-ALL-ARN": {
    "empty_streak": 0,
@@ -10855,11 +10999,11 @@
   },
   "K-ALL-BCN": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-ALL-BER": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-ALL-BKK": {
    "empty_streak": 0,
@@ -10934,7 +11078,7 @@
   },
   "K-ALL-FRA": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-ALL-GOI": {
    "empty_streak": 0,
@@ -10946,7 +11090,7 @@
   },
   "K-ALL-GVA": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-ALL-GYD": {
    "empty_streak": 0,
@@ -10994,11 +11138,11 @@
   },
   "K-ALL-LIS": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-ALL-MAD": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-ALL-MEL": {
    "empty_streak": 0,
@@ -11022,11 +11166,11 @@
   },
   "K-ALL-MUC": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-ALL-MXP": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-ALL-NBO": {
    "empty_streak": 0,
@@ -11050,7 +11194,7 @@
   },
   "K-ALL-PRG": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-ALL-PVG": {
    "empty_streak": 0,
@@ -11090,7 +11234,7 @@
   },
   "K-ALL-VIE": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-ALL-WAW": {
    "empty_streak": 0,
@@ -11106,7 +11250,7 @@
   },
   "K-ALL-ZRH": {
    "empty_streak": 0,
-   "last_found": "2026-11-08"
+   "last_found": "2026-11-10"
   },
   "K-HY-BKK": {
    "empty_streak": 0,
