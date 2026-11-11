@@ -5,10 +5,18 @@
   "senders": {}
  },
  "2026-11-11": {
-  "read": 1,
+  "read": 11,
   "matched": 0,
   "senders": {
-   "ארקיע": 1
+   "ארקיע": 2,
+   "Ethiopian Airlines": 1,
+   "אופיר טורס": 1,
+   "Emirates": 1,
+   "קשרי תעופה": 2,
+   "flydubai": 1,
+   "Etihad Airways": 1,
+   "יניב, טיסות סודיות": 1,
+   "lastminute.co.il": 1
   }
  }
 }
