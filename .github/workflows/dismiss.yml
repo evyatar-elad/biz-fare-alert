@@ -1,0 +1,44 @@
+name: dismiss
+
+# The status page's "הסר" button opens an issue "dismiss: <route>". Only the repo owner's
+# issues are handled; the deal is hidden, the issue gets a reply and is closed.
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: scan          # same group as the scanner, so they never write data at the same time
+  cancel-in-progress: false
+
+jobs:
+  dismiss:
+    if: startsWith(github.event.issue.title, 'dismiss:') && github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: dismiss
+        id: d
+        env:
+          TITLE: ${{ github.event.issue.title }}
+        run: |
+          key="${TITLE#dismiss:}"
+          if python dismiss.py "$key"; then echo "msg=הוסר: $key" >> "$GITHUB_OUTPUT"; else echo "msg=לא נמצא: $key" >> "$GITHUB_OUTPUT"; fi
+          python status.py || true
+          git config user.name "biz-fare-alert"
+          git config user.email "actions@users.noreply.github.com"
+          git add data docs
+          git diff --cached --quiet || git commit -m "dismiss: $key"
+          for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
+      - name: reply and close
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "${{ steps.d.outputs.msg }}. הדף יתעדכן בעוד דקה-שתיים."
+          gh issue close ${{ github.event.issue.number }}

@@ -26,6 +26,14 @@ def t(iso: str | None) -> str:
     return datetime.fromisoformat(iso).astimezone(IL).strftime("%d/%m %H:%M")
 
 
+def dismiss_btn(key: str) -> str:
+    """A "remove" link: opens a prefilled GitHub issue; dismiss.yml handles it (owner only)."""
+    from urllib.parse import quote
+    url = ("https://github.com/evyatar-elad/biz-fare-alert/issues/new?title=" + quote(f"dismiss:{key}")
+           + "&body=" + quote("לחץ Create / Submit כדי להסיר את המציאה מהדף. הבוט יסגור את הבקשה לבד."))
+    return f"<a href='{url}' target=_blank style='color:#b91c1c;font-size:13px;white-space:nowrap'>✕ הסר</a>"
+
+
 def main() -> None:
     state = scanner.load(scanner.STATE_F, {"last": {}})
     hist = scanner.load(scanner.HIST_F, {})
@@ -104,6 +112,7 @@ def main() -> None:
     this_month = now.astimezone(IL).strftime("%Y-%m")
     al = sorted(((k, v) for k, v in alerts.items()
                  if "|" not in k  # old per-month format = the false alerts of 6-9/11
+                 and not v.get("dismissed")
                  and (now - datetime.fromisoformat(v["at"])).days <= C.REALERT_DAYS
                  and (v.get("month") or "9999") >= this_month),
                 key=lambda kv: kv[1]["at"], reverse=True)[:15]
@@ -119,7 +128,8 @@ def main() -> None:
 
     al_rows = "".join(
         f"<tr><td>{t(v['at'])}</td><td>{route_label(k)}</td>"
-        f"<td>{v.get('month') or (k.split('|')[1] if '|' in k else '')}</td><td><b>${v['price']:,.0f}</b></td></tr>"
+        f"<td>{v.get('month') or (k.split('|')[1] if '|' in k else '')}</td><td><b>${v['price']:,.0f}</b></td>"
+        f"<td>{dismiss_btn(k)}</td></tr>"
         for k, v in al
     ) or "<tr><td colspan=4 class=m>עוד לא נשלחו התראות</td></tr>"
 
@@ -154,7 +164,8 @@ def main() -> None:
                 if waiting else "אין")
     wait_rows = "".join(
         f"<tr><td>{html.escape(name(d['origin']))} - {html.escape(name(d['dest']))}</td><td>{d['month']}</td>"
-        f"<td><b>${d['price']:,.0f}</b></td><td class=m>{html.escape('; '.join(d.get('reasons', [])))}</td></tr>"
+        f"<td><b>${d['price']:,.0f}</b></td><td class=m>{html.escape('; '.join(d.get('reasons', [])))}</td>"
+        f"<td>{dismiss_btn(d['route'])}</td></tr>"
         for d in waiting)
 
     page = f"""<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
@@ -191,17 +202,18 @@ h.style.color='#b91c1c'; h.textContent='● הדף לא עודכן כבר '+Math
 <li>הבוט לא עוקף חסימות. אם גוגל מבקש להאט, הוא עוצר ל-4 שעות וממשיך לבד.</li>
 </ul></details>
 <div class="kpis" style="margin-top:14px">
+ <div class="kpi"><span class=m>נאספו מאז 5/11</span><b>{sum(len(r) for m in hist.values() for r in m.values()):,}</b><span class=m>מדידות מחיר ל-{len(hist)} מסלולים</span></div>
  <div class="kpi"><span class=m>הריצה האחרונה הסתיימה</span><b>{t(lr.get('end') or lr.get('at'))}</b><span class=m>{lr.get('calls', 0)} חיפושים בה</span></div>
  <div class="kpi"><span class=m>חיפושים ב-24 שעות</span><b>{calls_24h:,}</b><span class=m>{"בלי חסימות" if not blocks_24h else f"{blocks_24h} פעמים גוגל ביקש להאט"}</span></div>
  <div class="kpi"><span class=m>הנתונים עדכניים</span><b>{100 * fresh // max(1, len(tasks))}%</b><span class=m>מכל החיפושים המתוכננים נבדקו בזמן</span></div>
  <div class="kpi"><span class=m>ממתין למייל היומי (09:00)</span><b>{len(waiting)} מציאות</b><span class=m>{len(nwait)} פריטים מניוזלטרים · <a href="#waiting" style="color:inherit">פירוט</a></span></div>
 </div>
 <div class="card" id=waiting><h2>ממתינות למייל היומי הבא</h2>
-<div class=scroll><table><tr><th>מסלול</th><th>חודש</th><th>מחיר</th><th>למה</th></tr>{wait_rows or "<tr><td colspan=4 class=m>אין כרגע</td></tr>"}</table></div></div>
+<div class=scroll><table><tr><th>מסלול</th><th>חודש</th><th>מחיר</th><th>למה</th><th></th></tr>{wait_rows or "<tr><td colspan=4 class=m>אין כרגע</td></tr>"}</table></div></div>
 <div class="card"><h2>מציאות שנשלחו במייל (14 הימים האחרונים)</h2>
-<div class=m style="font-size:13px;margin-bottom:6px">כל מסלול נשלח פעם אחת, ושוב רק אם המחיר ירד ב-7% נוספים או שעברו 14 יום. שורה נעלמת לבד אחרי 14 יום או כשהחודש עבר. רוצה להסיר משהו קודם? תגיד לי בצ'אט.</div>
+<div class=m style="font-size:13px;margin-bottom:6px">כל מסלול נשלח פעם אחת, ושוב רק אם המחיר ירד ב-7% נוספים או שעברו 14 יום. שורה נעלמת לבד אחרי 14 יום או כשהחודש עבר. רוצה להסיר משהו קודם? "✕ הסר" פותח בקשה ב-GitHub; לוחצים Create, והבוט מסיר לבד תוך דקה-שתיים.</div>
 <div class=scroll><table>
-<tr><th>נשלח</th><th>מסלול</th><th>חודש</th><th>מחיר</th></tr>{al_rows}</table></div></div>
+<tr><th>נשלח</th><th>מסלול</th><th>חודש</th><th>מחיר</th><th></th></tr>{al_rows}</table></div></div>
 <div class="card"><h2>ניוזלטרים ואתרי מציאות</h2>
 <div class=m style="font-size:13px;margin-bottom:8px">הבוט קורא בכל ריצה את התיבה הייעודית ואת אתר Fly4free. נשלח במייל היומי רק מה שמזכיר ביזנס עם מחיר (בקרוב: קריאה חכמה עם AI).</div>
 <div class="kpis"><div class="kpi"><span class=m>נקראו ב-7 ימים</span><b>{n_read}</b><span class=m>מיילים</span></div>
