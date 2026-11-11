@@ -48,3 +48,8 @@ SPIKE = True; print("\n===== with promo ====="); run()      # promo appears -> e
 st = json.loads((tmp/"state.json").read_text()); st["last"] = {}; (tmp/"state.json").write_text(json.dumps(st))
 print("\n===== same promo again (must NOT email) ====="); run()
 shutil.rmtree(tmp)
+
+# status page must build with the real data files (11/11: a crash froze it for a day)
+import status
+status.main()
+print("STATUS_PAGE_OK")

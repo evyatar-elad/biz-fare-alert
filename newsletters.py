@@ -17,10 +17,11 @@ from urllib.parse import quote
 
 import notify
 import json as _json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 PENDING_F = Path(__file__).parent / "data" / "pending_news.json"
+UIDS_F = Path(__file__).parent / "data" / "news_uids.json"
 STATS_F = Path(__file__).parent / "data" / "news_stats.json"
 
 
@@ -197,17 +198,35 @@ def main(dry_run: bool = False) -> int:
         row = row.decode(errors="replace")
         if "\\Junk" in row:
             folders.append(row.rsplit(' "/" ', 1)[-1].strip())
+    # 11/11: track the last message UID per folder instead of "unread". Before, anyone
+    # opening the dedicated inbox (marking mail as read) made the bot skip those mails.
+    try:
+        seen = _json.loads(UIDS_F.read_text(encoding="utf-8"))
+    except (FileNotFoundError, ValueError):
+        seen = {}
     hits, total_read = [], 0
     senders_all.clear()
     for folder in folders:
-        m.select(folder)
-        _, data = m.search(None, "UNSEEN")
-        ids = data[0].split()[:MAX_PER_RUN]
-        print(f"newsletters: {folder}: {len(ids)} unread")
-        got = read_folder(m, ids, dry_run)
-        hits += got
-        total_read += len(ids)
+        _, sel = m.select(folder, readonly=True)
+        _, v = m.response("UIDVALIDITY")
+        validity = (v[0] or b"").decode() if v and v[0] else ""
+        st = seen.get(folder, {})
+        if st.get("validity") == validity and st.get("last"):
+            _, data = m.uid("search", None, f"UID {int(st['last']) + 1}:*")
+        else:  # first time: the last 7 days
+            since = (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%d-%b-%Y")
+            _, data = m.uid("search", None, f"SINCE {since}")
+        uids = [u for u in data[0].split() if not st.get("last") or int(u) > int(st["last"])][:MAX_PER_RUN]
+        print(f"newsletters: {folder}: {len(uids)} new")
+        hits += read_folder(m, uids, dry_run)
+        total_read += len(uids)
+        if uids and not dry_run:
+            seen[folder] = {"validity": validity, "last": int(uids[-1])}
+        elif not st and not dry_run:
+            seen[folder] = {"validity": validity, "last": 0}
     m.logout()
+    if not dry_run:
+        UIDS_F.write_text(_json.dumps(seen, indent=1), encoding="utf-8")
     add_stats(total_read, len(hits), senders_all)
     finish(hits, user, dry_run)
     return 0
@@ -219,7 +238,7 @@ senders_all: list[str] = []
 def read_folder(m, ids, dry_run: bool) -> list[dict]:
     hits = []
     for i in ids:
-        _, raw = m.fetch(i, "(BODY.PEEK[])")
+        _, raw = m.uid("fetch", i, "(BODY.PEEK[])")
         msg = email.message_from_bytes(raw[0][1])
         subj, frm = dec(msg.get("Subject")), dec(msg.get("From"))
         senders_all.append(frm)
@@ -231,8 +250,6 @@ def read_folder(m, ids, dry_run: bool) -> list[dict]:
             src = c.get("text") or clean(text)
             hits.append({"from": frm, "subject": subj, "c": c, "snip": snippet(src, c["biz"]),
                          "msgid": (msg.get("Message-ID") or "").strip("<>")})
-        if not dry_run:
-            m.store(i, "+FLAGS", "\\Seen")
     return hits
 
 

@@ -356,7 +356,7 @@ def main() -> int:
 
     state = load(STATE_F, {"last": {}, "backoff_until": None, "last_email": None})
     hist = load(HIST_F, {})
-    alerts = load(ALERTS_F, {})
+    alerts = {k: v for k, v in load(ALERTS_F, {}).items() if "|" not in k}  # drop pre-9/11 per-month keys
     today = date.today().isoformat()
     started = time.monotonic()
     run = {"at": now_utc().isoformat(timespec="seconds"), "calls": 0, "ok": 0, "empty": 0, "deals": 0, "blocked": False}

@@ -53,6 +53,8 @@ def main() -> None:
         health, color = f"בהמתנה אחרי חסימה של גוגל, עד {t(backoff)}", "#b45309"
     elif runs and (now - datetime.fromisoformat(lr["at"])).total_seconds() > 3 * 3600:
         health, color = "לא רץ כבר יותר מ-3 שעות. כדאי לבדוק את Actions", "#b91c1c"
+    elif lr and not lr.get("calls"):
+        health, color = "פעיל. כרגע הכל עדכני, אין מה לחפש (הריצה האחרונה לא מצאה חיפוש שהגיע זמנו)", "#047857"
     else:
         health, color = "פעיל", "#047857"
 
@@ -99,7 +101,12 @@ def main() -> None:
     dormant_html = ("<div class=card><h2>יעדים רדומים</h2><div class=m>אין טיסות בכלל, נבדקים רק כל 10 ימים: "
                     + ", ".join(html.escape(name(k.split('-')[-1]) + (" (Kiwi)" if k.startswith("K-") else "")) for k in dormant)
                     + "</div></div>") if dormant else ""
-    al = sorted(alerts.items(), key=lambda kv: kv[1]["at"], reverse=True)[:15]
+    this_month = now.astimezone(IL).strftime("%Y-%m")
+    al = sorted(((k, v) for k, v in alerts.items()
+                 if "|" not in k  # old per-month format = the false alerts of 6-9/11
+                 and (now - datetime.fromisoformat(v["at"])).days <= C.REALERT_DAYS
+                 and (v.get("month") or "9999") >= this_month),
+                key=lambda kv: kv[1]["at"], reverse=True)[:15]
     def route_label(k: str) -> str:
         parts = k.split("|")[0].split("-")
         src = "Google Flights"
@@ -112,7 +119,8 @@ def main() -> None:
 
     al_rows = "".join(
         f"<tr><td>{t(v['at'])}</td><td>{route_label(k)}</td>"
-        f"<td>{k.split('|')[1]}</td><td><b>${v['price']:,.0f}</b></td></tr>" for k, v in al
+        f"<td>{v.get('month') or (k.split('|')[1] if '|' in k else '')}</td><td><b>${v['price']:,.0f}</b></td></tr>"
+        for k, v in al
     ) or "<tr><td colspan=4 class=m>עוד לא נשלחו התראות</td></tr>"
 
     import json as _j
@@ -142,8 +150,12 @@ def main() -> None:
         + "</td></tr>" for x in reversed(nlog[-12:])) \
         or "<tr><td colspan=3 class=m>עוד לא נמצא שום מבצע ביזנס עם מחיר בניוזלטרים</td></tr>"
     waiting = state.get("pending", [])
-    wait_txt = (", ".join(f"{html.escape(name(d['dest']))} ${d['price']:,.0f}" for d in waiting)
+    wait_txt = (", ".join(f"{html.escape(name(d['dest']))} ${d['price']:,.0f} ({d['month']})" for d in waiting)
                 if waiting else "אין")
+    wait_rows = "".join(
+        f"<tr><td>{html.escape(name(d['origin']))} - {html.escape(name(d['dest']))}</td><td>{d['month']}</td>"
+        f"<td><b>${d['price']:,.0f}</b></td><td class=m>{html.escape('; '.join(d.get('reasons', [])))}</td></tr>"
+        for d in waiting)
 
     page = f"""<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="600"><title>בוט מציאות ביזנס</title>
@@ -164,7 +176,12 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 </style></head><body><div class="wrap">
 <header><h1>✈️ בוט מציאות ביזנס</h1>
 <div style="opacity:.8;margin-top:4px">ביזנס הלוך חזור מתל אביב. מקורות: Google Flights ו-Kiwi.com, וגם ניוזלטרים של חברות תעופה ו-Fly4free. עודכן {t(now.isoformat())}</div></header>
-<div class="card"><span style="color:{color};font-weight:bold">● {health}</span></div>
+<div class="card"><span id=health style="color:{color};font-weight:bold">● {health}</span></div>
+<script>
+// The page is regenerated after every run. If it is old, the bot (or this page) stopped: say so.
+(function(){{var age=(Date.now()-{int(now.timestamp()*1000)})/36e5; if(age>2.5){{var h=document.getElementById('health');
+h.style.color='#b91c1c'; h.textContent='● הדף לא עודכן כבר '+Math.round(age)+' שעות. כנראה הבוט נעצר או שיש תקלה בדף. כדאי לבדוק את Actions';}}}})();
+</script>
 <details class="card"><summary style="cursor:pointer;font-weight:bold">איך הבוט עובד? (לחץ להסבר)</summary>
 <ul style="line-height:1.7;margin:10px 0 0;padding-right:18px">
 <li>כל שעה הבוט רץ כ-45 דקות ובודק מחירי ביזנס הלוך חזור מתל אביב לכ-70 יעדים, עד כ-10 חודשים קדימה, בשני מקורות: Google Flights ו-Kiwi.com.</li>
@@ -177,10 +194,12 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
  <div class="kpi"><span class=m>הריצה האחרונה הסתיימה</span><b>{t(lr.get('end') or lr.get('at'))}</b><span class=m>{lr.get('calls', 0)} חיפושים בה</span></div>
  <div class="kpi"><span class=m>חיפושים ב-24 שעות</span><b>{calls_24h:,}</b><span class=m>{"בלי חסימות" if not blocks_24h else f"{blocks_24h} פעמים גוגל ביקש להאט"}</span></div>
  <div class="kpi"><span class=m>הנתונים עדכניים</span><b>{100 * fresh // max(1, len(tasks))}%</b><span class=m>מכל החיפושים המתוכננים נבדקו בזמן</span></div>
- <div class="kpi"><span class=m>ממתין למייל היומי</span><b>{len(waiting)} מציאות</b><span class=m>{len(nwait)} פריטים מניוזלטרים</span></div>
+ <div class="kpi"><span class=m>ממתין למייל היומי (09:00)</span><b>{len(waiting)} מציאות</b><span class=m>{len(nwait)} פריטים מניוזלטרים · <a href="#waiting" style="color:inherit">פירוט</a></span></div>
 </div>
-<div class="card"><h2>מציאות שנשלחו במייל</h2>
-<div class=m style="font-size:13px;margin-bottom:6px">כל מסלול נשלח פעם אחת, ושוב רק אם המחיר ירד ב-7% נוספים או שעברו 14 יום. ממתינות למייל הבא: {wait_txt}.</div>
+<div class="card" id=waiting><h2>ממתינות למייל היומי הבא</h2>
+<div class=scroll><table><tr><th>מסלול</th><th>חודש</th><th>מחיר</th><th>למה</th></tr>{wait_rows or "<tr><td colspan=4 class=m>אין כרגע</td></tr>"}</table></div></div>
+<div class="card"><h2>מציאות שנשלחו במייל (14 הימים האחרונים)</h2>
+<div class=m style="font-size:13px;margin-bottom:6px">כל מסלול נשלח פעם אחת, ושוב רק אם המחיר ירד ב-7% נוספים או שעברו 14 יום. שורה נעלמת לבד אחרי 14 יום או כשהחודש עבר. רוצה להסיר משהו קודם? תגיד לי בצ'אט.</div>
 <div class=scroll><table>
 <tr><th>נשלח</th><th>מסלול</th><th>חודש</th><th>מחיר</th></tr>{al_rows}</table></div></div>
 <div class="card"><h2>ניוזלטרים ואתרי מציאות</h2>

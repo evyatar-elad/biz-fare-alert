@@ -113,7 +113,9 @@ HORIZON_DAYS = 300
 START_OFFSET_DAYS = 2
 
 # How often each task is due (hours).
-DUE_HOURS = {"priority": 24, "normal": 48, "LCA": 96}
+# 11/11: with 24/48h the bot was idle ~half the day (everything up to date), so check more
+# often; when there is more work than time, the most overdue tasks go first anyway.
+DUE_HOURS = {"priority": 12, "normal": 24, "LCA": 48}
 FAR_DUE_FACTOR = 1.5  # far (anchor) dates are checked a bit less often
 
 # A route with this many empty results in a row (no flights at all, even with
@@ -154,7 +156,7 @@ KIWI_WINDOW_DAYS = 30
 KIWI_NIGHTS = {"europe": (3, 10), "near": (3, 10), "asia": (7, 21), "far": (7, 21)}
 KIWI_PACE_SECONDS = 10
 DORMANT_AFTER_EMPTY_KIWI = 10  # ~one full sweep of monthly windows
-KIWI_DUE_HOURS = {"priority": 24, "normal": 48}
+KIWI_DUE_HOURS = {"priority": 12, "normal": 24}
 # Airlines Google misses: also searched on Kiwi on their own (so a promo shows even
 # when another airline is cheaper overall).
 KIWI_AIRLINE_FOCUS = {

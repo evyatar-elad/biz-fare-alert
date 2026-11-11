@@ -48,7 +48,7 @@ def stats_line() -> str:
 
 def main(dry_run: bool = False, force: bool = False) -> int:
     state = scanner.load(scanner.STATE_F, {"last": {}})
-    alerts = scanner.load(scanner.ALERTS_F, {})
+    alerts = {k: v for k, v in scanner.load(scanner.ALERTS_F, {}).items() if "|" not in k}  # drop pre-9/11 keys
     hist = scanner.load(scanner.HIST_F, {})
     try:
         news = json.loads(NEWS_F.read_text(encoding="utf-8"))
