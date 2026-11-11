@@ -9,6 +9,7 @@ does not scramble inside the right-to-left Hebrew text.
 """
 from __future__ import annotations
 
+import base64
 import html
 import os
 import smtplib
@@ -96,10 +97,33 @@ def nice_date(iso: str) -> str:
     return f"{WEEKDAYS[d.weekday()]} {ltr(d.strftime('%d/%m/%Y'))}"
 
 
-def gf_link(o, d, dep, ret) -> str:
-    q = f"Flights from {o} to {d} on {dep} through {ret} business class one adult"
-    return "https://www.google.com/travel/flights?q=" + quote(q) + "&curr=USD"
+def _pb_varint(n: int) -> bytes:
+    out = bytearray()
+    while True:
+        b, n = n & 0x7F, n >> 7
+        out.append(b | 0x80 if n else b)
+        if not n:
+            return bytes(out)
 
+
+def _pb(field: int, payload) -> bytes:
+    if isinstance(payload, int):
+        return _pb_varint(field << 3) + _pb_varint(payload)
+    return _pb_varint((field << 3) | 2) + _pb_varint(len(payload)) + payload
+
+
+def gf_link(o, d, dep, ret, seat: int = 3) -> str:
+    """Direct Google Flights results page with route, dates, 1 adult and BUSINESS (seat 3)
+    already set: the `tfs` parameter the site itself uses (structure as in the open
+    fast-flights library; idea taken from Brain-ai-biz/cheap-flights, 11/11)."""
+    leg = lambda a, b, day: _pb(2, day.encode()) + _pb(13, _pb(2, a.encode())) + _pb(14, _pb(2, b.encode()))
+    msg = _pb(3, leg(o, d, dep)) + _pb(3, leg(d, o, ret)) + _pb(8, bytes([1])) + _pb(9, seat) + _pb(19, 1)
+    tfs = base64.urlsafe_b64encode(msg).decode().rstrip("=")
+    return f"https://www.google.com/travel/flights/search?tfs={tfs}&hl=he&curr=USD"
+
+
+def kayak_link(o, d, dep, ret) -> str:
+    return f"https://www.kayak.com/flights/{o}-{d}/{dep}/{ret}/business"
 
 def sky_link(o, d, dep, ret) -> str:
     f = lambda s: s[2:4] + s[5:7] + s[8:10]
@@ -225,6 +249,7 @@ def deal_card(d: dict) -> str:
     else:
         buttons = button("Google Flights", gf_link(o, x, d["dep"], d["ret"]), primary=True)
     buttons += button("Skyscanner", sky_link(o, x, d["dep"], d["ret"]))
+    buttons += button("Kayak", kayak_link(o, x, d["dep"], d["ret"]))
     if d.get("airline_focus") in C.HUB_SITES:
         buttons += button(f"אתר {C.HUB_SITES[d['airline_focus']][0]}", C.HUB_SITES[d["airline_focus"]][1])
     for a in airlines[:2]:
