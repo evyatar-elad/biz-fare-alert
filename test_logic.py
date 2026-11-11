@@ -51,5 +51,6 @@ shutil.rmtree(tmp)
 
 # status page must build with the real data files (11/11: a crash froze it for a day)
 import status
+status.OUT = tmp / "index.html"   # never overwrite the real docs/index.html (11/11: it did, with empty test data)
 status.main()
 print("STATUS_PAGE_OK")
