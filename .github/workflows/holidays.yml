@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "probe = one-off measurement"
+        description: "probe = one-off measurement, diag = calendar diagnosis"
         default: "probe"
       quick:
         description: "quick probe (2 destinations)"
@@ -16,7 +16,7 @@ on:
         default: false
   push:
     branches: ["claude/**"]
-    paths: ["holiday_probe.py", "fli_multi.py", ".github/workflows/holidays.yml"]
+    paths: ["holiday_probe.py", "holiday_diag.py", "fli_multi.py", ".github/workflows/holidays.yml"]
 
 permissions:
   contents: write
@@ -39,7 +39,8 @@ jobs:
       - name: tests
         run: python test_holidays.py
       - name: probe
-        run: python holiday_probe.py ${{ inputs.quick && '--quick' || '' }}
+        run: |
+          if [ "${{ inputs.mode || 'diag' }}" = "diag" ]; then python holiday_diag.py; else python holiday_probe.py ${{ inputs.quick && '--quick' || '' }}; fi
       - name: save probe report
         if: always()
         run: |
