@@ -16,6 +16,7 @@ from email.header import decode_header, make_header
 from urllib.parse import quote
 
 import notify
+import news_ai
 import json as _json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -233,6 +234,101 @@ def main(dry_run: bool = False) -> int:
 
 
 senders_all: list[str] = []
+MAX_AI_PER_RUN = 40   # cost guard on top of the Workspace spend limit
+HOL_NEWS_F = Path(__file__).parent / "data" / "holidays" / "pending_news.json"
+ai_state = {"client": None, "used": 0, "ctx": None}
+
+
+def _ai_ctx():
+    """Upcoming holidays and destination lists for routing (loaded once per run)."""
+    if ai_state["ctx"] is None:
+        import config as C
+        from datetime import date as _date
+        try:
+            import holiday_cal
+            from profiles import holidays as HP
+            hols, hdests = holiday_cal.upcoming(_date.today()), HP.DESTINATIONS
+        except Exception as e:  # holidays profile not installed: business only
+            print(f"news_ai: holidays routing off ({e})")
+            hols, hdests = [], {}
+        ai_state["ctx"] = (hols, hdests, C.DESTINATIONS, C.MAX_PRICE)
+    return ai_state["ctx"]
+
+
+def biz_reference(deal: dict) -> str:
+    """What our own business history says about this route and month (latest scans)."""
+    import config as C
+    dest = deal.get("destination")
+    if dest not in C.DESTINATIONS:
+        return ""
+    try:
+        hist = _json.loads((Path(__file__).parent / "data" / "history.json").read_text(encoding="utf-8"))
+    except (FileNotFoundError, ValueError):
+        return ""
+    region = C.DESTINATIONS[dest][1]
+    rk = f"TLV-{dest}-{C.REGIONS[region]['dur']}"
+    month = (deal.get("travel_from") or "")[:7]
+    rows = hist.get(rk, {}).get(month) or []
+    if not rows:
+        allm = [r for m_, rs in hist.get(rk, {}).items() for r in rs[-1:]]
+        if not allm:
+            return "לא נסרק אצלנו עדיין"
+        return f"אצלנו (גוגל, ביזנס): הזול בחודשים שנבדקו ${min(r[2] for r in allm):,}"
+    return f"אצלנו (גוגל, ביזנס) ל-{month}: הזול בבדיקה האחרונה ${rows[-1][2]:,}"
+
+
+def deal_line(d: dict, extra: str = "") -> str:
+    price = f"{d['price']:,.0f} {d.get('currency') or ''}".strip() if d.get("price") is not None else "בלי מחיר"
+    basis = {"round_trip": "הלוך חזור", "one_way": "כיוון אחד"}.get(d.get("price_basis"), "")
+    cab = {"economy": "תיירים", "premium_economy": "פרימיום", "business": "ביזנס", "first": "ראשונה"}.get(d.get("cabin"), "")
+    where = " - ".join(x for x in (d.get("origin") or d.get("origin_name"), d.get("destination") or d.get("destination_name")) if x)
+    when = f"טיסות {d['travel_from']} עד {d['travel_to']}" if d.get("travel_from") and d.get("travel_to") else ""
+    by = f"לקנות עד {d['book_by']}" if d.get("book_by") else ""
+    bits = [b for b in (where, cab, f"{price} {basis}".strip(), when, by, d.get("conditions") or "", extra) if b]
+    return "• " + html.escape(" · ".join(bits))
+
+
+def queue_holidays(sender: str, subject: str, ai: dict, deals: list[dict]) -> None:
+    """Holiday-relevant promos wait for the holidays email (separate from the business digest)."""
+    try:
+        items = _json.loads(HOL_NEWS_F.read_text(encoding="utf-8"))
+    except (FileNotFoundError, ValueError):
+        items = []
+    items.append({"from": sender, "subject": subject, "summary": ai.get("summary_he", ""),
+                  "deals": deals, "at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
+    HOL_NEWS_F.parent.mkdir(parents=True, exist_ok=True)
+    HOL_NEWS_F.write_text(_json.dumps(items[-100:], ensure_ascii=False, indent=1), encoding="utf-8")
+
+
+def read_ai(frm: str, subj: str, text: str, msg) -> dict | None:
+    """Claude reads the mail. Returns a business hit, None (not for the business digest),
+    or {"fallback": True} when the API is unavailable (then the keyword filter runs)."""
+    if ai_state["used"] >= MAX_AI_PER_RUN:
+        return {"fallback": True}
+    if ai_state["client"] is None:
+        ai_state["client"] = news_ai._client()
+    ai_state["used"] += 1
+    ai = news_ai.extract(frm, subj, text, ai_state["client"])
+    if ai is None:  # API problem: keyword filter for the rest of this run
+        ai_state["used"] = MAX_AI_PER_RUN
+        return {"fallback": True}
+    hols, hdests, bdests, bmax = _ai_ctx()
+    routed = news_ai.route(ai, hols, hdests, bdests, bmax) if ai.get("is_promo") else {"business": [], "holidays": []}
+    sender = re.sub(r"\s*<.*", "", frm).strip('" ')
+    log_items([{"kind": "ai", "from": sender, "subject": subj, "snip": ai.get("summary_he", "")[:300],
+                "promo": ai.get("is_promo"), "business": len(routed["business"]), "holidays": len(routed["holidays"]),
+                "deals": len(ai.get("deals") or [])}])
+    if routed["holidays"]:
+        queue_holidays(sender, subj, ai, routed["holidays"])
+    msgid = (msg.get("Message-ID") or "").strip("<>")
+    if ai.get("needs_action"):
+        return {"from": frm, "subject": subj, "c": {"biz": [], "promo": [], "israel": False, "confirm": True},
+                "snip": "", "msgid": msgid}
+    if not routed["business"]:
+        return None
+    lines = "<br>".join(deal_line(d, biz_reference(d)) for d in routed["business"])
+    return {"from": frm, "subject": subj, "msgid": msgid, "snip": ai.get("summary_he", ""), "lines": lines,
+            "c": {"biz": ["ai"], "promo": [], "israel": any(d.get("origin") in ("TLV", "LCA") for d in routed["business"])}}
 
 
 def read_folder(m, ids, dry_run: bool) -> list[dict]:
@@ -243,6 +339,13 @@ def read_folder(m, ids, dry_run: bool) -> list[dict]:
         subj, frm = dec(msg.get("Subject")), dec(msg.get("From"))
         senders_all.append(frm)
         text = body_text(msg)
+        if news_ai.enabled():
+            h = read_ai(frm, subj, text, msg)
+            if h is None:
+                continue
+            if not h.get("fallback"):
+                hits.append(h)
+                continue
         c = classify(subj, text)
         if not c and CONFIRM.search(subj):
             c = {"biz": [], "promo": [], "israel": False, "confirm": True}
@@ -272,6 +375,7 @@ def finish(hits: list[dict], user: str, dry_run: bool) -> None:
             f'<div style="color:{notify.MUTED};font-size:12px">{html.escape(h["from"])}</div>'
             f'<div style="font-size:16px;font-weight:bold;margin:4px 0">{notify.ltr(h["subject"]) if h["subject"].isascii() else html.escape(h["subject"])}{tag}</div>'
             f'<div dir="auto" style="color:{notify.MUTED}">{html.escape(h["snip"])}</div>'
+            + (f'<div dir="auto" style="margin-top:6px;font-size:13px">{h["lines"]}</div>' if h.get("lines") else "") +
             f'<div style="margin-top:8px">{notify.button("לפתוח את המייל", link, primary=True)}</div>'
             f'</td></tr></table>')
     head = (f'<div style="{notify.FONT}font-size:20px;font-weight:bold;color:{notify.INK};margin:0 4px 12px">'
