@@ -81,7 +81,7 @@ def latest_price(prices: dict, o: dict) -> int | None:
 
 def trend(curve_rows: list) -> str:
     if len(curve_rows) < 2:
-        return "<span class=m>עוד אין</span>"
+        return ""
     last = curve_rows[-1][2]
     week = [r for r in curve_rows if (date.fromisoformat(curve_rows[-1][0]) - date.fromisoformat(r[0])).days >= 7]
     ref = week[-1][2] if week else curve_rows[0][2]
@@ -138,6 +138,54 @@ def matrix(h: HC.Holiday, prices: dict, group: str, today: date) -> str:
             f"מחירים מ-{FRESH_DAYS} הימים האחרונים, הזול מבין Kiwi וגוגל.</div>")
 
 
+def candidates(h: HC.Holiday, prices: dict, routes: dict, group: str, today: date) -> list[dict]:
+    """Every fresh price (14-21 nights) for the destination, with its route when we know it."""
+    out = []
+    for sk, series in prices.items():
+        src, dest = sk.split("|", 1)
+        if ("TYO" if dest in ("NRT", "HND", "TYO") else dest) != group:
+            continue
+        rmap = routes.get(sk, {})
+        for k, rows in series.items():
+            dep_s, n_s = k.split("|")
+            n = int(n_s)
+            seen, price = rows[-1]
+            if not (P.NIGHTS_MAIN[0] <= n <= P.NIGHTS_MAIN[1]) or (today - date.fromisoformat(seen)).days > FRESH_DAYS:
+                continue
+            dep = date.fromisoformat(dep_s)
+            ret = dep + timedelta(days=n)
+            o = {"price": price, "dep": dep_s, "ret": ret.isoformat(), "nights": n, "src": src, "dest": dest,
+                 "vac": HC.vacation(h, dep, ret)["vac"], "notes": HC.notes(h, dep, ret), "seen": seen}
+            r = rmap.get(k)
+            if r and r.get("p") == price:
+                o.update(via_out=r["vo"], via_ret=r["vr"], hours_out=r["ho"], hours_ret=r["hr"], airlines=r["al"],
+                         separate=r["sep"], url=r["url"], dest=r.get("arr") or dest,
+                         europe=any(v in P.EUROPE_AIRPORTS for v in r["vo"] + r["vr"]))
+            out.append(o)
+    return out
+
+
+def convenient(o: dict, group: str) -> bool:
+    """At most one connection each way, within the hours limit (incl. waiting), one ticket."""
+    return (o.get("via_out") is not None and max(len(o["via_out"]), len(o["via_ret"])) <= 1
+            and max(o["hours_out"], o["hours_ret"]) <= P.FAST_HOURS.get(group, 20) and not o.get("separate"))
+
+
+def short_route(o: dict) -> str:
+    """'ישירה · 11.7 שעות' / 'עצירה אחת (באקו) · 12 שעות' / '2 עצירות · 31 שעות'."""
+    if o.get("via_out") is None:
+        return "מסלול בקישור"
+    n = max(len(o["via_out"]), len(o["via_ret"]))
+    vias = list(dict.fromkeys(o["via_out"] + o["via_ret"]))
+    s = "ישירה" if n == 0 else (f"עצירה אחת ({', '.join(T.city(v) for v in vias[:2])})" if n == 1 else f"{n} עצירות")
+    s += f" · {max(o['hours_out'], o['hours_ret']):g} שעות"
+    if o.get("separate"):
+        s += " · כרטיסים נפרדים"
+    if o.get("europe"):
+        s += " · דרך אירופה"
+    return s
+
+
 def cheapest_within(h: HC.Holiday, prices: dict, group: str, today: date, max_vac: int) -> dict | None:
     """Cheapest fresh price (14-21 nights) whose trip costs at most max_vac vacation days."""
     best = None
@@ -179,13 +227,18 @@ h1{margin:0;font-size:21px} h2{font-size:18px;margin:0 0 8px} h3{font-size:15px;
 td,th{padding:6px 4px;border-top:1px solid var(--line);text-align:right;vertical-align:top}
 th{color:var(--muted);font-weight:normal;font-size:13px}
 .scroll{overflow-x:auto}
-.thead,.row>summary{display:grid;grid-template-columns:1.2fr .8fr 2fr .8fr .7fr;gap:6px;align-items:center;padding:9px 4px}
+.row>summary{padding:10px 4px}
+.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px} .dname{font-size:17px}
+.opt{display:grid;grid-template-columns:24px 110px 80px 1fr;gap:6px;align-items:baseline;font-size:14px;padding:2px 0}
+.opt .m{grid-column:3/5;font-size:12px;margin-top:-2px} .ot{color:var(--muted);font-size:13px} .pr{font-size:16px}
+@media (max-width:600px){.opt{grid-template-columns:22px 1fr auto}.opt>span:nth-child(4){grid-column:2/4;font-size:13px}.opt .m{grid-column:2/4}}
+.thead{display:none}
 .thead{color:var(--muted);font-size:12px}
 .row{border-top:1px solid var(--line)} .row>summary{cursor:pointer;list-style:none} .row>summary::-webkit-details-marker{display:none}
 .row>summary:hover{background:var(--hl)} .row[open]>summary{background:var(--hl)}
 .row .inner{padding:4px 8px 12px}
 .price{font-weight:bold} .when{font-size:13px} .vac{font-size:13px}
-@media (max-width:600px){.thead{display:none}.row>summary{grid-template-columns:1fr auto;gap:2px 6px}.row .when,.row .vac{grid-column:1/3;font-size:12px;color:var(--muted)}.row>summary>span:nth-child(5){display:none}}
+
 .tag{background:#fef3c7;color:#92400e;font-size:12px;padding:1px 7px;border-radius:9px}
 .tag-warn{background:#fee2e2;color:#991b1b;font-size:12px;padding:1px 7px;border-radius:9px}
 .good b{color:var(--good)} .up{color:var(--bad)} .down{color:var(--good)} .lnk{color:inherit;font-size:13px}
@@ -216,78 +269,94 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
     """The page of one holiday, and a short summary for the landing page."""
     hb = best.get(h.key, {})
     prices = jload(f"prices/{h.key}.json", {})
+    routes = jload(f"routes/{h.key}.json", {})
     bs = HC.best_spread(h)
     top = bs["top"][0]
     few = top["vac"] + 2
-    groups = [g for g in hb if not g.startswith("_")]
-    rows, cheapest, data_days = [], None, 0
-    entries = []
-    for g in groups:
+    rows, entries, data_days = [], [], 0
+    best_few = best_conv = None
+    for g in [g for g in hb if not g.startswith("_")]:
         b = hb[g]
-        fresh = cheapest_within(h, prices, g, today, 99)
-        bn = b.get("now")
-        if fresh and not (bn and (bn["dep"], bn["nights"], bn["price"]) == (fresh["dep"], fresh["nights"], fresh["price"])):
-            fresh["dest"] = g
-            b = {**b, "now": {**fresh, "notes": HC.notes(h, date.fromisoformat(fresh["dep"]), date.fromisoformat(fresh["ret"]))}}
-        if b.get("now"):
-            entries.append((g, b))
-    entries.sort(key=lambda x: x[1]["now"]["price"])
-    best_few = None
-    for g, b in entries:
-        now_o = b["now"]
-        cw = cheapest_within(h, prices, g, today, few)
-        if cw:
-            cw["dest"] = g
-            cw["notes"] = HC.notes(h, date.fromisoformat(cw["dep"]), date.fromisoformat(cw["ret"]))
-            if not best_few or cw["price"] < best_few[1]["price"]:
-                best_few = (g, cw)
+        cands = candidates(h, prices, routes, g, today)
+        if b.get("fast") and (today - date.fromisoformat(b["fast"]["seen"])).days <= FRESH_DAYS and P.NIGHTS_MAIN[0] <= b["fast"]["nights"] <= P.NIGHTS_MAIN[1]:
+            cands.append(b["fast"])
+        for k in ("any", "onestop"):
+            gc = (b.get("google") or {}).get(k)
+            if gc and (today - date.fromisoformat(gc["seen"])).days <= FRESH_DAYS:
+                cands.append({**gc, "notes": HC.notes(h, date.fromisoformat(gc["dep"]), date.fromisoformat(gc["ret"]))})
+        if not cands:
+            continue
+        # a Google calendar price has no route; Google's own check of the same dates does
+        for gc in (b.get("google") or {}).values():
+            for o in cands:
+                if o.get("via_out") is None and (o["dep"], o["ret"]) == (gc["dep"], gc["ret"]) and o["price"] == gc["price"]:
+                    o.update({k: gc[k] for k in ("via_out", "via_ret", "hours_out", "hours_ret", "airlines", "separate") if k in gc})
+        key = lambda o: (o["price"], o["vac"])
+        cheap = min(cands, key=key)
+        conv_l = [o for o in cands if convenient(o, g)]
+        conv = min(conv_l, key=key) if conv_l else None
+        few_l = [o for o in cands if o["vac"] <= few]
+        fewo = min(few_l, key=key) if few_l else None
+        entries.append((g, cheap, conv))
+        if fewo and (not best_few or fewo["price"] < best_few[1]["price"]):
+            best_few = (g, fewo)
+        if conv and (not best_conv or conv["price"] < best_conv[1]["price"]):
+            best_conv = (g, conv)
         low = b.get("low")
-        low_extra = ""
-        if low:
-            lp = latest_price(prices, low)
-            low_extra = (f" <span class=m>(נמצא {e(low['found'][8:10] + '/' + low['found'][5:7])}"
-                         + ("; עדיין זמין" if lp == low["price"] else f"; עכשיו באותם תאריכים: ${lp:,}" if lp else "") + ")</span>")
-        label, why = T.advice(h, curve, g, now_o["price"], (low or {}).get("price"), today)
+        label, why = T.advice(h, curve, g, cheap["price"], (low or {}).get("price"), today)
         data_days = max(data_days, len({r[0] for r in curve.get(h.key, {}).get(g, [])}))
+
+        def opt_line(icon, title, o):
+            if not o:
+                return ""
+            d0, d1 = date.fromisoformat(o["dep"]), date.fromisoformat(o["ret"])
+            return (f"<div class=opt><span class=ic>{icon}</span><span class=ot>{title}</span><b class=pr>${o['price']:,}</b>"
+                    f"<span>{d0.day}/{d0.month} - {d1.day}/{d1.month} · {o['vac']} ימי חופש</span>"
+                    f"<span class=m>{e(short_route(o))}</span></div>")
+        same = conv is not None and (conv["dep"], conv["nights"], conv["price"]) == (cheap["dep"], cheap["nights"], cheap["price"])
+        lines = opt_line("💰", "הכי זול" + (" וגם נוח" if same else ""), cheap)
+        if not same:
+            lines += opt_line("😌", "הכי נוח", conv) if conv else "<div class=opt><span class=ic>😌</span><span class=ot>הכי נוח</span><span class=m>עוד לא נמצא מסלול עם עצירה אחת ושעות סבירות</span></div>"
 
         def line(title, cell):
             return f"<tr><th class=lab>{title}</th>{cell}</tr>"
-        det = [line("הזול עכשיו", opt_cell(now_o)),
-               line(f"הזול עם עד {few} ימי חופש", opt_cell(cw)),
-               line(f"קצר וזול (עצירה אחת, עד {P.FAST_HOURS.get(g, 20)} שעות לכיוון כולל המתנה)", opt_cell(b.get("fast"))),
-               line("הזול בלי אירופה", opt_cell(b.get("noeu")))]
+        det = [line("💰 הכי זול", opt_cell(cheap))]
+        if conv and not same:
+            det.append(line(f"😌 הכי נוח (עצירה אחת, עד {P.FAST_HOURS.get(g, 20)} שעות לכיוון כולל המתנה, כרטיס אחד)", opt_cell(conv)))
+        if fewo and (fewo["dep"], fewo["nights"]) != (cheap["dep"], cheap["nights"]):
+            det.append(line(f"📅 הזול עם עד {few} ימי חופש", opt_cell(fewo)))
+        if b.get("noeu") and b["noeu"]["price"] < (conv or cheap)["price"] + 400:
+            det.append(line("הזול בלי אירופה", opt_cell(b["noeu"])))
         for hub, st in sorted((b.get("stops") or {}).items(), key=lambda kv: kv[1]["price"]):
             parts = []
             if st.get("n_out"):
                 parts.append(f"{st['n_out']} {'לילה' if st['n_out'] == 1 else 'לילות'} בהלוך")
             if st.get("n_back"):
                 parts.append(f"{st['n_back']} {'לילה' if st['n_back'] == 1 else 'לילות'} בחזור")
-            diff = st["price"] - now_o["price"]
+            diff = st["price"] - cheap["price"]
             legs = " · ".join(f"{e(T.city(l[0]))}-{e(T.city(l[1]))} {dshort(l[2])}" for l in st["legs"])
-            det.append(line(f"עצירה ב{e(T.city(hub))} (כרטיס אחד)",
-                            f"<td><b>${st['price']:,}</b> <span class=m>({'+' if diff >= 0 else '-'}${abs(diff):,} מהזול עכשיו) · "
-                            f"{e(', '.join(parts))} · {st['vac']} ימי חופש</span><br><span style='font-size:13px'>{legs} · "
+            det.append(line(f"🏨 עצירה ב{e(T.city(hub))} (כרטיס אחד)",
+                            f"<td><b>${st['price']:,}</b> <span class=m>({'+' if diff >= 0 else '-'}${abs(diff):,} מהזול) · "
+                            f"{e(', '.join(parts))}</span><br><span style='font-size:13px'>{legs} · "
                             f"{e(', '.join(st['airlines']))}</span><br><a href='{e(T.google_multi_link(st['legs']))}' class=lnk "
                             f"target=_blank>לחיפוש הזה בגוגל</a></td>"))
-        gch = b.get("google") or {}
-        for k, lab in (("any", "בגוגל לאותם תאריכים"), ("onestop", "בגוגל, עצירה אחת לכל היותר")):
-            if gch.get(k):
-                det.append(line(lab, opt_cell(gch[k])))
-        det.append(line("הזול מאז שהתחלנו", opt_cell(low, low_extra)))
+        if low and low["price"] < cheap["price"]:
+            det.append(line("היה זול יותר", f"<td class=m>${low['price']:,} ב-{low['found'][8:10]}/{low['found'][5:7]} "
+                            f"({dshort(low['dep'])} - {dshort(low['ret'])}). המחיר הזה כבר לא נמצא בבדיקות האחרונות.</td>"))
         bz = b.get("biz")
         if bz:
             det.append(line("ביזנס (הצצה)", f"<td{' class=good' if bz['price'] <= P.BIZ_PEEK_MAX else ''}><b>${bz['price']:,}</b> "
                             f"<span class=m>{dshort(bz['dep'])}, {bz['nights']} לילות</span><br>{T.links_html({**bz, 'dest': g})}</td>"))
-        dep, ret = date.fromisoformat(now_o["dep"]), date.fromisoformat(now_o["ret"])
         rows.append(
-            f"<details class=row><summary><b>{e(group_name(g))}</b><span class=price>${now_o['price']:,}</span>"
-            f"<span class=when>{dep.day}/{dep.month} - {ret.day}/{ret.month} · {now_o['nights']} לילות</span>"
-            f"<span class=vac>{now_o['vac']} ימי חופש</span><span>{trend(curve.get(h.key, {}).get(g, []))}</span></summary>"
+            f"<details class=row><summary><div class=dhead><b class=dname>{e(group_name(g))}</b>"
+            f"<span>{trend(curve.get(h.key, {}).get(g, []))}</span></div>{lines}</summary>"
             f"<div class=inner><div class=m style='margin-bottom:6px'><span class=adv>{e(label)}</span> {e(why)}</div>"
             f"<div class=scroll><table>{''.join(det)}</table></div>"
             f"<details class=sub><summary>לוח מחירים: תאריך יציאה × לילות</summary>{matrix(h, prices, g, today)}</details></div></details>")
-    if entries:
-        cheapest = entries[0]
+    entries.sort(key=lambda x: x[1]["price"])
+    order = {g: i for i, (g, _, _) in enumerate(entries)}
+    rows.sort(key=lambda r: order.get(next((g for g in order if f">{e(group_name(g))}</b>" in r), ""), 99))
+    cheapest = (entries[0][0], {"now": entries[0][1]}) if entries else None
     lead = (h.dep[0] - today).days
     hero = []
     if cheapest:
@@ -302,6 +371,11 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
         dep, ret = date.fromisoformat(c["dep"]), date.fromisoformat(c["ret"])
         few_txt = (f"<br>הזול עם עד {few} ימי חופש: <b>{e(group_name(g))} ${c['price']:,}</b> · {e(HC.fmt(dep))} - {e(HC.fmt(ret))}, "
                    f"{c['vac']} ימי חופש")
+    if best_conv:
+        g, o = best_conv
+        dep, ret = date.fromisoformat(o["dep"]), date.fromisoformat(o["ret"])
+        hero.append(f"<div><span class=k>הכי נוח (עצירה אחת, שעות סבירות, כרטיס אחד)</span><b>{e(group_name(g))} ${o['price']:,}</b> "
+                    f"· {e(HC.fmt(dep))} - {e(HC.fmt(ret))} · {o['vac']} ימי חופש · {e(short_route(o))}</div>")
     hero.append(f"<div><span class=k>הכי חסכוני בימי חופש</span>{e(HC.fmt(top['dep']))} - {e(HC.fmt(top['ret']))} · "
                 f"{top['nights']} לילות · <b>{top['vac']} ימי חופש</b>{few_txt}</div>")
     if data_days < 14:
@@ -342,9 +416,8 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
                          f"<br><span style='font-size:13px'>{'<br>'.join(lines)}</span></td></tr>")
     body = f"""
 <div class="card hero"><h2>{e(h.name)}</h2>{''.join(hero)}</div>
-<div class=card><h2>לכל יעד: הזול עכשיו</h2>
-<div class=m style="font-size:13px;margin-bottom:4px">לחיצה על יעד פותחת פירוט: מסלולים, עצירה בכרטיס אחד, קישורים ולוח מחירים.</div>
-<div class=thead><span>יעד</span><span>מחיר</span><span>תאריכים</span><span>ימי חופש</span><span>שבוע</span></div>
+<div class=card><h2>לכל יעד</h2>
+<div class=m style="font-size:13px;margin-bottom:4px">💰 הכי זול, ו-😌 הכי נוח (עצירה אחת לכל היותר, שעות סבירות, כרטיס אחד). לחיצה על יעד: עוד אפשרויות, עצירה בכרטיס אחד, קישורים ולוח מחירים.</div>
 {''.join(rows) or "<div class=m>עוד אין מחירים לחג הזה</div>"}</div>
 <div class=card>
 <details class=sub><summary>ימי החג וכל התאריכים החסכוניים</summary>
@@ -363,6 +436,7 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
 <li>מייל רק כשיש מחיר הכי זול מאז שהתחלנו או ירידה של {round(P.DROP_ALERT * 100)}%, ובנוסף סיכום שבועי ביום ראשון.</li>
 <li>"עצירה בכרטיס אחד": לילה-שניים בעיר ביניים, כרטיס אחד של החברה (כמו באקו בכרטיס לסין). ביטול טיסה מבטל הכל יחד.</li>
 <li>"מתי לקנות" מבוסס רק על המדידות שלנו: אחרי שבועיים, האם המחיר בשפל שמדדנו ולאן המגמה; מהשנה הבאה גם מה קרה בעונה הקודמת.</li>
+<li>קישור "לחיפוש בגוגל" פותח את החיפוש לאותם תאריכים: רשימה של כל הטיסות, והמחיר שלנו הוא בדרך כלל הזול בה. כשהמחיר מ-Kiwi, הקישור "להזמנה ב-Kiwi" מוביל למסלול עצמו.</li>
 <li>"✓ ליל הסדר בבית" ליד מחיר = התאריכים מאפשרים להיות בבית באותו ערב. רק הערה.</li>
 <li>בלי טורקיה ובלי מדינות אויב, גם לא בקונקשן.</li></ul></details></div>"""
     summ = {"name": h.name, "cheapest": cheapest, "top": top}

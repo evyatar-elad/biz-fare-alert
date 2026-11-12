@@ -52,14 +52,7 @@ def google_link(o: dict) -> str:
 
 
 def google_multi_link(legs: list) -> str:
-    """Google Flights multi-city search (economy, 1 adult) with all legs filled in.
-    Checked in a browser 12/11: opens "Multi-city · 1 · Economy" with the 4 legs."""
-    import base64
-    pb = notify._pb
-    leg = lambda a, b, day: pb(2, day.encode()) + pb(13, pb(2, a.encode())) + pb(14, pb(2, b.encode()))
-    msg = b"".join(pb(3, leg(*l)) for l in legs) + pb(8, bytes([1])) + pb(9, 1) + pb(19, 3)
-    return ("https://www.google.com/travel/flights/search?tfs="
-            + base64.urlsafe_b64encode(msg).decode().rstrip("=") + "&hl=he&curr=USD")
+    return notify.gf_multi_link(legs, seat=1)  # economy
 
 
 def links_html(o: dict, cls: str = "lnk") -> str:

@@ -374,6 +374,23 @@ def gf_points(task: dict, h: HC.Holiday) -> list[dict] | None:
 
 
 # ---------------------------------------------------------------- storage and logic
+def routes_file(hkey: str) -> Path:
+    return DATA / "routes" / f"{hkey}.json"
+
+
+def record_routes(routes: dict, pts: list[dict]) -> None:
+    """The route of the latest observation of each (source, destination, dates): so every
+    price on the page comes with how you fly it (stops, hours, airlines, link)."""
+    for p in pts:
+        i = p.get("info")
+        if not i:
+            continue
+        routes.setdefault(f"{p['src']}|{p['dest']}", {})[f"{p['dep']}|{p['nights']}"] = {
+            "p": p["price"], "vo": i["out"]["via"], "vr": i["ret"]["via"], "ho": i["out"]["hours"],
+            "hr": i["ret"]["hours"], "al": sorted(set(i["out"]["airlines"]) | set(i["ret"]["airlines"])),
+            "sep": i["separate"], "url": i["url"], "arr": i["out"].get("to")}
+
+
 def record(prices: dict, pts: list[dict], today: str) -> None:
     """Append an observation only when the price changed (keeps years of data small)."""
     for p in pts:
@@ -486,6 +503,7 @@ def main() -> int:
     stats = {"calls": 0, "points": 0, "errors": 0, "alerts": 0}
     alerts: list = []
     price_cache: dict[str, dict] = {}
+    route_cache: dict[str, dict] = {}
     gf_last = 0.0
     for task in tasks:
         if time.time() - t0 > a.minutes * 60:
@@ -562,7 +580,9 @@ def main() -> int:
             continue
         if task["h"] not in price_cache:
             price_cache[task["h"]] = load(prices_file(task["h"]), {})
+            route_cache[task["h"]] = load(routes_file(task["h"]), {})
         record(price_cache[task["h"]], pts, today)
+        record_routes(route_cache[task["h"]], pts)
         groups: dict[str, list] = {}
         for p in pts:
             groups.setdefault(dest_group(p["dest"]), []).append(p)
@@ -580,6 +600,8 @@ def main() -> int:
     if not a.dry_run:
         for hk, pr in price_cache.items():
             save(prices_file(hk), pr, compact=True)  # years of observations: keep the file small
+        for hk, rt in route_cache.items():
+            save(routes_file(hk), rt, compact=True)
         save(STATE_F, state)
         save(BEST_F, best)
         save(CURVE_F, curve)

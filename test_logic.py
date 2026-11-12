@@ -27,6 +27,12 @@ tmp = Path(tempfile.mkdtemp())
 scanner.DATA = tmp; scanner.STATE_F = tmp/"state.json"; scanner.HIST_F = tmp/"history.json"
 scanner.ALERTS_F = tmp/"alerts.json"; scanner.LOG_F = tmp/"runs.jsonl"
 scanner.fli = fake_fli; C.PACE_SECONDS = 0; C.KIWI_ENABLED = False
+def fake_multi(cabin, legs):   # one-ticket stopover: DPS via Baku under the Asia cap, others dearer
+    hub = legs[0][1]
+    price = 1500 if (legs[1][1] == "DPS" and hub == "GYD") else 5200
+    return [{"price": price, "legs": [{"hours": 4, "flights": [{"from": a, "to": b, "airline": "Azerbaijan Airlines"}]}
+                                      for a, b, _ in legs]}]
+scanner.multi = fake_multi
 import sys
 import notify
 _orig_send = notify._send
@@ -37,6 +43,9 @@ def run(extra=()):
     digest.main(dry_run=False, force=True)   # "sends" (no SMTP secrets = printed) and clears pending
 
 SPIKE = False; run()                                  # day 1: normal prices, builds history
+st1 = json.loads((tmp/"state.json").read_text())
+assert st1["stops"]["DPS"]["GYD"]["price"] == 1500, st1.get("stops")   # stopover found and kept
+assert any(k.startswith("STOP-TLV-DPS-GYD") for k in json.loads((tmp/"alerts.json").read_text())), "stopover deal not sent"
 h = json.loads((tmp/"history.json").read_text())   # pretend day 1 was two past days
 for rk in h:
     for m in h[rk]:

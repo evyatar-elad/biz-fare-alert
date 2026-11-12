@@ -18,13 +18,18 @@ h1{margin:0;font-size:21px} h2{font-size:18px;margin:0 0 8px} h3{font-size:15px;
 td,th{padding:6px 4px;border-top:1px solid var(--line);text-align:right;vertical-align:top}
 th{color:var(--muted);font-weight:normal;font-size:13px}
 .scroll{overflow-x:auto}
-.thead,.row>summary{display:grid;grid-template-columns:1.2fr .8fr 2fr .8fr .7fr;gap:6px;align-items:center;padding:9px 4px}
+.row>summary{padding:10px 4px}
+.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px} .dname{font-size:17px}
+.opt{display:grid;grid-template-columns:24px 110px 80px 1fr;gap:6px;align-items:baseline;font-size:14px;padding:2px 0}
+.opt .m{grid-column:3/5;font-size:12px;margin-top:-2px} .ot{color:var(--muted);font-size:13px} .pr{font-size:16px}
+@media (max-width:600px){.opt{grid-template-columns:22px 1fr auto}.opt>span:nth-child(4){grid-column:2/4;font-size:13px}.opt .m{grid-column:2/4}}
+.thead{display:none}
 .thead{color:var(--muted);font-size:12px}
 .row{border-top:1px solid var(--line)} .row>summary{cursor:pointer;list-style:none} .row>summary::-webkit-details-marker{display:none}
 .row>summary:hover{background:var(--hl)} .row[open]>summary{background:var(--hl)}
 .row .inner{padding:4px 8px 12px}
 .price{font-weight:bold} .when{font-size:13px} .vac{font-size:13px}
-@media (max-width:600px){.thead{display:none}.row>summary{grid-template-columns:1fr auto;gap:2px 6px}.row .when,.row .vac{grid-column:1/3;font-size:12px;color:var(--muted)}.row>summary>span:nth-child(5){display:none}}
+
 .tag{background:#fef3c7;color:#92400e;font-size:12px;padding:1px 7px;border-radius:9px}
 .tag-warn{background:#fee2e2;color:#991b1b;font-size:12px;padding:1px 7px;border-radius:9px}
 .good b{color:var(--good)} .up{color:var(--bad)} .down{color:var(--good)} .lnk{color:inherit;font-size:13px}
@@ -36,9 +41,9 @@ th.lab{width:150px;color:var(--muted);font-weight:normal;font-size:13px}
 .adv{background:#dbeafe;color:#1e3a8a;font-size:12px;padding:1px 8px;border-radius:9px}
 </style></head><body><div class="wrap">
 <header><h1>🌴 חגים בתיירים</h1>
-<div style="opacity:.85;font-size:13px;margin-top:4px">הלוך חזור מתל אביב, נוסע אחד. עודכן 12/11 11:11.</div>
+<div style="opacity:.85;font-size:13px;margin-top:4px">הלוך חזור מתל אביב, נוסע אחד. עודכן 12/11 11:37.</div>
 <nav class=tabs><a href="holidays.html" class="on">כל החגים</a><a href="pesach.html" class="">פסח תשפ״ז</a><a href="tishrei.html" class="">חגי תשרי תשפ״ח</a><a href="index.html">ביזנס ←</a></nav></header>
-<a href='pesach.html' style='color:inherit;text-decoration:none'><div class='card hero'><h2>פסח תשפ״ז ←</h2><div><span class=k>הזול כרגע</span><span class=big>מומבאי $559</span> · 23/4 - 14/5 · 10 ימי חופש</div><div><span class=k>הכי חסכוני בימי חופש</span>שישי 16/4 - שבת 1/5, 4 ימי חופש</div></div></a><a href='tishrei.html' style='color:inherit;text-decoration:none'><div class='card hero'><h2>חגי תשרי תשפ״ח ←</h2><div><span class=k>הזול כרגע</span><span class=big>מומבאי $561</span> · 1/10 - 20/10 · 7 ימי חופש</div><div><span class=k>הכי חסכוני בימי חופש</span>שישי 8/10 - שבת 23/10, 3 ימי חופש</div></div></a>
+<a href='pesach.html' style='color:inherit;text-decoration:none'><div class='card hero'><h2>פסח תשפ״ז ←</h2><div><span class=k>הזול כרגע</span><span class=big>מומבאי $559</span> · 23/4 - 14/5 · 10 ימי חופש</div><div><span class=k>הכי חסכוני בימי חופש</span>שישי 16/4 - שבת 1/5, 4 ימי חופש</div></div></a><a href='tishrei.html' style='color:inherit;text-decoration:none'><div class='card hero'><h2>חגי תשרי תשפ״ח ←</h2><div><span class=k>הזול כרגע</span><span class=big>מומבאי $561</span> · 7/10 - 22/10 · 4 ימי חופש</div><div><span class=k>הכי חסכוני בימי חופש</span>שישי 8/10 - שבת 23/10, 3 ימי חופש</div></div></a>
 <p class=m style="font-size:12px">הריצה האחרונה: 12/11 10:46, 211 חיפושים.
 <a href="https://github.com/evyatar-elad/biz-fare-alert/actions" style="color:inherit">ריצות</a></p>
 </div></body></html>
