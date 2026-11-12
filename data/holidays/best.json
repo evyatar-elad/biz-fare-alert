@@ -5949,6 +5949,112 @@
      "GYD"
     ]
    }
+  },
+  "_open_jaw_1t": {
+   "BKK-HKT": {
+    "airlines": [
+     "Etihad Airways"
+    ],
+    "banned": false,
+    "hours": [
+     12.8,
+     11.8
+    ],
+    "legs": [
+     [
+      "TLV",
+      "BKK",
+      "2027-04-24"
+     ],
+     [
+      "HKT",
+      "TLV",
+      "2027-05-14"
+     ]
+    ],
+    "nights": 20,
+    "price": 1595,
+    "seen": "2026-11-12",
+    "vac": 10,
+    "via": [
+     [
+      "AUH"
+     ],
+     [
+      "AUH"
+     ]
+    ]
+   },
+   "HAN-SGN": {
+    "airlines": [
+     "El Al",
+     "Thai Airways"
+    ],
+    "banned": false,
+    "hours": [
+     14.8,
+     16.8
+    ],
+    "legs": [
+     [
+      "TLV",
+      "HAN",
+      "2027-04-13"
+     ],
+     [
+      "SGN",
+      "TLV",
+      "2027-05-04"
+     ]
+    ],
+    "nights": 21,
+    "price": 3342,
+    "seen": "2026-11-12",
+    "vac": 10,
+    "via": [
+     [
+      "BKK"
+     ],
+     [
+      "BKK"
+     ]
+    ]
+   },
+   "SGN-HAN": {
+    "airlines": [
+     "El Al",
+     "Thai Airways"
+    ],
+    "banned": false,
+    "hours": [
+     16.8,
+     16.3
+    ],
+    "legs": [
+     [
+      "TLV",
+      "SGN",
+      "2027-04-18"
+     ],
+     [
+      "HAN",
+      "TLV",
+      "2027-05-04"
+     ]
+    ],
+    "nights": 16,
+    "price": 2972,
+    "seen": "2026-11-12",
+    "vac": 7,
+    "via": [
+     [
+      "BKK"
+     ],
+     [
+      "BKK"
+     ]
+    ]
+   }
   }
  },
  "tishrei-5788": {
