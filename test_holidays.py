@@ -82,11 +82,11 @@ def scanner_and_page():
     (tmp / "curve.json").write_text(json.dumps(curve))
     (tmp / "prices" / f"{t.key}.json").write_text(json.dumps(prices))
     HS.DATA = tmp
-    out = tmp / "holidays.html"
-    HS.main(out)
-    html_ = out.read_text()
+    HS.main(tmp / "site")
+    html_ = (tmp / "site" / "tishrei.html").read_text()
+    assert "חגי תשרי" in (tmp / "site" / "holidays.html").read_text()
     assert "חגי תשרי" in html_ and "$700" in html_ and "ימי חופש" in html_
-    assert "עצירה בבאקו, כרטיס אחד" in html_ and "$959" in html_ and "(כרטיס אחד)" in html_
+    assert "עצירה בבאקו (כרטיס אחד)" in html_ and "$959" in html_ and "(כרטיס אחד)" in html_
 
 
 if __name__ == "__main__":

@@ -320,7 +320,8 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
     for month, ps in by_month.items():
         best = min(ps, key=lambda p: p["price"])
         price = best["price"] + extra
-        if price > C.MAX_PRICE:
+        cap = min(C.CAP_OVERRIDE.get(t["dest"], region["cap"]), C.MAX_PRICE)
+        if price > cap:  # 12/11, the user: the regional amounts are an absolute ceiling, this rule wins
             continue
         min_pts = C.KIWI_MIN_POINTS if t.get("src") == "kiwi" else C.GF_MIN_POINTS
         if len(ps) < min_pts:
@@ -341,7 +342,6 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
             reasons.append(f"{round(100 * (1 - price / ref))}% מתחת למחיר הרגיל (${ref:,.0f}, {why})"
                            + (f", וגם {round(100 * (1 - price / floor))}% מתחת למחיר הרגיל במסלול כל השנה (${floor:,.0f})"
                               if floor else ""))
-        cap = min(C.CAP_OVERRIDE.get(t["dest"], region["cap"]), C.MAX_PRICE)
         if price <= cap:
             reasons.append(f"מתחת לסף הקבוע (${cap:,})")
         if reasons:

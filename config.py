@@ -7,7 +7,8 @@ POSITIONING_USD = 150  # rough round trip TLV-LCA in economy
 
 # Destination regions. "dur" is the probe stay length in days (see CLAUDE.md:
 # the stay length is a probe, not a choice. Price barely depends on it).
-# "cap" = always alert if the round trip business price (USD) is at or below it.
+# "cap" = always alert if the round trip business price (USD) is at or below it, and (12/11,
+# the user) also an ABSOLUTE ceiling: never alert above it, whatever the relative rule says.
 REGIONS = {
     "europe": {"dur": 7, "cap": 650},   # 6/11: normal business mins are ~$700-1,100 (Athens ~$470)
     "near":   {"dur": 7, "cap": 650},    # Gulf, Caucasus, North Africa

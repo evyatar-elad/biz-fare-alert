@@ -190,7 +190,8 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 .scroll{{overflow-x:auto}}
 </style></head><body><div class="wrap">
 <header><h1>✈️ בוט מציאות ביזנס</h1>
-<div style="opacity:.8;margin-top:4px"><a href="holidays.html" style="color:#fff">🌴 לדף "חגים - תיירים" ←</a><br>ביזנס הלוך חזור מתל אביב. מקורות: Google Flights ו-Kiwi.com, וגם ניוזלטרים של חברות תעופה ו-Fly4free. עודכן {t(now.isoformat())}</div></header>
+<a href="holidays.html" style="display:inline-block;margin-top:10px;background:#fff;color:#0f2a4a;font-weight:bold;padding:7px 14px;border-radius:9px;text-decoration:none">🌴 חגים בתיירים (פסח ותשרי) ←</a>
+<div style="opacity:.8;margin-top:8px">ביזנס הלוך חזור מתל אביב. מקורות: Google Flights ו-Kiwi.com, וגם ניוזלטרים של חברות תעופה ו-Fly4free. עודכן {t(now.isoformat())}</div></header>
 <div class="card"><span id=health style="color:{color};font-weight:bold">● {health}</span></div>
 <script>
 // The page is regenerated after every run. If it is old, the bot (or this page) stopped: say so.
@@ -201,7 +202,7 @@ h.style.color='#b91c1c'; h.textContent='● הדף לא עודכן כבר '+Math
 <ul style="line-height:1.7;margin:10px 0 0;padding-right:18px">
 <li>כל שעה הבוט רץ כ-45 דקות ובודק מחירי ביזנס הלוך חזור מתל אביב לכ-70 יעדים, עד כ-10 חודשים קדימה, בשני מקורות: Google Flights ו-Kiwi.com.</li>
 <li>לכל יעד ולכל חודש הוא שומר את <b>המחיר הזול ביותר</b> שמצא בכל בדיקה. "המחיר הרגיל" הוא האמצע של המחירים האלה מבדיקות קודמות.</li>
-<li><b>מציאה</b> = מחיר עד $2,000, וגם: נמוך ב-35% לפחות מהרגיל לאותו חודש, או מתחת לסף קבוע לאזור (אירופה וקרובות $650, אסיה $1,700).</li>
+<li><b>מציאה</b> = רק מתחת לסף של האזור, שהוא תקרה מוחלטת (אירופה וקרובות $650, אסיה $1,700, רחוקות $2,200). אם המחיר גם נמוך ב-35% מהרגיל לחודש, זה מצוין כסיבה נוספת.</li>
 <li>מציאות, וגם מבצעי ביזנס מהניוזלטרים ומאתרי מציאות, נאספים ונשלחים ב<b>מייל אחד ביום</b> מ-09:00, רק אם יש משהו.</li>
 <li>הבוט לא עוקף חסימות. אם גוגל מבקש להאט, הוא עוצר ל-4 שעות וממשיך לבד.</li>
 </ul></details>
