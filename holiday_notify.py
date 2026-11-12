@@ -62,58 +62,80 @@ def card(inner: str) -> str:
 
 
 def route(o: dict) -> str:
-    r = T.route(o) or "מסלול: לבדוק בקישור"
+    r = T.route(o)
+    if not r:
+        return ""
     bits = [r] + ([", ".join(o["airlines"])] if o.get("airlines") else []) + ["⚠️ " + x if not x.startswith("⭐") else x for x in T.tags(o)]
     return " · ".join(e(b) for b in bits)
 
 
-def option_block(o: dict, title: str = "") -> str:
+def when(o: dict) -> str:
     dep, ret = date.fromisoformat(o["dep"]), date.fromisoformat(o["ret"])
-    notes = f'<br><span style="color:{notify.MUTED}">{e(", ".join(o["notes"]))}</span>' if o.get("notes") else ""
-    buttons = notify.button("Google Flights", T.google_link(o), primary=not o.get("url"))
+    return f"{HC.fmt(dep)} - {HC.fmt(ret)} · {o['nights']} לילות · {o['vac']} ימי חופש"
+
+
+def when_short(o: dict) -> str:
+    dep, ret = date.fromisoformat(o["dep"]), date.fromisoformat(o["ret"])
+    return f"{dep.day}/{dep.month}-{ret.day}/{ret.month} · {o['nights']} לילות · {o['vac']} ימי חופש"
+
+
+def ours(best: dict, d: dict) -> str:
+    """Our own cheapest for the holiday and destination of a newsletter deal, for comparison."""
+    g = "TYO" if d.get("destination") in ("NRT", "HND", "TYO") else d.get("destination")
+    o = (best.get(d.get("holiday"), {}).get(g) or {}).get("now")
+    return f" · אצלנו לחג הזה: ${o['price']:,}" if o else ""
+
+
+def buttons(o: dict) -> str:
+    out = notify.button("לחיפוש בגוגל", T.google_link(o), primary=not o.get("url"))
     if o.get("url"):
-        buttons = notify.button("Kiwi.com", o["url"], primary=True) + buttons
-    return (f'{f"<b>{e(title)}</b><br>" if title else ""}'
-            f'<span style="font-size:20px;font-weight:bold">${o["price"]:,}</span> '
-            f'{e(HC.fmt(dep))} - {e(HC.fmt(ret))} · {o["nights"]} לילות · <b>{o["vac"]} ימי חופש</b>{notes}'
-            f'<br><span style="font-size:13px">{route(o)}</span><br>{buttons}')
+        out = notify.button("להזמנה ב-Kiwi", o["url"], primary=True) + out
+    return out
 
 
-def alert_card(a: dict) -> str:
+def alert_card(a: dict, sample: bool = False) -> str:
+    """Three lines: what and how much (and why now), when, how. Then buttons."""
     o = a["o"]
-    why = (f"🏆 הזול ביותר מאז שהתחלנו (היה ${a['prev']:,})" if a["type"] == "low"
-           else f"📉 ירד מ-${a['prev']:,} ({round(100 * (a['prev'] - o['price']) / a['prev'])}%)")
-    return card(f'<div style="color:{notify.MUTED};font-size:12px">{e(a["hname"])}</div>'
-                f'<div style="font-size:17px;font-weight:bold">{e(NAMES.get(a["group"], a["group"]))}</div>'
-                f'<div style="color:{GREEN};font-weight:bold">{e(why)}</div>{option_block(o)}')
-
-
-def spread_table(h: HC.Holiday) -> str:
-    rows = "".join(f'<tr><td style="padding:3px 0">{e(HC.fmt(r["dep"]))} - {e(HC.fmt(r["ret"]))}</td>'
-                   f'<td>{r["nights"]} לילות</td><td><b>{r["vac"]}</b> ימי חופש</td></tr>' for r in HC.best_spread(h)["top"][:4])
-    return f'<table role="presentation" style="{notify.FONT}font-size:13px">{rows}</table>'
+    if sample:
+        why = "דוגמה לאיך נראית התראה"
+    elif a["type"] == "low":
+        why = f"🏆 הכי זול מאז שהתחלנו לחפש (הקודם: ${a['prev']:,})"
+    else:
+        why = f"📉 ירד ב-{round(100 * (a['prev'] - o['price']) / a['prev'])}% מאתמול (היה ${a['prev']:,})"
+    notes = f' · ✓ {e(", ".join(n.replace("בארץ", "בבית") for n in o["notes"]))}' if o.get("notes") else ""
+    r = route(o)
+    return card(f'<div style="font-size:18px;font-weight:bold">{e(NAMES.get(a["group"], a["group"]))} · '
+                f'<span style="color:{GREEN}">${o["price"]:,}</span></div>'
+                f'<div style="color:{notify.MUTED};font-size:13px">{e(a["hname"])} · {e(why)}</div>'
+                f'<div style="margin-top:6px">📅 {e(when(o))}{notes}</div>'
+                + (f'<div>✈️ {r}</div>' if r else "")
+                + f'<div style="margin-top:6px">{buttons(o)}</div>')
 
 
 def summary(best: dict, news: list) -> str:
+    """Per holiday: the dates that cost the fewest vacation days, then one line per destination."""
     parts = []
     for h in HC.upcoming(date.today()):
         hb = best.get(h.key, {})
-        rows = sorted(((g, b) for g, b in hb.items() if b.get("now")), key=lambda x: x[1]["now"]["price"])
+        rows = sorted(((g, b) for g, b in hb.items() if not g.startswith("_") and b.get("now")),
+                      key=lambda x: x[1]["now"]["price"])
+        top = HC.best_spread(h)["top"][0]
         lines = "".join(
-            f'<tr><td style="padding:6px 0;border-top:1px solid {notify.LINE}"><b>{e(NAMES.get(g, g))}</b></td>'
-            f'<td style="border-top:1px solid {notify.LINE}">${b["now"]["price"]:,} · {e(HC.fmt(date.fromisoformat(b["now"]["dep"])))}'
-            f' · {b["now"]["nights"]} לילות · {b["now"]["vac"]} ימי חופש'
-            + (f'<br><span style="color:{notify.MUTED};font-size:12px">הזול מאז שהתחלנו: ${b["low"]["price"]:,}</span>' if b.get("low") else "")
-            + (f'<br><span style="color:{notify.MUTED};font-size:12px">בלי אירופה: ${b["noeu"]["price"]:,}</span>' if b.get("noeu") and b["noeu"]["price"] != b["now"]["price"] else "")
-            + '</td></tr>' for g, b in rows)
-        hn = [n for n in news if any(d.get("holiday") == h.key for d in n.get("deals", []))][-5:]
-        news_html = "".join(f'<br>📬 <b>{e(n["from"])}</b>: {e(n.get("summary", ""))}' for n in hn)
+            f'<tr><td style="padding:7px 0;border-top:1px solid {notify.LINE};white-space:nowrap"><b>{e(NAMES.get(g, g))}</b></td>'
+            f'<td style="padding:7px 6px;border-top:1px solid {notify.LINE};white-space:nowrap"><b>${b["now"]["price"]:,}</b></td>'
+            f'<td style="padding:7px 0;border-top:1px solid {notify.LINE};font-size:13px;color:{notify.MUTED}">'
+            f'{e(when_short(b["now"]))}</td></tr>' for g, b in rows)
+        hn = [n for n in news if any(d.get("holiday") == h.key for d in n.get("deals", []))][-3:]
+        news_html = "".join(f'<div style="font-size:13px;margin-top:6px">📬 {e(n["from"])}: {e(n.get("summary", ""))}</div>' for n in hn)
         parts.append(card(
             f'<div style="font-size:18px;font-weight:bold">{e(h.name)}</div>'
-            f'<div style="color:{notify.MUTED};font-size:13px">יציאה {e(HC.fmt(h.dep[0]))} עד {e(HC.fmt(h.dep[1]))}</div>'
-            f'<div style="margin-top:8px"><b>הכי חסכוני בימי חופש:</b>{spread_table(h)}</div>'
-            f'<table role="presentation" width="100%" style="{notify.FONT}font-size:14px;margin-top:8px">'
-            f'{lines or "<tr><td>עוד אין מחירים</td></tr>"}</table>{news_html}'))
+            f'<div style="color:{notify.MUTED};font-size:13px">הכי חסכוני בימי חופש: {e(HC.fmt(top["dep"]))} - {e(HC.fmt(top["ret"]))} '
+            f'({top["nights"]} לילות, {top["vac"]} ימי חופש)</div>'
+            f'<table role="presentation" width="100%" style="{notify.FONT}font-size:14px;margin-top:8px;border-collapse:collapse">'
+            f'<tr><td style="color:{notify.MUTED};font-size:12px">יעד</td><td style="color:{notify.MUTED};font-size:12px;padding:0 6px">הזול עכשיו</td>'
+            f'<td style="color:{notify.MUTED};font-size:12px">תאריכים</td></tr>'
+            f'{lines or "<tr><td>עוד אין מחירים</td></tr>"}</table>{news_html}'
+            f'<div style="margin-top:8px">{notify.button("לכל הפרטים בדף", PAGE_URL)}</div>'))
     return "".join(parts)
 
 
@@ -124,7 +146,7 @@ def sample_alerts(best: dict) -> list[dict]:
         rows = sorted(((g, b) for g, b in best.get(h.key, {}).items() if not g.startswith("_") and b.get("now")),
                       key=lambda x: x[1]["now"]["price"])[:2]
         out += [{"type": "low", "h": h.key, "hname": h.name, "group": g, "o": b["now"],
-                 "prev": round(b["now"]["price"] * 1.12)} for g, b in rows]
+                 "prev": b["now"]["price"]} for g, b in rows]
     return out
 
 
@@ -148,21 +170,22 @@ def main(dry_run: bool = False, force: bool = False, weekly: bool = False, sampl
         pending = sample_alerts(best)
     head = (f'<div style="background:{GREEN};color:#fff;border-radius:12px;padding:14px 16px;margin-bottom:12px;{notify.FONT}">'
             f'<div style="font-size:20px;font-weight:bold">🌴 חגים - תיירים</div>'
-            + ('<div style="font-size:13px;margin-top:4px">מייל לדוגמה: כך ייראו התראה (שיא זול חדש או ירידה של 10%) והסיכום השבועי. '
-               'המחירים אמיתיים, ה"היה" בהתראות מומצא לצורך הדוגמה.</div>' if sample else '') + '</div>')
+            + ('<div style="font-size:13px;margin-top:4px">מייל לדוגמה: כך ייראו התראה (כשיש מחיר הכי זול מאז שהתחלנו, או ירידה של 10%) והסיכום השבועי. '
+               'המחירים אמיתיים.</div>' if sample else '') + '</div>')
     parts = [head]
     if pending:
-        parts.append(f'<div style="{notify.FONT}font-size:18px;font-weight:bold;margin:6px 4px 10px">מחירים חדשים ({len(pending)})</div>')
-        parts += [alert_card(a) for a in sorted(pending, key=lambda a: a["o"]["price"])]
+        parts.append(f'<div style="{notify.FONT}font-size:18px;font-weight:bold;margin:6px 4px 10px">'
+                     f'{"התראות" if not sample else "כך נראית התראה"} ({len(pending)})</div>')
+        parts += [alert_card(a, sample) for a in sorted(pending, key=lambda a: a["o"]["price"])]
     if new_news and not weekly_due:
         parts.append(f'<div style="{notify.FONT}font-size:18px;font-weight:bold;margin:16px 4px 10px">📬 מבצעים מניוזלטרים לחגים</div>')
         for n in new_news:
             lines = "<br>".join(
-                "• " + e(" · ".join(str(x) for x in (d.get("destination") or d.get("destination_name"),
+                "• " + e(" · ".join(str(x) for x in (T.city(d["destination"]) if d.get("destination") else d.get("destination_name"),
                                                     f"{d['price']:,.0f} {d.get('currency') or ''}" if d.get("price") is not None else None,
                                                     f"טיסות {d['travel_from']} עד {d['travel_to']}" if d.get("travel_from") else None,
                                                     f"לקנות עד {d['book_by']}" if d.get("book_by") else None,
-                                                    d.get("holiday_name")) if x)) for d in n["deals"])
+                                                    d.get("holiday_name")) if x)) + e(ours(best, d)) for d in n["deals"])
             parts.append(card(f'<div style="color:{notify.MUTED};font-size:12px">{e(n["from"])}</div>'
                               f'<b>{e(n["subject"])}</b><br>{e(n.get("summary", ""))}<br>{lines}'))
     if weekly_due:

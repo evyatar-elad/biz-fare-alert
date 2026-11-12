@@ -267,9 +267,23 @@ def main(out: Path = OUT) -> None:
         mats = "".join(f"<details class=sub><summary>{e(group_name(g))}</summary>{matrix(h, prices, g, today)}</details>"
                        for g in groups)
         hnews = [n for n in news if any(d.get("holiday") == h.key for d in n.get("deals", []))]
+        def news_deals(n):
+            out = []
+            for d in n.get("deals", []):
+                if d.get("holiday") != h.key:
+                    continue
+                g = "TYO" if d.get("destination") in ("NRT", "HND", "TYO") else d.get("destination")
+                o = (hb.get(g) or {}).get("now")
+                price = f"{d['price']:,.0f} {d.get('currency') or ''}" if d.get("price") is not None else "בלי מחיר"
+                usd = f" (≈${d['usd']:,.0f} הלוך חזור)" if d.get("usd") else ""
+                cmp_ = f" · אצלנו לחג הזה: ${o['price']:,}" if o else ""
+                out.append(f"{e(T.city(d.get('destination')) if d.get('destination') else d.get('destination_name') or '?')}: "
+                           f"{e(price)}{e(usd)}{e(cmp_)}")
+            return "<br>".join(out)
         news_rows = "".join(
             f"<tr><td class=m>{t(n['at'])}</td><td>{e(n['from'])}</td><td>{e(n['subject'])}<br>"
-            f"<span class=m style='font-size:13px'>{e(n.get('summary', ''))}</span></td></tr>" for n in reversed(hnews[-10:]))
+            f"<span class=m style='font-size:13px'>{e(n.get('summary', ''))}</span><br><span style='font-size:13px'>{news_deals(n)}</span></td></tr>"
+            for n in reversed(hnews[-10:]))
         sections.append(f"""
 <div class="card hol"><h2>{e(h.name)}</h2>
 <div class=m>יציאה אפשרית {e(HC.fmt(h.dep[0]))}/{h.dep[0].year} עד {e(HC.fmt(h.dep[1]))} ({lead} יום מהיום). אורך {P.NIGHTS_MAIN[0]}-{P.NIGHTS_MAIN[1]} לילות
