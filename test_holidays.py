@@ -39,7 +39,47 @@ def main():
 
     up = HC.upcoming(d(2026, 11, 11))
     assert [h.key for h in up][:2] == ["pesach-5787", "tishrei-5788"], [h.key for h in up]
+    scanner_and_page()
     print("HOLIDAYS_OK")
+
+
+def scanner_and_page():
+    """Storage, best/low/alerts and the page, with fake points (no network)."""
+    import tempfile
+    from pathlib import Path
+    import holiday_scanner as S
+    import holiday_status as HS
+    t = HC.tishrei(5788)
+    pts = [{"dep": "2027-10-08", "nights": 15, "price": 900, "src": "kiwi", "dest": "BKK",
+            "info": {"out": {"via": ["AUH"], "airlines": ["Etihad"], "hours": 12.0, "to": "BKK", "legs": []},
+                     "ret": {"via": ["VIE"], "airlines": ["Austrian"], "hours": 16.0, "to": "TLV", "legs": []},
+                     "separate": False, "url": "https://kiwi.example"}},
+           {"dep": "2027-10-01", "nights": 21, "price": 850, "src": "google", "dest": "BKK", "info": None}]
+    best, curve, prices, alerts = {}, {}, {}, []
+    S.record(prices, pts, "2026-11-12")
+    S.record(prices, pts, "2026-11-13")  # unchanged price: not stored twice
+    assert prices["kiwi|BKK"]["2027-10-08|15"] == [["2026-11-12", 900]]
+    S.update_best(best, t, "BKK", pts, "2026-11-12", alerts)
+    b = best[t.key]["BKK"]
+    assert b["now"]["price"] == 850 and b["now"]["vac"] == 7 and b["low"]["price"] == 850
+    assert b["noeu"] is None if "noeu" in b else True  # google option has no route info
+    assert alerts == []                                  # first day: no alerts
+    cheaper = [{**pts[1], "price": 700}]
+    S.update_best(best, t, "BKK", cheaper, "2026-11-13", alerts)
+    assert alerts and alerts[0]["type"] == "low" and alerts[0]["prev"] == 850, alerts
+    S.update_curve(curve, t, "BKK", 700, "2026-11-13")
+    assert curve[t.key]["BKK"][0][1] == (t.core[0] - date(2026, 11, 13)).days
+    tmp = Path(tempfile.mkdtemp())
+    (tmp / "prices").mkdir()
+    import json
+    (tmp / "best.json").write_text(json.dumps(best))
+    (tmp / "curve.json").write_text(json.dumps(curve))
+    (tmp / "prices" / f"{t.key}.json").write_text(json.dumps(prices))
+    HS.DATA = tmp
+    out = tmp / "holidays.html"
+    HS.main(out)
+    html_ = out.read_text()
+    assert "חגי תשרי" in html_ and "$700" in html_ and "ימי חופש" in html_
 
 
 if __name__ == "__main__":

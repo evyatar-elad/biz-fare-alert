@@ -2,21 +2,29 @@ name: holidays
 
 # Second system: "holidays - economy" (see CLAUDE.md). Fully separate from the business
 # scan: own runner (so Google's rate limit is counted separately), own concurrency group,
-# own data (data/holidays/). Stage 1: measurement only (holiday_probe.py).
+# own data (data/holidays/), own page (docs/holidays.html) and own email.
+#
+# NOT scheduled yet: the user approves first. To enable, uncomment "schedule" below
+# (schedules run only from the default branch, main).
 
 on:
+  # schedule:
+  #   - cron: "41 */2 * * *"   # every 2 hours
   workflow_dispatch:
     inputs:
       mode:
-        description: "probe = one-off measurement, diag = calendar diagnosis"
-        default: "probe"
-      quick:
-        description: "quick probe (2 destinations)"
+        description: "scan | probe | diag"
+        default: "scan"
+      minutes:
+        description: "time budget (minutes)"
+        default: "45"
+      send_email:
+        description: "really send the holidays email (otherwise only printed)"
         type: boolean
         default: false
+  # On a claude/** branch, a commit message with [hol-scan], [hol-probe] or [hol-diag] runs that mode.
   push:
     branches: ["claude/**"]
-    paths: ["holiday_probe.py", "holiday_diag.py", "fli_multi.py", ".github/workflows/holidays.yml"]
 
 permissions:
   contents: write
@@ -27,8 +35,11 @@ concurrency:
 
 jobs:
   holidays:
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[hol-')
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    env:
+      MODE: ${{ inputs.mode || (contains(github.event.head_commit.message, '[hol-scan]') && 'scan') || (contains(github.event.head_commit.message, '[hol-probe]') && 'probe') || 'diag' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -38,14 +49,28 @@ jobs:
       - run: pip install -r requirements-holidays.txt
       - name: tests
         run: python test_holidays.py
-      - name: probe
+      - name: run
         run: |
-          if [ "${{ inputs.mode || 'diag' }}" = "diag" ]; then python holiday_diag.py; else python holiday_probe.py ${{ inputs.quick && '--quick' || '' }}; fi
-      - name: save probe report
+          case "$MODE" in
+            scan)  python holiday_scanner.py --minutes "${{ inputs.minutes || '45' }}" ;;
+            probe) python holiday_probe.py ;;
+            *)     python holiday_diag.py ;;
+          esac
+      - name: holidays email
+        if: always() && env.MODE == 'scan'
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python holiday_notify.py ${{ inputs.send_email != true && '--dry-run' || '' }}
+      - name: holidays page
+        if: always() && env.MODE == 'scan'
+        run: python holiday_status.py
+      - name: save
         if: always()
         run: |
           git config user.name "biz-fare-alert"
           git config user.email "actions@users.noreply.github.com"
-          git add data/holidays || true
-          git diff --cached --quiet || git commit -m "holidays: probe report $(date -u +%F_%H%M)"
+          git add data/holidays docs/holidays.html 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "holidays: $MODE $(date -u +%F_%H%M)"
           for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done

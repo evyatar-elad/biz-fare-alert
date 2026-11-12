@@ -31,6 +31,9 @@ DESTINATIONS = {
 # the price is exceptional (user: "for an exceptional price I'll bend the min/max a bit").
 NIGHTS_MAIN = (14, 21)
 NIGHTS_FLEX = (12, 24)
+# Kiwi returns ~15 itineraries per request, so each departure date is searched in these
+# nights chunks (more cells of the date x nights matrix get a price).
+KIWI_NIGHT_CHUNKS = [(12, 17), (18, 24)]
 
 # Departure windows, relative to the holiday (see holiday_cal.windows()).
 # Tishrei: from a few days before erev Rosh Hashana up to the first days of Chol Hamoed Sukkot.
@@ -56,6 +59,10 @@ EUROPE_AIRPORTS = {
     "BEG", "ZAG", "LJU", "RIX", "VNO", "TLL", "NCE", "MRS", "LYS", "NAP", "BGY", "CIA",
     "BLQ", "STR", "CGN", "EIN", "CRL", "BTS", "KUN", "TBS", "SKG",
 }
+# Kiwi accepts at most 200 characters of excluded airports, so the "without Europe" search
+# excludes the main European hubs only (results are still flagged with the full list above).
+EUROPE_HUBS_KIWI = ["VIE", "FRA", "MUC", "ZRH", "FCO", "MXP", "CDG", "AMS", "LHR", "ATH", "WAW",
+                    "BUD", "PRG", "BER", "CPH", "HEL", "ARN", "BRU", "MAD", "BCN", "LIS", "OTP"]
 # - A stop of 1-2 nights in one of these cities is something the user likes.
 STOPOVER_HUBS = {
     "GYD": "באקו", "TAS": "טשקנט", "AUH": "אבו דאבי", "DXB": "דובאי", "BKK": "בנגקוק",
@@ -80,5 +87,11 @@ KIWI_PACE_SECONDS = 10
 # How far ahead each source can see (days). Holidays further out wait until a source sees them.
 GOOGLE_HORIZON_DAYS = 330
 KIWI_HORIZON_DAYS = 365
+
+
+
+# Google Flights calendar: on/off and extra arguments (set after the 12/11 diagnosis).
+GOOGLE_ENABLED = True
+GOOGLE_EXTRA_ARGS: list[str] = []
 
 __all__ = ["BANNED_AIRPORTS", "EXCLUDE_AIRLINES"]
