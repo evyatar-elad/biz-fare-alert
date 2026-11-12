@@ -107,6 +107,13 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
                 if only and a not in only and b not in only:
                     continue
                 tasks.append({"key": f"OJ|{h.key}|{a}-{b}", "src": "kiwi_oj", "h": h.key, "a": a, "b": b})
+    # round robin: when everything is equally overdue (e.g. the first sweep), spread the work
+    # over all holidays and destinations instead of finishing one destination at a time
+    seen: dict = {}
+    for t in tasks:
+        g = (t["h"], t.get("dest") or t.get("a"))
+        t["rr"] = seen.get(g, 0)
+        seen[g] = t["rr"] + 1
     return tasks
 
 
@@ -154,8 +161,8 @@ def overdue(tasks: list[dict], last: dict) -> list[dict]:
         age = 1e9 if not ts else (t - datetime.fromisoformat(ts)).total_seconds() / 3600
         due = DUE_H[task["src"]]
         if age >= due:
-            out.append((age / due, task))
-    out.sort(key=lambda x: -x[0])
+            out.append((min(age / due, 1e6), task))
+    out.sort(key=lambda x: (-round(x[0], 1), x[1].get("rr", 0)))
     return [t for _, t in out]
 
 
