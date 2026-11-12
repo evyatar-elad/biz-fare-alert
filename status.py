@@ -172,6 +172,19 @@ def main() -> None:
         f"<td>{dismiss_btn(d['route'])}</td></tr>"
         for d in waiting)
 
+    import notify as _n
+    stop_rows = []
+    for dest, hubs in (state.get("stops") or {}).items():
+        hub, st = min(hubs.items(), key=lambda kv: kv[1]["price"])
+        stop_rows.append((st["price"], f"<tr><td>{html.escape(name(dest))}</td><td>דרך {html.escape(name(hub))}</td>"
+                          f"<td><b>${st['price']:,}</b></td><td class=m>הלוך חזור רגיל: ${st['rt_price']:,.0f}</td>"
+                          f"<td class=m>{st['legs'][0][2][8:10]}/{st['legs'][0][2][5:7]} - {st['legs'][-1][2][8:10]}/{st['legs'][-1][2][5:7]}</td>"
+                          f"<td><a href='{html.escape(_n.gf_multi_link(st['legs']))}' style='color:inherit'>בגוגל</a></td></tr>"))
+    stops_html = (f'<div class="card"><h2>עצירה בכרטיס אחד (ביזנס)</h2><div class=m style="font-size:13px;margin-bottom:6px">'
+                  f'לכל יעד באסיה ורחוק: לילה-שניים בבאקו, טשקנט, אבו דאבי או דובאי, הכל בכרטיס אחד של החברה, '
+                  f'בתאריכים הזולים שנמצאו ליעד. מתחת לסף של האזור זה נשלח כמציאה.</div><div class=scroll><table>'
+                  f'<tr><th>יעד</th><th>עצירה</th><th>מחיר</th><th></th><th>תאריכים</th><th></th></tr>'
+                  + "".join(r for _, r in sorted(stop_rows)[:12]) + "</table></div></div>") if stop_rows else ""
     page = f"""<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="600"><title>בוט מציאות ביזנס</title>
 <style>
@@ -226,7 +239,7 @@ h.style.color='#b91c1c'; h.textContent='● הדף לא עודכן כבר '+Math
 <div class=scroll style="margin-top:10px"><table><tr><th>מי שולח (7 ימים)</th><th>מיילים</th></tr>{sender_rows}</table></div>
 <h2 style="margin-top:14px">מה נמצא לאחרונה</h2>
 <div class=scroll><table><tr><th>מתי</th><th>מאת</th><th>מה</th></tr>{log_rows}</table></div></div>
-{dormant_html}
+{stops_html}{dormant_html}
 <div class="card"><h2>המחירים לכל יעד (ביזנס הלוך חזור מתל אביב)</h2>
 <div class=m style="font-size:13px;margin-bottom:6px">לכל יעד: החודש עם המחיר הזול ביותר שנמצא. ⭐ יעד מועדף (נבדק בתדירות גבוהה יותר). "רגיל לחודש" = הזול שנמצא באותו חודש בבדיקות קודמות (חציון), כמו בהתראות; "עוד אין" = פחות משתי בדיקות קודמות. ירוק = 35% ומטה מהרגיל, כלומר מציאה. מסלול (ישירה / דרך) ידוע רק ב-Kiwi; ב-Google הוא מופיע במייל של מציאה.</div>
 <div class=scroll><table><tr><th></th><th colspan=2>Google Flights</th><th colspan=2>Kiwi.com</th></tr>

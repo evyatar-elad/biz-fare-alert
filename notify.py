@@ -122,6 +122,15 @@ def gf_link(o, d, dep, ret, seat: int = 3) -> str:
     return f"https://www.google.com/travel/flights/search?tfs={tfs}&hl=he&curr=USD"
 
 
+def gf_multi_link(legs, seat: int = 3) -> str:
+    """Google Flights multi-city search (all legs filled in). seat 3 = business, 1 = economy.
+    Checked in a browser 12/11: opens "Multi-city · 1 · <cabin>" with the legs."""
+    leg = lambda a, b, day: _pb(2, day.encode()) + _pb(13, _pb(2, a.encode())) + _pb(14, _pb(2, b.encode()))
+    msg = b"".join(_pb(3, leg(*l)) for l in legs) + _pb(8, bytes([1])) + _pb(9, seat) + _pb(19, 3)
+    tfs = base64.urlsafe_b64encode(msg).decode().rstrip("=")
+    return f"https://www.google.com/travel/flights/search?tfs={tfs}&hl=he&curr=USD"
+
+
 def kayak_link(o, d, dep, ret) -> str:
     return f"https://www.kayak.com/flights/{o}-{d}/{dep}/{ret}/business"
 
@@ -212,7 +221,7 @@ def deal_card(d: dict) -> str:
         flights += direction_block("הלוך", det["out"])
     if det.get("ret"):
         flights += direction_block("חזור", det["ret"])
-    if not flights:
+    if not flights and not d.get("multi_legs"):
         flights = (f'<div style="margin-top:14px;color:{MUTED};font-size:14px">'
                    "פרטי הטיסות לא נבדקו בריצה הזו. אפשר לראות אותם בקישורים.</div>")
     sisters = sorted(next((g for g in C.SISTER_CITIES if x in g), {x}) - {x})
@@ -243,7 +252,15 @@ def deal_card(d: dict) -> str:
         for a in (seg or {}).get("airlines", []):
             if a not in airlines:
                 airlines.append(a)
-    if d.get("src") == "kiwi" and det.get("booking_url"):
+    stop_row = ""
+    if d.get("multi_legs"):
+        legs_txt = " · ".join(f"{name(l[0])}-{name(l[1])} {nice_date(l[2])}" for l in d["multi_legs"])
+        stop_row = (f'<tr><td style="padding:4px 0;color:{MUTED};vertical-align:top">מסלול</td><td style="padding:4px 0">'
+                    f'כרטיס אחד עם עצירה: {legs_txt}' + (f' · {html.escape(", ".join(d.get("stop_airlines") or []))}' if d.get("stop_airlines") else "")
+                    + '</td></tr>')
+    if d.get("multi_legs"):
+        buttons = button("Google Flights (החיפוש הזה)", gf_multi_link(d["multi_legs"]), primary=True)
+    elif d.get("src") == "kiwi" and det.get("booking_url"):
         buttons = button("Kiwi.com (המחיר הזה)", det["booking_url"], primary=True)
         buttons += button("Google Flights", gf_link(o, x, d["dep"], d["ret"]))
     else:
@@ -275,11 +292,10 @@ def deal_card(d: dict) -> str:
    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
      <tr><td style="padding:4px 0;color:{MUTED};width:90px">תאריכים</td>
          <td style="padding:4px 0">{nice_date(d["dep"])} עד {nice_date(d["ret"])} ({d["dur"]} ימים)</td></tr>
-     <tr><td style="padding:4px 0;color:{MUTED}">גמישות</td>
-         <td style="padding:4px 0">{d["similar_dates"]} תאריכי יציאה בחודש הזה במחיר דומה</td></tr>
+     {"" if d.get("multi_legs") else f'<tr><td style="padding:4px 0;color:{MUTED}">גמישות</td><td style="padding:4px 0">{d["similar_dates"]} תאריכי יציאה בחודש הזה במחיר דומה</td></tr>'}
      <tr><td style="padding:4px 0;color:{MUTED};vertical-align:top">למה</td>
          <td style="padding:4px 0">{html.escape("; ".join(d["reasons"]))}</td></tr>
-     {more_row}{eco_row}{cont_rows}{src_row}{lca}{open_jaw}
+     {stop_row}{more_row}{eco_row}{cont_rows}{src_row}{lca}{open_jaw}
    </table>
  </td></tr>
  <tr><td style="padding:0 20px">{flights}</td></tr>

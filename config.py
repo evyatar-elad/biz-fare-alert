@@ -237,3 +237,12 @@ BIZ_TO_ECO_RATIO = 1.6
 # Do not re-alert the same route and month unless the price dropped by this much.
 REALERT_DROP = 0.07
 REALERT_DAYS = 14
+
+# Stopovers on ONE ticket (12/11, the user's Azerbaijan Airlines ticket to China: a night in
+# Baku out, two back, one ticket). Kiwi does not return these; Google multi-city does
+# (tested: TLV-GYD-DEL economy, one J2 ticket). For Asia / far destinations, every
+# STOPOVER_DUE_HOURS, on the cheapest business dates seen recently for the destination.
+# (hub, nights at the hub out, nights at the hub back)
+STOPOVER_PLANS = [("GYD", 1, 2), ("TAS", 1, 1), ("AUH", 1, 1), ("DXB", 1, 1)]
+STOPOVER_REGIONS = {"asia", "far"}
+STOPOVER_DUE_HOURS = 48

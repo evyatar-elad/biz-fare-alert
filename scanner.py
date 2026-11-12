@@ -110,6 +110,17 @@ def build_tasks(only: set[str] | None) -> list[dict]:
                               "to": we.isoformat(),
                               "due_h": C.KIWI_DUE_HOURS["priority" if prio else "normal"]})
 
+    # stopovers on one ticket (Google multi-city), Asia / far destinations from TLV
+    for code, (name_, region, prio) in C.DESTINATIONS.items():
+        if (only and code not in only) or region not in C.STOPOVER_REGIONS:
+            continue
+        for hub, n_out, n_back in C.STOPOVER_PLANS:
+            if hub == code:
+                continue
+            tasks.append({"src": "stop", "origin": "TLV", "dest": code, "hub": hub, "n_out": n_out, "n_back": n_back,
+                          "dur": C.REGIONS[region]["dur"], "region": region, "prio": prio,
+                          "key": f"STOP-{code}-{hub}", "due_h": C.STOPOVER_DUE_HOURS})
+
     # hub legs: TAS -> east, that hub airline only (TLV -> TAS is a normal destination)
     for hub, h in C.HUBS.items():
         for code in h["dests"]:
@@ -357,6 +368,71 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
     return deals
 
 
+def remember_cheap_dates(state: dict, t: dict, pts: list[dict], today: str) -> None:
+    """Cheapest business dates seen lately per destination (from TLV): the stopover searches use them."""
+    if t["origin"] != "TLV" or t.get("via") or not pts:
+        return
+    p = min(pts, key=lambda x: x["price"])
+    if not p.get("return_date"):
+        return
+    cd = state.setdefault("cheap_dates", {})
+    cur = cd.get(t["dest"])
+    stale = not cur or (date.fromisoformat(today) - date.fromisoformat(cur["at"])).days > 7 or cur["dep"] <= today
+    if stale or p["price"] < cur["price"]:
+        cd[t["dest"]] = {"dep": p["departure_date"], "ret": p["return_date"], "price": p["price"], "at": today}
+
+
+def multi(cabin: str, legs: list) -> list[dict]:
+    """Google multi-city search (one ticket); replaced by a fake in test_logic.py."""
+    import fli_multi
+    return fli_multi.search(cabin, legs, C.EXCLUDE_AIRLINES)["trips"]
+
+
+def stopover_search(t: dict, state: dict, today: str) -> list[dict]:
+    """One ticket TLV-hub-dest-hub-TLV in business (Google multi-city). Returns deal dicts."""
+    cd = state.get("cheap_dates", {}).get(t["dest"])
+    if not cd or cd["dep"] <= today:
+        return []
+    dep, ret = date.fromisoformat(cd["dep"]), date.fromisoformat(cd["ret"])
+    hub, no, nb, x = t["hub"], t["n_out"], t["n_back"], t["dest"]
+    legs = ([("TLV", hub, dep.isoformat()), (hub, x, (dep + timedelta(days=no)).isoformat())] if no
+            else [("TLV", x, dep.isoformat())])
+    legs += ([(x, hub, (ret - timedelta(days=nb)).isoformat()), (hub, "TLV", ret.isoformat())] if nb
+             else [(x, "TLV", ret.isoformat())])
+    try:
+        trips = multi("BUSINESS", legs)
+    except Exception as e:  # noqa: BLE001
+        if "429" in str(e) or "rate" in str(e).lower():
+            raise Blocked(str(e)) from e
+        print(f"  ! {t['key']}: {type(e).__name__}: {str(e)[:120]}")
+        return []
+    trips = [tr for tr in trips if tr.get("price") and not any(
+        f["from"] in C.BANNED_AIRPORTS or f["to"] in C.BANNED_AIRPORTS for l in tr["legs"] for f in l["flights"])]
+    if not trips:
+        print(f"  {t['key']}: אין תוצאות")
+        return []
+    tr = min(trips, key=lambda z: z["price"])
+    price = round(tr["price"])
+    airlines = sorted({f["airline"] for l in tr["legs"] for f in l["flights"]})
+    state.setdefault("stops", {}).setdefault(x, {})[hub] = {
+        "price": price, "legs": [list(l) for l in legs], "airlines": airlines, "at": today, "n_out": no, "n_back": nb,
+        "rt_price": cd["price"]}
+    print(f"  {t['key']}: ${price:,} ({', '.join(airlines)}), הלוך חזור רגיל באותם תאריכים ${cd['price']:,.0f}")
+    cap = min(C.CAP_OVERRIDE.get(x, C.REGIONS[t["region"]]["cap"]), C.MAX_PRICE)
+    if price > cap:
+        return []
+    hub_name = C.DESTINATIONS.get(hub, (hub,))[0]
+    nights = ", ".join(z for z in ((f"{no} {'לילה' if no == 1 else 'לילות'} בהלוך" if no else ""),
+                                   (f"{nb} {'לילה' if nb == 1 else 'לילות'} בחזור" if nb else "")) if z)
+    return [{
+        "route": f"STOP-TLV-{x}-{hub}", "origin": "TLV", "dest": x, "dur": (ret - dep).days,
+        "month": cd["dep"][:7], "dep": cd["dep"], "ret": cd["ret"], "price": price, "effective": price,
+        "ref": None, "ref_why": "", "similar_dates": 1, "via": None, "src": "gf", "details": None,
+        "reasons": [f"מתחת לסף הקבוע (${cap:,})", f"עצירה ב{hub_name} בכרטיס אחד ({nights})"],
+        "multi_legs": [list(l) for l in legs], "stop_airlines": airlines,
+    }]
+
+
 def is_new(deal: dict, alerts: dict) -> bool:
     k = deal["route"]
     a = alerts.get(k)
@@ -410,6 +486,18 @@ def main() -> int:
             is_kiwi = t.get("src") == "kiwi"
             if is_kiwi and (kiwi_off or not C.KIWI_ENABLED):
                 continue
+            if t.get("src") == "stop":
+                cd = state.get("cheap_dates", {}).get(t["dest"])
+                if not cd or cd["dep"] <= today:
+                    continue  # no recent business dates for this destination yet: next run
+                if run["calls"]:
+                    time.sleep(C.PACE_SECONDS)
+                run["calls"] += 1
+                sdeals = stopover_search(t, state, today)
+                state["last"][t["key"]] = now_utc().isoformat(timespec="seconds")
+                pending_routes = {d["route"] for d in state.get("pending", [])}
+                new_deals += [d for d in sdeals if is_new(d, alerts) and d["route"] not in pending_routes]
+                continue
             if run["calls"]:
                 time.sleep(C.KIWI_PACE_SECONDS if is_kiwi else C.PACE_SECONDS)
             run["calls"] += 1
@@ -453,6 +541,8 @@ def main() -> int:
                     del kb[m]
             deals = find_deals(t, pts, hist, today)
             update_history(hist, route_key(t), pts, today)
+            if not t.get("airline"):
+                remember_cheap_dates(state, t, pts, today)
             hub = None
             if not is_kiwi:
                 remember_cal(state, t, pts, today)
