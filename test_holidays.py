@@ -28,7 +28,7 @@ def main():
     assert v["vac"] == 3, v   # Tue-Thu 12-14/10 after Yom Kippur
     v = HC.vacation(p, d(2027, 4, 16), d(2027, 5, 1))
     assert v["vac"] == 4, v   # Sun-Tue 18-20/4 + Thu 29/4
-    assert HC.notes(p, d(2027, 4, 22), d(2027, 5, 6)) == ["ליל הסדר בארץ"]
+    assert HC.notes(p, d(2027, 4, 22), d(2027, 5, 6)) == ["ליל הסדר בבית"]
     assert HC.notes(p, d(2027, 4, 16), d(2027, 5, 1)) == []
 
     b = HC.best_spread(t)

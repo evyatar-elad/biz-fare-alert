@@ -18,6 +18,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import holiday_cal as HC
+import holiday_text as T
 import notify
 from profiles import holidays as P
 
@@ -27,7 +28,7 @@ PAGE_URL = "https://evyatar-elad.github.io/biz-fare-alert/holidays.html"
 IL = ZoneInfo("Asia/Jerusalem")
 ALERT_HOUR_IL = 9
 GREEN = "#14532d"
-NAMES = {**{k: v[0] for k, v in P.DESTINATIONS.items()}, "TYO": "טוקיו"}
+NAMES = T.NAMES
 
 
 def jload(p: Path, default):
@@ -61,26 +62,15 @@ def card(inner: str) -> str:
 
 
 def route(o: dict) -> str:
-    if o.get("via_out") is None:
-        return "מסלול: לבדוק באתר"
-    one = lambda v: "ישירה" if not v else "דרך " + "/".join(v)
-    s = one(o["via_out"]) if o["via_out"] == o["via_ret"] else f"הלוך {one(o['via_out'])}, חזור {one(o['via_ret'])}"
-    bits = [s]
-    if o.get("hours_out"):
-        bits.append(f"{o['hours_out']:g} / {o['hours_ret']:g} שעות")
-    if o.get("airlines"):
-        bits.append(", ".join(o["airlines"]))
-    if o.get("europe"):
-        bits.append("⚠️ דרך אירופה")
-    if o.get("separate"):
-        bits.append("⚠️ כרטיסים נפרדים")
+    r = T.route(o) or "מסלול: לבדוק בקישור"
+    bits = [r] + ([", ".join(o["airlines"])] if o.get("airlines") else []) + ["⚠️ " + x if not x.startswith("⭐") else x for x in T.tags(o)]
     return " · ".join(e(b) for b in bits)
 
 
 def option_block(o: dict, title: str = "") -> str:
     dep, ret = date.fromisoformat(o["dep"]), date.fromisoformat(o["ret"])
     notes = f'<br><span style="color:{notify.MUTED}">{e(", ".join(o["notes"]))}</span>' if o.get("notes") else ""
-    buttons = notify.button("Google Flights", notify.gf_link(P.ORIGIN, o["dest"], o["dep"], o["ret"], seat=1), primary=not o.get("url"))
+    buttons = notify.button("Google Flights", T.google_link(o), primary=not o.get("url"))
     if o.get("url"):
         buttons = notify.button("Kiwi.com", o["url"], primary=True) + buttons
     return (f'{f"<b>{e(title)}</b><br>" if title else ""}'

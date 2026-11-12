@@ -80,7 +80,7 @@ def tishrei(hy: int) -> Holiday:
         key=f"tishrei-{hy}", kind="tishrei", name=f"חגי תשרי {heb_year(hy)}",
         core=(erev_suk, suk + 7 * D1), free=free, labels=labels,
         dep=(erev_rh - P.TISHREI_DEP_BEFORE_EREV_RH * D1, erev_suk + P.TISHREI_DEP_AFTER_EREV_SUKKOT * D1),
-        prefs=[("ראש השנה בארץ", erev_rh), ("ערב סוכות בארץ", erev_suk)],
+        prefs=[("ראש השנה בבית", erev_rh), ("ערב סוכות בבית", erev_suk)],
     )
 
 
@@ -100,7 +100,7 @@ def pesach(hy: int) -> Holiday:
         key=f"pesach-{hy}", kind="pesach", name=f"פסח {heb_year(hy)}",
         core=core, free=free, labels=labels,
         dep=(core[1] - (max_n + P.PESACH_DEP_SLACK) * D1, erev + P.PESACH_DEP_AFTER_EREV * D1),
-        prefs=[("ליל הסדר בארץ", erev)],
+        prefs=[("ליל הסדר בבית", erev)],
     )
 
 

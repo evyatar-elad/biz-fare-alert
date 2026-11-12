@@ -4,12 +4,12 @@ name: holidays
 # scan: own runner (so Google's rate limit is counted separately), own concurrency group,
 # own data (data/holidays/), own page (docs/holidays.html) and own email.
 #
-# NOT scheduled yet: the user approves first. To enable, uncomment "schedule" below
-# (schedules run only from the default branch, main).
+# Scheduled every 2 hours (approved by the user 12/11). Schedules run only from main.
+# The email is still printed only (send_email) until the user approves sending it.
 
 on:
-  # schedule:
-  #   - cron: "41 */2 * * *"   # every 2 hours
+  schedule:
+    - cron: "41 */2 * * *"   # every 2 hours
   workflow_dispatch:
     inputs:
       mode:

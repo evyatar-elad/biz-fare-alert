@@ -40,7 +40,8 @@ LOG_F = DATA / "runs.jsonl"
 D1 = timedelta(days=1)
 
 # How often each task is due (hours)
-DUE_H = {"kiwi_day": 24, "kiwi_noeu": 24, "gf_cal": 24, "gf_biz": 48, "kiwi_oj": 48}
+DUE_H = {"kiwi_day": 24, "kiwi_noeu": 24, "kiwi_fast": 24, "gf_cal": 24, "gf_biz": 48, "kiwi_oj": 48,
+         "gf_check": 24}
 BIZ_NIGHTS = 15  # business "peek": one Google calendar per destination and holiday
 TOKYO = {"NRT", "HND"}
 
@@ -81,7 +82,7 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
     for h in HC.upcoming(today):
         lead = (h.dep[0] - today).days
         kiwi_ok = lead <= P.KIWI_HORIZON_DAYS
-        gf_ok = (h.dep[1] - today).days <= P.GOOGLE_HORIZON_DAYS
+        gf_ok = (h.dep[0] - today).days <= P.GOOGLE_HORIZON_DAYS  # joins by itself once Google sees it
         seen_k = set()
         for dest in P.DESTINATIONS:
             if only and dest not in only:
@@ -96,6 +97,8 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
                         tasks.append({"key": f"K|{h.key}|{kd}|{dep}|{lo}-{hi}", "src": "kiwi_day", "h": h.key,
                                       "dest": kd, "dep": dep.isoformat(), "nights": (lo, hi)})
                 tasks.append({"key": f"KN|{h.key}|{kd}", "src": "kiwi_noeu", "h": h.key, "dest": kd})
+                tasks.append({"key": f"KF|{h.key}|{kd}", "src": "kiwi_fast", "h": h.key, "dest": kd})
+                tasks.append({"key": f"GC|{h.key}|{kd}", "src": "gf_check", "h": h.key, "dest": kd})
             if gf_ok and P.GOOGLE_ENABLED and dest in P.DESTINATIONS:
                 for n in range(P.NIGHTS_MAIN[0], P.NIGHTS_MAIN[1] + 1):
                     tasks.append({"key": f"G|{h.key}|{dest}|{n}", "src": "gf_cal", "h": h.key,
@@ -152,6 +155,45 @@ def open_jaw(k: kiwi.Client, task: dict, h: HC.Holiday, best: dict, today: str) 
         oj[f"{task['a']}-{task['b']}"] = min(combos, key=lambda c: (c["price"], c["vac"]))
     return len(combos)
 
+def google_check(task: dict, h: HC.Holiday, best: dict, today: str) -> int:
+    """Google's view of the cheapest dates found so far: the cheapest itinerary on Google for
+    exactly those dates, and the cheapest with at most one stop. Gives a second price, a real
+    airline itinerary (often shorter than Kiwi's) and a direct Google Flights link."""
+    b = best.get(h.key, {}).get(task["dest"], {})
+    o = b.get("now")
+    if not o:
+        return 0
+    dest = o["dest"] if o["dest"] in P.DESTINATIONS else ("NRT" if task["dest"] == "TYO" else task["dest"])
+    out = {}
+    calls = 0
+    for label, extra in (("any", []), ("onestop", ["--stops", "1"])):
+        d = fli(["flights", P.ORIGIN, dest, o["dep"], "--return", o["ret"], "--class", "ECONOMY",
+                 "--sort", "CHEAPEST", "--exclude-airlines", ",".join(P.EXCLUDE_AIRLINES), *extra])
+        calls += 1
+        time.sleep(P.PACE_SECONDS)
+        fl = [f for f in (d.get("flights") or []) if f.get("price")]
+        if not fl:
+            continue
+        f = min(fl, key=lambda x: x["price"])
+
+        def side(seg):
+            legs = (seg or {}).get("legs") or []
+            code = lambda a: a.get("code") if isinstance(a, dict) else str(a or "?")
+            return {"via": [code(l.get("arrival_airport")) for l in legs[:-1]],
+                    "airlines": sorted({(l.get("airline") or {}).get("name", "?") for l in legs}),
+                    "hours": round(((seg or {}).get("duration") or 0) / 60, 1)}
+        so, sr = side(f.get("outbound")), side(f.get("return"))
+        if any(v in P.BANNED_AIRPORTS for v in so["via"] + sr["via"]):
+            continue
+        out[label] = {"price": round(f["price"]), "via_out": so["via"], "via_ret": sr["via"],
+                      "hours_out": so["hours"], "hours_ret": sr["hours"],
+                      "airlines": sorted(set(so["airlines"]) | set(sr["airlines"])),
+                      "separate": bool(f.get("self_transfer")), "dep": o["dep"], "ret": o["ret"],
+                      "nights": o["nights"], "vac": o["vac"], "dest": dest, "src": "google", "seen": today}
+    if out:
+        best[h.key][task["dest"]]["google"] = out
+    return calls
+
 
 def overdue(tasks: list[dict], last: dict) -> list[dict]:
     t = now()
@@ -200,13 +242,17 @@ def kiwi_points(k: kiwi.Client, task: dict, h: HC.Holiday, no_europe: bool = Fal
     else:
         a, b = h.dep[0].isoformat(), h.dep[1].isoformat()
         lo, hi = P.NIGHTS_FLEX
-    excl_air = set(P.BANNED_AIRPORTS) | (set(P.EUROPE_HUBS_KIWI) if no_europe else set())
+    countries = P.BANNED_COUNTRIES + ("," + P.EUROPE_COUNTRIES if no_europe else "")
     args = dict(flyFrom=P.ORIGIN, flyTo=task["dest"],
                 departureDate=kiwi.ddmmyyyy(a), departureDateTo=kiwi.ddmmyyyy(b),
                 nights_in_dst_from=lo, nights_in_dst_to=hi,
                 cabinClass="M", currency="USD", adults=1, max_sector_stopovers=2,
                 exclude_airlines=",".join(P.EXCLUDE_AIRLINES),
-                exclude_stopover_airports=",".join(sorted(excl_air)))
+                exclude_stopover_airports=",".join(sorted(P.BANNED_AIRPORTS)),
+                exclude_stopover_countries=countries)
+    if task["src"] == "kiwi_fast":  # short routes: one connection, limited hours, one ticket
+        args.update(max_sector_stopovers=1, max_fly_duration=P.FAST_HOURS.get(task["dest"], 20),
+                    allow_self_transfer=False)
     pts = []
     for it in k.search(**args):
         o, r = it.get("outbound") or {}, it.get("inbound") or it.get("return") or {}
@@ -313,7 +359,10 @@ def update_best(best: dict, h: HC.Holiday, group: str, pts: list[dict], today: s
     prev = b.get("prev_day_price")
     if prev and cheapest["price"] <= prev * (1 - P.DROP_ALERT) and not (prev_low and cheapest["price"] < prev_low["price"]):
         alerts.append({"type": "drop", "h": h.key, "hname": h.name, "group": group, "o": cheapest, "prev": prev})
+    fast_h = P.FAST_HOURS.get(group, 20)
     for name, pred in (("noeu", lambda o: o.get("europe") is False),
+                       ("fast", lambda o: o.get("hours_out") is not None and max(o["hours_out"], o["hours_ret"]) <= fast_h
+                        and max(len(o["via_out"]), len(o["via_ret"])) <= 1),
                        ("onestop", lambda o: o.get("via_out") is not None and max(len(o["via_out"]), len(o["via_ret"])) <= 1),
                        ("fewvac", lambda o: True)):
         cand = [o for o in main_opts if pred(o)]
@@ -367,6 +416,16 @@ def main() -> int:
             break
         h = hols[task["h"]]
         try:
+            if task["src"] == "gf_check":
+                if not P.GOOGLE_ENABLED or (state.get("blocked_until") and now() < datetime.fromisoformat(state["blocked_until"])):
+                    continue
+                n = google_check(task, hols[task["h"]], best, today)
+                if n:  # nothing to check yet (no Kiwi price for this destination): try again next run
+                    state["last"][task["key"]] = now().isoformat(timespec="seconds")
+                stats["calls"] += n
+                g = best.get(task["h"], {}).get(task["dest"], {}).get("google", {})
+                print(f"  {task['key']}: " + ", ".join(f"{k} ${v['price']}" for k, v in g.items()))
+                continue
             if task["src"] == "kiwi_oj":
                 if k is None:
                     k = kiwi.Client()
@@ -379,7 +438,7 @@ def main() -> int:
             if task["src"].startswith("kiwi"):
                 if k is None:
                     k = kiwi.Client()
-                pts = kiwi_points(k, task, h, no_europe=task["src"] == "kiwi_noeu")
+                pts = kiwi_points(k, task, h, no_europe=task["src"] in ("kiwi_noeu", "kiwi_fast"))
                 time.sleep(P.KIWI_PACE_SECONDS)
             else:
                 if state.get("blocked_until") and now() < datetime.fromisoformat(state["blocked_until"]):

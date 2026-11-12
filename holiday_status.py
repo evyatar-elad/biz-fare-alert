@@ -14,12 +14,13 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import holiday_cal as HC
+import holiday_text as T
 from profiles import holidays as P
 
 DATA = Path(__file__).parent / "data" / "holidays"
 OUT = Path(__file__).parent / "docs" / "holidays.html"
 IL = ZoneInfo("Asia/Jerusalem")
-NAMES = {**{k: v[0] for k, v in P.DESTINATIONS.items()}, "TYO": "טוקיו"}
+NAMES = T.NAMES
 FRESH_DAYS = 3  # matrix cells older than this are not shown
 
 
@@ -50,30 +51,32 @@ def group_name(g: str) -> str:
 
 
 def route_txt(o: dict) -> str:
-    if o.get("via_out") is None:
-        return "<span class=m>מסלול: לבדוק באתר (" + ("Kiwi" if o.get("src") == "kiwi" else "Google") + ")</span>"
-    def one(v):
-        return "ישירה" if not v else "דרך " + "/".join(v)
-    s = one(o["via_out"]) if o["via_out"] == o["via_ret"] else f"הלוך {one(o['via_out'])}, חזור {one(o['via_ret'])}"
-    tags = []
-    if o.get("europe"):
-        tags.append("<span class=tag-warn>דרך אירופה</span>")
-    stops = [v for v in (o.get("via_out") or []) + (o.get("via_ret") or []) if v in P.STOPOVER_HUBS]
-    if stops:
-        tags.append("<span class=tag>⭐ " + e(P.STOPOVER_HUBS[stops[0]]) + "</span>")
-    if o.get("separate"):
-        tags.append("<span class=tag-warn>כרטיסים נפרדים</span>")
-    hours = f" · {o['hours_out']:g}/{o['hours_ret']:g} שעות" if o.get("hours_out") else ""
-    return e(s) + hours + (" " + " ".join(tags) if tags else "")
+    r = T.route(o)
+    if not r:
+        return "<span class=m>מסלול: לבדוק בקישור</span>"
+    tags = "".join(f" <span class={'tag' if x.startswith('⭐') else 'tag-warn'}>{e(x)}</span>" for x in T.tags(o))
+    return e(r) + tags
 
 
 def opt_cell(o: dict | None, extra: str = "") -> str:
     if not o:
         return "<td class=m>-</td>"
-    notes = f"<br><span class=m>{e(', '.join(o['notes']))}</span>" if o.get("notes") else ""
-    link = f" <a href='{e(o['url'])}' class=lnk>להזמנה</a>" if o.get("url") else ""
+    notes = f"<br><span class=m>✓ {e(', '.join(n.replace('בארץ', 'בבית') for n in o['notes']))}</span>" if o.get("notes") else ""
     return (f"<td><b>${o['price']:,}</b> <span class=m>{dshort(o['dep'])} - {dshort(o['ret'])}, {o['nights']} לילות, "
-            f"<b>{o['vac']}</b> ימי חופש</span>{extra}<br><span style='font-size:13px'>{route_txt(o)}</span>{notes}{link}</td>")
+            f"<b>{o['vac']}</b> ימי חופש</span>{extra}<br><span style='font-size:13px'>{route_txt(o)}</span>{notes}"
+            f"<br>{T.links_html(o)}</td>")
+
+
+def latest_price(prices: dict, o: dict) -> int | None:
+    """The latest price seen for the same source, destination and dates (is the low still there?)."""
+    for sk, series in prices.items():
+        src, dest = sk.split("|", 1)
+        if src != o.get("src"):
+            continue
+        rows = series.get(f"{o['dep']}|{o['nights']}")
+        if rows and (dest == o.get("dest") or ("TYO" if dest in ("NRT", "HND") else dest) == ("TYO" if o.get("dest") in ("NRT", "HND") else o.get("dest"))):
+            return rows[-1][1]
+    return None
 
 
 def trend(curve_rows: list) -> str:
@@ -186,25 +189,50 @@ def main(out: Path = OUT) -> None:
         drows = []
         for g in groups:
             b = hb[g]
-            low = b.get("low")
-            low_txt = (f"<td><b>${low['price']:,}</b><br><span class=m>נמצא {e(low['found'][8:10] + '/' + low['found'][5:7])}</span></td>"
-                       if low else "<td>-</td>")
-            bz = b.get("biz")
-            biz_txt = ("<td class=m>-</td>" if not bz else
-                       f"<td{' class=good' if bz['price'] <= P.BIZ_PEEK_MAX else ''}><b>${bz['price']:,}</b>"
-                       f"<br><span class=m>{dshort(bz['dep'])}, {bz['nights']} לילות</span></td>")
             # "now" from the freshest observation of every (date, nights): a price seen this
             # morning and gone up since is not "now" any more
             fresh = cheapest_within(h, prices, g, today, 99)
             bn = b.get("now")
             if fresh and not (bn and (bn["dep"], bn["nights"], bn["price"]) == (fresh["dep"], fresh["nights"], fresh["price"])):
+                fresh["dest"] = g
                 b = {**b, "now": {**fresh, "notes": HC.notes(h, date.fromisoformat(fresh["dep"]), date.fromisoformat(fresh["ret"]))}}
             cw = cheapest_within(h, prices, g, today, few)
-            few_txt = ("<td class=m>-</td>" if not cw else
-                       f"<td><b>${cw['price']:,}</b><br><span class=m>{dshort(cw['dep'])} - {dshort(cw['ret'])}, "
-                       f"{cw['nights']} לילות, <b>{cw['vac']}</b> ימי חופש</span></td>")
-            drows.append(f"<tr><th>{e(group_name(g))}</th>{opt_cell(b.get('now'))}{few_txt}{low_txt}"
-                         f"<td>{trend(curve.get(h.key, {}).get(g, []))}</td>{opt_cell(b.get('noeu'))}{opt_cell(b.get('onestop'))}{biz_txt}</tr>")
+            if cw:
+                cw["dest"] = g
+                cw["notes"] = HC.notes(h, date.fromisoformat(cw["dep"]), date.fromisoformat(cw["ret"]))
+            low = b.get("low")
+            low_extra = ""
+            if low:
+                lp = latest_price(prices, low)
+                low_extra = (f" <span class=m>(נמצא {e(low['found'][8:10] + '/' + low['found'][5:7])}"
+                             + ("; עדיין זמין" if lp == low["price"] else f"; בבדיקה האחרונה באותם תאריכים: ${lp:,}" if lp else "")
+                             + ")</span>")
+            gch = b.get("google") or {}
+            label, why = T.advice(h, curve, g, (b.get("now") or {}).get("price"), (low or {}).get("price"), today)
+            bz = b.get("biz")
+
+            def line(title, cell):
+                return f"<tr><th class=lab>{title}</th>{cell}</tr>"
+            rows = [
+                line("הזול עכשיו", opt_cell(b.get("now"))),
+                line(f"הזול עם עד {few} ימי חופש", opt_cell(cw)),
+                line(f"קצר וזול (עצירה אחת, עד {P.FAST_HOURS.get(g, 20)} שעות לכיוון)", opt_cell(b.get("fast"))),
+                line("הזול בלי אירופה", opt_cell(b.get("noeu"))),
+            ]
+            for k, lab in (("any", "גוגל לתאריכים האלה"), ("onestop", "גוגל, עצירה אחת לכל היותר")):
+                if gch.get(k):
+                    rows.append(line(lab, opt_cell(gch[k])))
+            rows.append(line("הזול מאז שהתחלנו", opt_cell(low, low_extra)))
+            if bz:
+                rows.append(line("ביזנס (הצצה)", f"<td{' class=good' if bz['price'] <= P.BIZ_PEEK_MAX else ''}><b>${bz['price']:,}</b> "
+                                 f"<span class=m>{dshort(bz['dep'])}, {bz['nights']} לילות</span><br>{T.links_html({**bz, 'dest': g})}</td>"))
+            nowp = (b.get("now") or {}).get("price")
+            drows.append(
+                f"<details class=destcard><summary><b class=dname>{e(group_name(g))}</b> "
+                f"{f'<b>${nowp:,}</b>' if nowp else ''} <span class=adv>{e(label)}</span> "
+                f"<span class=m>{trend(curve.get(h.key, {}).get(g, []))}</span></summary>"
+                f"<div class=m style='margin:6px 0'>מתי לקנות: {e(why)}</div>"
+                f"<div class=scroll><table class=dest>{''.join(rows)}</table></div></details>")
         def rt_price(code):
             g = "TYO" if code in ("NRT", "HND") else code
             return (hb.get(g, {}).get("now") or {}).get("price")
@@ -232,8 +260,8 @@ def main(out: Path = OUT) -> None:
 <details class=sub><summary>לפי אורך הטיול</summary><table><tr><th>לילות</th><th>תאריכים</th><th>ימי חופש</th></tr>{per_n}</table></details></div>
 </div>
 <h3>הזול לכל יעד (תיירים, הלוך חזור, נוסע אחד)</h3>
-<div class=scroll><table class=dest><tr><th>יעד</th><th>הזול עכשיו</th><th>הזול עם עד {few} ימי חופש</th><th>הזול מאז שהתחלנו</th><th>מגמה בשבוע</th><th>הזול בלי אירופה</th><th>הזול עם עצירה אחת לכל היותר</th><th>ביזנס (הצצה)</th></tr>
-{''.join(drows) or "<tr><td colspan=8 class=m>עוד אין מחירים לחג הזה</td></tr>"}</table></div>
+<div class=m style="font-size:13px;margin-bottom:6px">לחץ על יעד לפירוט: הזול עכשיו, הזול עם מעט ימי חופש, הקצר והזול, בלי אירופה, מה גוגל מראה לאותם תאריכים, והזול מאז שהתחלנו. לכל אחד קישור לגוגל לאותם תאריכים, ו-Kiwi למסלול עצמו כשהמחיר משם.</div>
+{''.join(drows) or "<div class=m>עוד אין מחירים לחג הזה</div>"}
 <details class=sub><summary><b>Open jaw (בונוס):</b> הלוך לעיר אחת וחזור מאחרת, שני כרטיסים לכיוון אחד</summary>
 <div class=scroll><table>{oj_rows or "<tr><td class=m>עוד אין</td></tr>"}</table></div></details>
 <h3>לוח מחירים לכל יעד</h3>{mats or "<div class=m>עוד אין</div>"}
@@ -262,7 +290,10 @@ th{{color:var(--muted);font-weight:normal;font-size:13px}} .dest th{{color:var(-
 .mx td,.mx th{{padding:3px 4px;font-size:12px;text-align:center;border:1px solid var(--line)}}
 .mx .rowh{{text-align:right;white-space:nowrap}} .cell{{color:#111}} .empty{{background:transparent}}
 .ring{{outline:2px solid var(--ink);outline-offset:-2px;font-weight:bold}}
-details.sub{{margin:6px 0}} details.sub summary{{cursor:pointer;color:var(--ink)}}
+details.sub{{margin:6px 0}}
+.destcard{{border-top:1px solid var(--line);padding:8px 0}} .destcard summary{{cursor:pointer;font-size:16px}}
+.dname{{display:inline-block;min-width:110px}} .adv{{background:#dbeafe;color:#1e3a8a;font-size:12px;padding:1px 8px;border-radius:9px;margin:0 6px}}
+th.lab{{width:170px;color:var(--muted);font-weight:normal;font-size:13px}} details.sub summary{{cursor:pointer;color:var(--ink)}}
 </style></head><body><div class="wrap">
 <header><h1>🌴 חגים - תיירים</h1>
 <div style="opacity:.85;margin-top:4px">טיסות <b>בתיירים</b> הלוך חזור מתל אביב לחגי תשרי ולפסח, לנוסע אחד. מקורות: Kiwi.com ו-Google Flights, וגם ניוזלטרים (נקראים עם AI).
@@ -277,7 +308,8 @@ h.style.color='var(--bad)'; h.textContent='● הדף לא עודכן כבר '+M
 <li>לכל אפשרות מחושב כמה <b>ימי חופש רגילים</b> היא עולה (ראשון-חמישי שאינם חג, ערב חג או חול המועד).</li>
 <li>המחיר קובע. דרך אירופה, כרטיסים נפרדים ועצירות מסומנים כדי שתוכל להחליט. בלי טורקיה ובלי מדינות אויב, גם לא בקונקשן.</li>
 <li>"ביזנס (הצצה)": הזול בביזנס ל-15 לילות בחלון החג (Google Flights). ירוק = עד ${P.BIZ_PEEK_MAX:,}.</li>
-<li>כל מחיר נשמר עם התאריך שבו נמדד, כדי ללמוד עם השנים מתי הכי כדאי להזמין.</li>
+<li>כל מחיר נשמר עם התאריך שבו נמדד. "מתי לקנות" מבוסס רק על המדידות שלנו: אחרי שבועיים של מעקב הבוט אומר אם המחיר בשפל שמדדנו ואם המגמה עולה או יורדת, ומהשנה הבאה גם מה קרה מאותו שלב בעונה הקודמת.</li>
+<li>"ליל הסדר בבית" / "ראש השנה בבית" ליד מחיר = התאריכים האלה מאפשרים להיות בבית באותו ערב. זו רק הערה, לא סינון.</li>
 </ul></details>
 {''.join(sections)}
 <p class=m style="font-size:12px"><a href="https://github.com/evyatar-elad/biz-fare-alert/actions" style="color:inherit">ריצות</a></p>
