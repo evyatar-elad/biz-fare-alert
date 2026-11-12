@@ -157,7 +157,8 @@ def main(out: Path = OUT) -> None:
             f"<td class=m>{e(', '.join(r['notes']))}</td></tr>" for r in bs["top"])
         per_n = "".join(f"<tr><td>{r['nights']}</td><td>{e(HC.fmt(r['dep']))} - {e(HC.fmt(r['ret']))}</td><td>{r['vac']}</td></tr>"
                         for r in bs["per_nights"])
-        groups = sorted(hb, key=lambda g: (hb[g].get("now") or {}).get("price", 10 ** 9))
+        oj = hb.get("_open_jaw", {})
+        groups = sorted((g for g in hb if not g.startswith("_")), key=lambda g: (hb[g].get("now") or {}).get("price", 10 ** 9))
         drows = []
         for g in groups:
             b = hb[g]
@@ -170,6 +171,15 @@ def main(out: Path = OUT) -> None:
                        f"<br><span class=m>{dshort(bz['dep'])}, {bz['nights']} לילות</span></td>")
             drows.append(f"<tr><th>{e(group_name(g))}</th>{opt_cell(b.get('now'))}{low_txt}"
                          f"<td>{trend(curve.get(h.key, {}).get(g, []))}</td>{opt_cell(b.get('noeu'))}{opt_cell(b.get('onestop'))}{biz_txt}</tr>")
+        def rt_price(code):
+            g = "TYO" if code in ("NRT", "HND") else code
+            return (hb.get(g, {}).get("now") or {}).get("price")
+        oj_rows = "".join(
+            f"<tr><td>הלוך ל{e(NAMES.get(k.split('-')[0], k))}, חזור מ{e(NAMES.get(k.split('-')[1], k))}</td>"
+            f"<td><b>${c['price']:,}</b> <span class=m>(${c['parts'][0]:,} + ${c['parts'][1]:,})</span></td>"
+            f"<td class=m>{dshort(c['dep'])} - {dshort(c['ret'])}, {c['nights']} לילות, {c['vac']} ימי חופש</td>"
+            f"<td class=m>{'הלוך חזור ל' + e(NAMES.get(k.split('-')[0], '')) + ': $' + format(rt_price(k.split('-')[0]), ',') if rt_price(k.split('-')[0]) else ''}</td></tr>"
+            for k, c in sorted(oj.items(), key=lambda kv: kv[1]["price"]))
         lead = (h.dep[0] - today).days
         mats = "".join(f"<details class=sub><summary>{e(group_name(g))}</summary>{matrix(h, prices, g, today)}</details>"
                        for g in groups)
@@ -190,6 +200,8 @@ def main(out: Path = OUT) -> None:
 <h3>הזול לכל יעד (תיירים, הלוך חזור, נוסע אחד)</h3>
 <div class=scroll><table class=dest><tr><th>יעד</th><th>הזול עכשיו</th><th>הזול מאז שהתחלנו</th><th>מגמה בשבוע</th><th>הזול בלי אירופה</th><th>הזול עם עצירה אחת לכל היותר</th><th>ביזנס (הצצה)</th></tr>
 {''.join(drows) or "<tr><td colspan=7 class=m>עוד אין מחירים לחג הזה</td></tr>"}</table></div>
+<details class=sub><summary><b>Open jaw (בונוס):</b> הלוך לעיר אחת וחזור מאחרת, שני כרטיסים לכיוון אחד</summary>
+<div class=scroll><table>{oj_rows or "<tr><td class=m>עוד אין</td></tr>"}</table></div></details>
 <h3>לוח מחירים לכל יעד</h3>{mats or "<div class=m>עוד אין</div>"}
 <h3>מבצעים מהניוזלטרים לחג הזה</h3>
 <div class=scroll><table>{news_rows or "<tr><td class=m>עוד לא נמצאו</td></tr>"}</table></div>

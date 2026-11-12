@@ -40,7 +40,7 @@ LOG_F = DATA / "runs.jsonl"
 D1 = timedelta(days=1)
 
 # How often each task is due (hours)
-DUE_H = {"kiwi_day": 24, "kiwi_noeu": 24, "gf_cal": 24, "gf_biz": 48}
+DUE_H = {"kiwi_day": 24, "kiwi_noeu": 24, "gf_cal": 24, "gf_biz": 48, "kiwi_oj": 48}
 BIZ_NIGHTS = 15  # business "peek": one Google calendar per destination and holiday
 TOKYO = {"NRT", "HND"}
 
@@ -94,13 +94,54 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
                         tasks.append({"key": f"K|{h.key}|{kd}|{dep}|{lo}-{hi}", "src": "kiwi_day", "h": h.key,
                                       "dest": kd, "dep": dep.isoformat(), "nights": (lo, hi)})
                 tasks.append({"key": f"KN|{h.key}|{kd}", "src": "kiwi_noeu", "h": h.key, "dest": kd})
-            if gf_ok and P.GOOGLE_ENABLED:
+            if gf_ok and P.GOOGLE_ENABLED and dest in P.DESTINATIONS:
                 for n in range(P.NIGHTS_MAIN[0], P.NIGHTS_MAIN[1] + 1):
                     tasks.append({"key": f"G|{h.key}|{dest}|{n}", "src": "gf_cal", "h": h.key,
                                   "dest": dest, "nights": n})
                 tasks.append({"key": f"GB|{h.key}|{dest}", "src": "gf_biz", "h": h.key, "dest": dest,
                               "nights": BIZ_NIGHTS})
+        if kiwi_ok:
+            for a, b in P.OPEN_JAW:
+                if only and a not in only and b not in only:
+                    continue
+                tasks.append({"key": f"OJ|{h.key}|{a}-{b}", "src": "kiwi_oj", "h": h.key, "a": a, "b": b})
     return tasks
+
+
+def kiwi_oneway(k: kiwi.Client, frm: str, to: str, d0: date, d1: date) -> list[dict]:
+    its = k.search(flyFrom=frm, flyTo=to, departureDate=kiwi.ddmmyyyy(d0.isoformat()),
+                   departureDateTo=kiwi.ddmmyyyy(d1.isoformat()), cabinClass="M", currency="USD", adults=1,
+                   max_sector_stopovers=2, exclude_airlines=",".join(P.EXCLUDE_AIRLINES),
+                   exclude_stopover_airports=",".join(sorted(P.BANNED_AIRPORTS)))
+    out = []
+    for it in its:
+        o = it.get("outbound") or {}
+        if o.get("departureTime") and it.get("price"):
+            out.append({"day": o["departureTime"][:10], "price": round(float(it["price"])),
+                        "via": [x.get("to") for x in (o.get("segments") or [])[:-1]], "url": it.get("bookingUrl")})
+    return out
+
+
+def open_jaw(k: kiwi.Client, task: dict, h: HC.Holiday, best: dict, today: str) -> int:
+    """Bonus next to the round trips: into A, back from B, as two one-way tickets.
+    Measured 12/11: usually dearer than a round trip, so it is shown apart, never instead."""
+    outs = kiwi_oneway(k, P.ORIGIN, task["a"], h.dep[0], h.dep[1])
+    time.sleep(P.KIWI_PACE_SECONDS)
+    rets = kiwi_oneway(k, task["b"], P.ORIGIN, h.dep[0] + P.NIGHTS_MAIN[0] * D1, h.dep[1] + P.NIGHTS_MAIN[1] * D1)
+    combos = []
+    for o in outs:
+        for r in rets:
+            n = (date.fromisoformat(r["day"]) - date.fromisoformat(o["day"])).days
+            if P.NIGHTS_MAIN[0] <= n <= P.NIGHTS_MAIN[1]:
+                dep = date.fromisoformat(o["day"])
+                combos.append({"price": o["price"] + r["price"], "dep": o["day"], "ret": r["day"], "nights": n,
+                               "parts": [o["price"], r["price"]], "via_out": o["via"], "via_ret": r["via"],
+                               "urls": [o["url"], r["url"]], "vac": HC.vacation(h, dep, dep + n * D1)["vac"],
+                               "notes": HC.notes(h, dep, dep + n * D1), "seen": today})
+    oj = best.setdefault(h.key, {}).setdefault("_open_jaw", {})
+    if combos:
+        oj[f"{task['a']}-{task['b']}"] = min(combos, key=lambda c: (c["price"], c["vac"]))
+    return len(combos)
 
 
 def overdue(tasks: list[dict], last: dict) -> list[dict]:
@@ -315,6 +356,15 @@ def main() -> int:
             break
         h = hols[task["h"]]
         try:
+            if task["src"] == "kiwi_oj":
+                if k is None:
+                    k = kiwi.Client()
+                n = open_jaw(k, task, hols[task["h"]], best, today)
+                time.sleep(P.KIWI_PACE_SECONDS)
+                state["last"][task["key"]] = now().isoformat(timespec="seconds")
+                stats["calls"] += 2
+                print(f"  {task['key']}: {n} צירופים")
+                continue
             if task["src"].startswith("kiwi"):
                 if k is None:
                     k = kiwi.Client()
