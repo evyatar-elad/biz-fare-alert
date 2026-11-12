@@ -51,7 +51,7 @@ def group_name(g: str) -> str:
 
 def route_txt(o: dict) -> str:
     if o.get("via_out") is None:
-        return "<span class=m>(גוגל: מסלול לא ידוע)</span>"
+        return "<span class=m>מסלול: לבדוק באתר (" + ("Kiwi" if o.get("src") == "kiwi" else "Google") + ")</span>"
     def one(v):
         return "ישירה" if not v else "דרך " + "/".join(v)
     s = one(o["via_out"]) if o["via_out"] == o["via_ret"] else f"הלוך {one(o['via_out'])}, חזור {one(o['via_ret'])}"
@@ -193,6 +193,12 @@ def main(out: Path = OUT) -> None:
             biz_txt = ("<td class=m>-</td>" if not bz else
                        f"<td{' class=good' if bz['price'] <= P.BIZ_PEEK_MAX else ''}><b>${bz['price']:,}</b>"
                        f"<br><span class=m>{dshort(bz['dep'])}, {bz['nights']} לילות</span></td>")
+            # "now" from the freshest observation of every (date, nights): a price seen this
+            # morning and gone up since is not "now" any more
+            fresh = cheapest_within(h, prices, g, today, 99)
+            bn = b.get("now")
+            if fresh and not (bn and (bn["dep"], bn["nights"], bn["price"]) == (fresh["dep"], fresh["nights"], fresh["price"])):
+                b = {**b, "now": {**fresh, "notes": HC.notes(h, date.fromisoformat(fresh["dep"]), date.fromisoformat(fresh["ret"]))}}
             cw = cheapest_within(h, prices, g, today, few)
             few_txt = ("<td class=m>-</td>" if not cw else
                        f"<td><b>${cw['price']:,}</b><br><span class=m>{dshort(cw['dep'])} - {dshort(cw['ret'])}, "
