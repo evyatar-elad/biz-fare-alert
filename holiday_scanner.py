@@ -60,9 +60,11 @@ def load(p: Path, default):
         return default
 
 
-def save(p: Path, obj) -> None:
+def save(p: Path, obj, compact: bool = False) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(obj, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
+    txt = (json.dumps(obj, ensure_ascii=False, separators=(",", ":"), sort_keys=True) if compact
+           else json.dumps(obj, ensure_ascii=False, indent=1, sort_keys=True))
+    p.write_text(txt, encoding="utf-8")
 
 
 def prices_file(hkey: str) -> Path:
@@ -419,7 +421,7 @@ def main() -> int:
     stats["alerts"] = len(alerts)
     if not a.dry_run:
         for hk, pr in price_cache.items():
-            save(prices_file(hk), pr)
+            save(prices_file(hk), pr, compact=True)  # years of observations: keep the file small
         save(STATE_F, state)
         save(BEST_F, best)
         save(CURVE_F, curve)

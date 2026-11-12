@@ -29,16 +29,17 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: holidays
-  cancel-in-progress: false
-
 jobs:
   holidays:
     if: github.event_name != 'push' || contains(github.event.head_commit.message, '[hol-')
+    # job level, so pushes without a [hol-...] tag (skipped) do not cancel a waiting run
+    concurrency:
+      group: holidays
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
+      PYTHONUNBUFFERED: "1"
       MODE: ${{ inputs.mode || (contains(github.event.head_commit.message, '[hol-scan]') && 'scan') || (contains(github.event.head_commit.message, '[hol-probe]') && 'probe') || (contains(github.event.head_commit.message, '[hol-aitest]') && 'aitest') || 'diag' }}
     steps:
       - uses: actions/checkout@v4
