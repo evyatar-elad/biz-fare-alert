@@ -209,8 +209,10 @@ def kiwi_points(k: kiwi.Client, task: dict, h: HC.Holiday, no_europe: bool = Fal
         info = itin_info(it)
         if any(v in P.BANNED_AIRPORTS for s in ("out", "ret") for v in info[s]["via"]):
             continue
+        # group by the searched destination (Kiwi may land at another airport of the city,
+        # e.g. DMK for Bangkok); the real airport is kept for links
         pts.append({"dep": dep.isoformat(), "nights": (ret - dep).days, "price": round(float(it["price"])),
-                    "src": "kiwi", "dest": info["out"]["to"] or task["dest"], "info": info})
+                    "src": "kiwi", "dest": task["dest"], "arr": info["out"]["to"], "info": info})
     return pts
 
 
@@ -261,7 +263,7 @@ def option(h: HC.Holiday, p: dict, today: str) -> dict:
     ret = dep + p["nights"] * D1
     v = HC.vacation(h, dep, ret)
     o = {"price": p["price"], "dep": p["dep"], "ret": ret.isoformat(), "nights": p["nights"], "src": p["src"],
-         "dest": p["dest"], "vac": v["vac"], "notes": HC.notes(h, dep, ret), "seen": today}
+         "dest": p.get("arr") or p["dest"], "vac": v["vac"], "notes": HC.notes(h, dep, ret), "seen": today}
     if p.get("info"):
         i = p["info"]
         o.update(via_out=i["out"]["via"], via_ret=i["ret"]["via"], hours_out=i["out"]["hours"],
