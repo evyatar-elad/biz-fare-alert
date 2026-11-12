@@ -1,0 +1,80 @@
+name: holidays
+
+# Second system: "holidays - economy" (see CLAUDE.md). Fully separate from the business
+# scan: own runner (so Google's rate limit is counted separately), own concurrency group,
+# own data (data/holidays/), own page (docs/holidays.html) and own email.
+#
+# Scheduled every 2 hours (approved by the user 12/11). Schedules run only from main.
+# The email is still printed only (send_email) until the user approves sending it.
+
+on:
+  schedule:
+    - cron: "41 */2 * * *"   # every 2 hours
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "scan | probe | diag | aitest"
+        default: "scan"
+      minutes:
+        description: "time budget (minutes)"
+        default: "45"
+      send_email:
+        description: "really send the holidays email (otherwise only printed)"
+        type: boolean
+        default: false
+  # On a claude/** branch, a commit message with [hol-scan], [hol-probe] or [hol-diag] runs that mode.
+  push:
+    branches: ["claude/**"]
+
+permissions:
+  contents: write
+
+jobs:
+  holidays:
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[hol-')
+    # job level, so pushes without a [hol-...] tag (skipped) do not cancel a waiting run
+    concurrency:
+      group: holidays
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      PYTHONUNBUFFERED: "1"
+      MODE: ${{ inputs.mode || (contains(github.event.head_commit.message, '[hol-scan]') && 'scan') || (contains(github.event.head_commit.message, '[hol-probe]') && 'probe') || (contains(github.event.head_commit.message, '[hol-aitest]') && 'aitest') || 'diag' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements-holidays.txt
+      - name: tests
+        run: python test_holidays.py
+      - name: run
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          case "$MODE" in
+            scan)  python holiday_scanner.py --minutes "${{ inputs.minutes || '45' }}" ;;
+            probe) python holiday_probe.py ;;
+            aitest) python news_ai.py --selftest ;;
+            *)     python holiday_diag.py ;;
+          esac
+      - name: holidays email
+        if: always() && env.MODE == 'scan'
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python holiday_notify.py ${{ inputs.send_email != true && '--dry-run' || '' }}
+      - name: holidays page
+        if: always() && env.MODE == 'scan'
+        run: python holiday_status.py
+      - name: save
+        if: always()
+        run: |
+          git config user.name "biz-fare-alert"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/holidays docs/holidays.html 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "holidays: $MODE $(date -u +%F_%H%M)"
+          for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done

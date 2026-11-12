@@ -58,6 +58,7 @@ jobs:
           MAIL_TO: ${{ secrets.MAIL_TO }}
           NEWS_USER: ${{ secrets.NEWS_USER }}
           NEWS_PASS: ${{ secrets.NEWS_PASS }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python newsletters.py
       - name: daily digest
         if: always() && inputs.test_email != true

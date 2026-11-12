@@ -1,2 +1,3 @@
 flights==0.9.0
 click
+anthropic>=2,<3
