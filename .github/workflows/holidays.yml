@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "scan | probe | diag"
+        description: "scan | probe | diag | aitest"
         default: "scan"
       minutes:
         description: "time budget (minutes)"
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
-      MODE: ${{ inputs.mode || (contains(github.event.head_commit.message, '[hol-scan]') && 'scan') || (contains(github.event.head_commit.message, '[hol-probe]') && 'probe') || 'diag' }}
+      MODE: ${{ inputs.mode || (contains(github.event.head_commit.message, '[hol-scan]') && 'scan') || (contains(github.event.head_commit.message, '[hol-probe]') && 'probe') || (contains(github.event.head_commit.message, '[hol-aitest]') && 'aitest') || 'diag' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -50,10 +50,13 @@ jobs:
       - name: tests
         run: python test_holidays.py
       - name: run
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           case "$MODE" in
             scan)  python holiday_scanner.py --minutes "${{ inputs.minutes || '45' }}" ;;
             probe) python holiday_probe.py ;;
+            aitest) python news_ai.py --selftest ;;
             *)     python holiday_diag.py ;;
           esac
       - name: holidays email

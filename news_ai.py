@@ -163,3 +163,19 @@ def route(res: dict, holidays: list, holiday_dests: dict, biz_dests: dict, biz_m
                 out["holidays"].append({**d, "usd": price_usd, "holiday": h.key, "holiday_name": h.name,
                                         "dates_known": bool(a and b)})
     return out
+
+
+SAMPLE = """Flash sale! Fly from Tel Aviv to Bangkok from $649 return in Economy, and Business Class
+to Ho Chi Minh City from $1,590 return. Travel 1 April - 15 May 2027. Book by 30 November 2026.
+Prices per person, including taxes. Unsubscribe | Our business address: 1 Airport Rd."""
+
+if __name__ == "__main__":
+    import sys
+    if "--selftest" in sys.argv:
+        if not enabled():
+            print("news_ai selftest: no ANTHROPIC_API_KEY")
+            sys.exit(1)
+        r = extract("Sample Airline <news@example.com>", "Flash sale to Asia", SAMPLE)
+        print(json.dumps(r, ensure_ascii=False, indent=1))
+        print(json.dumps(json.loads(USAGE_F.read_text()), indent=1))
+        sys.exit(0 if r and r.get("deals") else 1)
