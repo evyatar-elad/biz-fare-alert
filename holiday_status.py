@@ -222,6 +222,20 @@ def main(out: Path = OUT) -> None:
             for k, lab in (("any", "גוגל לתאריכים האלה"), ("onestop", "גוגל, עצירה אחת לכל היותר")):
                 if gch.get(k):
                     rows.append(line(lab, opt_cell(gch[k])))
+            nowp0 = (b.get("now") or {}).get("price")
+            for hub, st in sorted((b.get("stops") or {}).items(), key=lambda kv: kv[1]["price"]):
+                parts = []
+                if st.get("n_out"):
+                    parts.append(f"{st['n_out']} {'לילה' if st['n_out'] == 1 else 'לילות'} בהלוך")
+                if st.get("n_back"):
+                    parts.append(f"{st['n_back']} {'לילה' if st['n_back'] == 1 else 'לילות'} בחזור")
+                diff = f" ({'+' if st['price'] >= nowp0 else '-'}${abs(st['price'] - nowp0):,} מהזול עכשיו)" if nowp0 else ""
+                legs = " · ".join(f"{e(T.city(l[0]))}-{e(T.city(l[1]))} {dshort(l[2])}" for l in st["legs"])
+                rows.append(line(f"עצירה ב{e(T.city(hub))}, כרטיס אחד",
+                                 f"<td><b>${st['price']:,}</b>{e(diff)} <span class=m>{e(', '.join(parts))}, {st['vac']} ימי חופש"
+                                 f"{' (בדיקה ישנה)' if st.get('stale') else ''}</span><br><span style='font-size:13px'>{legs}"
+                                 f" · {e(', '.join(st['airlines']))}</span><br>"
+                                 f"<a href='{e(T.google_multi_link(st['legs']))}' class=lnk target=_blank>לחיפוש הזה בגוגל</a></td>"))
             rows.append(line("הזול מאז שהתחלנו", opt_cell(low, low_extra)))
             if bz:
                 rows.append(line("ביזנס (הצצה)", f"<td{' class=good' if bz['price'] <= P.BIZ_PEEK_MAX else ''}><b>${bz['price']:,}</b> "
@@ -236,7 +250,14 @@ def main(out: Path = OUT) -> None:
         def rt_price(code):
             g = "TYO" if code in ("NRT", "HND") else code
             return (hb.get(g, {}).get("now") or {}).get("price")
-        oj_rows = "".join(
+        oj1 = hb.get("_open_jaw_1t", {})
+        oj1_rows = "".join(
+            f"<tr><td>הלוך ל{e(T.city(k.split('-')[0]))}, חזור מ{e(T.city(k.split('-')[1]))} <b>(כרטיס אחד)</b></td>"
+            f"<td><b>${c['price']:,}</b> <span class=m>{e(', '.join(c['airlines']))}</span></td>"
+            f"<td class=m>{dshort(c['legs'][0][2])} - {dshort(c['legs'][-1][2])}, {c['nights']} לילות, {c['vac']} ימי חופש</td>"
+            f"<td><a href='{e(T.google_multi_link(c['legs']))}' class=lnk target=_blank>לחיפוש בגוגל</a></td></tr>"
+            for k, c in sorted(oj1.items(), key=lambda kv: kv[1]["price"]))
+        oj_rows = oj1_rows + "".join(
             f"<tr><td>הלוך ל{e(NAMES.get(k.split('-')[0], k))}, חזור מ{e(NAMES.get(k.split('-')[1], k))}</td>"
             f"<td><b>${c['price']:,}</b> <span class=m>(${c['parts'][0]:,} + ${c['parts'][1]:,})</span></td>"
             f"<td class=m>{dshort(c['dep'])} - {dshort(c['ret'])}, {c['nights']} לילות, {c['vac']} ימי חופש</td>"
@@ -262,7 +283,7 @@ def main(out: Path = OUT) -> None:
 <h3>הזול לכל יעד (תיירים, הלוך חזור, נוסע אחד)</h3>
 <div class=m style="font-size:13px;margin-bottom:6px">לחץ על יעד לפירוט: הזול עכשיו, הזול עם מעט ימי חופש, הקצר והזול, בלי אירופה, מה גוגל מראה לאותם תאריכים, והזול מאז שהתחלנו. לכל אחד קישור לגוגל לאותם תאריכים, ו-Kiwi למסלול עצמו כשהמחיר משם.</div>
 {''.join(drows) or "<div class=m>עוד אין מחירים לחג הזה</div>"}
-<details class=sub><summary><b>Open jaw (בונוס):</b> הלוך לעיר אחת וחזור מאחרת, שני כרטיסים לכיוון אחד</summary>
+<details class=sub><summary><b>Open jaw (בונוס):</b> הלוך לעיר אחת וחזור מאחרת. "כרטיס אחד" = מגוגל (רב-יעדי); אחרת שני כרטיסים לכיוון אחד מ-Kiwi</summary>
 <div class=scroll><table>{oj_rows or "<tr><td class=m>עוד אין</td></tr>"}</table></div></details>
 <h3>לוח מחירים לכל יעד</h3>{mats or "<div class=m>עוד אין</div>"}
 <h3>מבצעים מהניוזלטרים לחג הזה</h3>
@@ -307,6 +328,7 @@ h.style.color='var(--bad)'; h.textContent='● הדף לא עודכן כבר '+M
 <li>לא רק מציאות: תמיד מוצג <b>הזול ביותר</b> שנמצא. מייל נשלח רק כשיש שיא זול חדש או ירידה של {round(P.DROP_ALERT * 100)}% ומעלה, ובנוסף סיכום שבועי.</li>
 <li>לכל אפשרות מחושב כמה <b>ימי חופש רגילים</b> היא עולה (ראשון-חמישי שאינם חג, ערב חג או חול המועד).</li>
 <li>המחיר קובע. דרך אירופה, כרטיסים נפרדים ועצירות מסומנים כדי שתוכל להחליט. בלי טורקיה ובלי מדינות אויב, גם לא בקונקשן.</li>
+<li><b>עצירה בכרטיס אחד:</b> לכל יעד הבוט בודק בגוגל (חיפוש רב-יעדי) מסלול עם לילה-שניים בעיר ביניים (באקו, טשקנט, אבו דאבי, דובאי ועוד), כרטיס אחד של החברה, כמו הכרטיס שלך לסין דרך באקו. אם טיסה מבוטלת, הכל מבוטל יחד. התאריכים: הזולים שנמצאו ליעד.</li>
 <li>"ביזנס (הצצה)": הזול בביזנס ל-15 לילות בחלון החג (Google Flights). ירוק = עד ${P.BIZ_PEEK_MAX:,}.</li>
 <li>כל מחיר נשמר עם התאריך שבו נמדד. "מתי לקנות" מבוסס רק על המדידות שלנו: אחרי שבועיים של מעקב הבוט אומר אם המחיר בשפל שמדדנו ואם המגמה עולה או יורדת, ומהשנה הבאה גם מה קרה מאותו שלב בעונה הקודמת.</li>
 <li>"ליל הסדר בבית" / "ראש השנה בבית" ליד מחיר = התאריכים האלה מאפשרים להיות בבית באותו ערב. זו רק הערה, לא סינון.</li>

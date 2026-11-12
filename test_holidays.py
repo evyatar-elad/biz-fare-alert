@@ -69,6 +69,12 @@ def scanner_and_page():
     assert alerts and alerts[0]["type"] == "low" and alerts[0]["prev"] == 850, alerts
     S.update_curve(curve, t, "BKK", 700, "2026-11-13")
     assert curve[t.key]["BKK"][0][1] == (t.core[0] - date(2026, 11, 13)).days
+    best[t.key]["BKK"]["stops"] = {"GYD": {"price": 959, "legs": [["TLV", "GYD", "2027-10-08"], ["GYD", "BKK", "2027-10-09"],
+                                                                 ["BKK", "GYD", "2027-10-21"], ["GYD", "TLV", "2027-10-23"]],
+                                           "airlines": ["Azerbaijan Airlines"], "hours": [3, 8, 8, 3], "via": [[], [], [], []],
+                                           "hub": "GYD", "n_out": 1, "n_back": 2, "vac": 3, "nights": 15, "seen": "2026-11-13"}}
+    best[t.key]["_open_jaw_1t"] = {"KIX-NRT": {"price": 1200, "legs": [["TLV", "KIX", "2027-10-08"], ["NRT", "TLV", "2027-10-23"]],
+                                               "airlines": ["X"], "nights": 15, "vac": 3, "seen": "2026-11-13"}}
     tmp = Path(tempfile.mkdtemp())
     (tmp / "prices").mkdir()
     import json
@@ -80,6 +86,7 @@ def scanner_and_page():
     HS.main(out)
     html_ = out.read_text()
     assert "חגי תשרי" in html_ and "$700" in html_ and "ימי חופש" in html_
+    assert "עצירה בבאקו, כרטיס אחד" in html_ and "$959" in html_ and "(כרטיס אחד)" in html_
 
 
 if __name__ == "__main__":

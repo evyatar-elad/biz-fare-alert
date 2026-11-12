@@ -41,7 +41,7 @@ D1 = timedelta(days=1)
 
 # How often each task is due (hours)
 DUE_H = {"kiwi_day": 24, "kiwi_noeu": 24, "kiwi_fast": 24, "gf_cal": 24, "gf_biz": 48, "kiwi_oj": 48,
-         "gf_check": 24}
+         "gf_check": 24, "gf_stop": 48, "gf_oj": 48}
 BIZ_NIGHTS = 15  # business "peek": one Google calendar per destination and holiday
 TOKYO = {"NRT", "HND"}
 
@@ -99,6 +99,9 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
                 tasks.append({"key": f"KN|{h.key}|{kd}", "src": "kiwi_noeu", "h": h.key, "dest": kd})
                 tasks.append({"key": f"KF|{h.key}|{kd}", "src": "kiwi_fast", "h": h.key, "dest": kd})
                 tasks.append({"key": f"GC|{h.key}|{kd}", "src": "gf_check", "h": h.key, "dest": kd})
+                for hub, n_out, n_back in P.STOPOVER_PLANS + P.STOPOVER_EXTRA.get(kd, []):
+                    tasks.append({"key": f"ST|{h.key}|{kd}|{hub}", "src": "gf_stop", "h": h.key, "dest": kd,
+                                  "hub": hub, "n_out": n_out, "n_back": n_back})
             if gf_ok and P.GOOGLE_ENABLED and dest in P.DESTINATIONS:
                 for n in range(P.NIGHTS_MAIN[0], P.NIGHTS_MAIN[1] + 1):
                     tasks.append({"key": f"G|{h.key}|{dest}|{n}", "src": "gf_cal", "h": h.key,
@@ -110,12 +113,13 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
                 if only and a not in only and b not in only:
                     continue
                 tasks.append({"key": f"OJ|{h.key}|{a}-{b}", "src": "kiwi_oj", "h": h.key, "a": a, "b": b})
+                tasks.append({"key": f"OJG|{h.key}|{a}-{b}", "src": "gf_oj", "h": h.key, "a": a, "b": b})
     # round robin: when everything is equally overdue (e.g. the first sweep), spread the work
     # over all holidays and destinations instead of finishing one destination at a time
     seen: dict = {}
     for t in tasks:
         g = (t["h"], t.get("dest") or t.get("a"))
-        if t["src"] in ("kiwi_noeu", "kiwi_fast", "kiwi_oj", "gf_check", "gf_biz"):
+        if t["src"] in ("kiwi_noeu", "kiwi_fast", "kiwi_oj", "gf_check", "gf_biz", "gf_stop", "gf_oj"):
             t["rr"] = -1  # one task per holiday and destination, and the most informative: first
             continue
         t["rr"] = seen.get(g, 0)
@@ -196,6 +200,75 @@ def google_check(task: dict, h: HC.Holiday, best: dict, today: str) -> int:
     if out:
         best[h.key][task["dest"]]["google"] = out
     return calls
+
+def multi_search(legs: list[tuple[str, str, str]]) -> list[dict]:
+    """Google multi-city (one ticket) via fli_multi. A 429 stops Google for this run."""
+    import fli_multi
+    try:
+        return fli_multi.search("ECONOMY", legs, P.EXCLUDE_AIRLINES)["trips"]
+    except Exception as e:  # noqa: BLE001
+        msg = str(e)
+        if "429" in msg or "rate" in msg.lower():
+            raise Blocked(msg) from e
+        print(f"  ! multi: {type(e).__name__}: {msg[:150]}")
+        return []
+
+
+def trip_summary(t: dict, legs: list, today: str) -> dict:
+    """Display-ready summary of a multi-city trip."""
+    banned = any(f["from"] in P.BANNED_AIRPORTS or f["to"] in P.BANNED_AIRPORTS for l in t["legs"] for f in l["flights"])
+    return {"price": round(t["price"]), "legs": [list(x) for x in legs], "seen": today, "banned": banned,
+            "airlines": sorted({f["airline"] for l in t["legs"] for f in l["flights"]}),
+            "hours": [l["hours"] for l in t["legs"]],
+            "via": [[f["to"] for f in l["flights"][:-1]] for l in t["legs"]]}
+
+
+def stopover(task: dict, h: HC.Holiday, best: dict, today: str) -> int:
+    """One ticket with nights at a hub, on the cheapest dates found so far."""
+    b = best.get(h.key, {}).get(task["dest"], {})
+    o = b.get("now")
+    if not o:
+        return 0
+    dest = o["dest"] if o["dest"] in P.DESTINATIONS else ("NRT" if task["dest"] == "TYO" else task["dest"])
+    dep, ret = date.fromisoformat(o["dep"]), date.fromisoformat(o["ret"])
+    hub, no, nb = task["hub"], task["n_out"], task["n_back"]
+    legs = []
+    if no:
+        legs += [(P.ORIGIN, hub, dep.isoformat()), (hub, dest, (dep + no * D1).isoformat())]
+    else:
+        legs += [(P.ORIGIN, dest, dep.isoformat())]
+    if nb:
+        legs += [(dest, hub, (ret - nb * D1).isoformat()), (hub, P.ORIGIN, ret.isoformat())]
+    else:
+        legs += [(dest, P.ORIGIN, ret.isoformat())]
+    trips = [t for t in multi_search(legs) if t.get("price")]
+    stops = b.setdefault("stops", {})
+    good = [trip_summary(t, legs, today) for t in trips]
+    good = [g for g in good if not g["banned"]]
+    if good:
+        c = min(good, key=lambda g: g["price"])
+        c.update(hub=hub, n_out=no, n_back=nb, vac=HC.vacation(h, dep, ret)["vac"], nights=(ret - dep).days)
+        stops[hub] = c
+    elif hub in stops and stops[hub].get("seen") != today:
+        stops[hub]["stale"] = True
+    return 1
+
+
+def open_jaw_google(task: dict, h: HC.Holiday, best: dict, today: str) -> int:
+    """Open jaw as ONE ticket (Google multi-city): into A on the cheapest dates to A, back from B."""
+    ga = "TYO" if task["a"] in TOKYO else task["a"]
+    o = best.get(h.key, {}).get(ga, {}).get("now")
+    if not o:
+        return 0
+    legs = [(P.ORIGIN, task["a"], o["dep"]), (task["b"], P.ORIGIN, o["ret"])]
+    trips = [t for t in multi_search(legs) if t.get("price")]
+    good = [g for g in (trip_summary(t, legs, today) for t in trips) if not g["banned"]]
+    if good:
+        c = min(good, key=lambda g: g["price"])
+        dep, ret = date.fromisoformat(o["dep"]), date.fromisoformat(o["ret"])
+        c.update(vac=HC.vacation(h, dep, ret)["vac"], nights=(ret - dep).days)
+        best.setdefault(h.key, {}).setdefault("_open_jaw_1t", {})[f"{task['a']}-{task['b']}"] = c
+    return 1
 
 
 def overdue(tasks: list[dict], last: dict) -> list[dict]:
@@ -428,6 +501,20 @@ def main() -> int:
                 stats["calls"] += n
                 g = best.get(task["h"], {}).get(task["dest"], {}).get("google", {})
                 print(f"  {task['key']}: " + ", ".join(f"{k} ${v['price']}" for k, v in g.items()))
+                continue
+            if task["src"] in ("gf_stop", "gf_oj"):
+                if not P.GOOGLE_ENABLED or (state.get("blocked_until") and now() < datetime.fromisoformat(state["blocked_until"])):
+                    continue
+                wait = P.PACE_SECONDS - (time.time() - gf_last)
+                if wait > 0:
+                    time.sleep(wait)
+                gf_last = time.time()
+                fn = stopover if task["src"] == "gf_stop" else open_jaw_google
+                n = fn(task, hols[task["h"]], best, today)
+                if n:
+                    state["last"][task["key"]] = now().isoformat(timespec="seconds")
+                    stats["calls"] += n
+                    print(f"  {task['key']}: נבדק")
                 continue
             if task["src"] == "kiwi_oj":
                 if k is None:

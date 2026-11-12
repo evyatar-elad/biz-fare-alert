@@ -93,6 +93,15 @@ STOPOVER_HUBS = {
 }
 # - Prefer nonstop or one connection; two only when there is no reasonable alternative.
 
+# Stopovers on ONE ticket (12/11): the user's Azerbaijan Airlines ticket to China had a night
+# in Baku out and two nights back, all one ticket (safer: a cancelled flight cancels the whole
+# trip together). Kiwi does not return such itineraries; Google's multi-city search does
+# (tested: TLV-GYD-DEL with a night out and two nights back = one J2 ticket, $959).
+# Each plan: (hub, nights at the hub on the way out, nights at the hub on the way back).
+STOPOVER_PLANS = [("GYD", 1, 2), ("TAS", 1, 1), ("AUH", 1, 1), ("DXB", 1, 1)]
+STOPOVER_EXTRA = {"DPS": [("BKK", 1, 1), ("SIN", 1, 1)], "HKT": [("BKK", 0, 2)], "GOI": [("BOM", 1, 1)],
+                  "DAD": [("BKK", 1, 1)], "TYO": [("ICN", 1, 1)], "KIX": [("ICN", 1, 1)]}
+
 # Open jaw = a bonus next to the round trips, never instead of them:
 # fly into one city and back from another.
 OPEN_JAW = [
