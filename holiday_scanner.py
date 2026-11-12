@@ -115,6 +115,9 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
     seen: dict = {}
     for t in tasks:
         g = (t["h"], t.get("dest") or t.get("a"))
+        if t["src"] in ("kiwi_noeu", "kiwi_fast", "kiwi_oj", "gf_check", "gf_biz"):
+            t["rr"] = -1  # one task per holiday and destination, and the most informative: first
+            continue
         t["rr"] = seen.get(g, 0)
         seen[g] = t["rr"] + 1
     return tasks
