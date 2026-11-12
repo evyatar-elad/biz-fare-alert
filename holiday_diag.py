@@ -1,13 +1,16 @@
-"""Diagnosis after the first probe (12/11): from GitHub, Google returned an EMPTY economy
-calendar for most destinations (BKK 0/21), while the same request from another machine
-returned 21/21. Find out what changes the answer: airline exclusion, country/language,
-repetition, or the flight search (shopping) instead of the calendar.
+"""Diagnosis 2 (12/11): stopovers of 1-2 nights on ONE ticket.
+
+The user's Azerbaijan Airlines ticket (Sep 2026, one ticket 7712439297609): TLV-GYD 14/9,
+GYD-PEK 15/9 (a night in Baku), PEK-GYD 30/9, GYD-TLV 2/10 (two nights in Baku). Kiwi's
+search returned nothing for 20-48 hour layovers; does Google's multi-city search price such
+itineraries as one ticket? Compare with the plain round trip for the same dates.
 Writes data/holidays/diag.md and the step summary."""
 from __future__ import annotations
 
 import json
 import os
 import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -23,52 +26,66 @@ def say(s=""):
     lines.append(s)
 
 
-def fli(args):
+def pace():
     w = P.PACE_SECONDS - (time.time() - last[0])
     if w > 0:
         time.sleep(w)
     last[0] = time.time()
-    p = subprocess.run(["fli", *args, "--format", "json"], capture_output=True, text=True, timeout=200)
+
+
+def multi(legs):
+    pace()
+    p = subprocess.run([sys.executable, "fli_multi.py", "ECONOMY", *[",".join(l) for l in legs],
+                        "--exclude", ",".join(P.EXCLUDE_AIRLINES)], capture_output=True, text=True, timeout=300)
     try:
-        return json.loads(p.stdout)
+        return json.loads(p.stdout.strip().splitlines()[-1])
+    except (json.JSONDecodeError, IndexError):
+        return {"success": False, "error": (p.stdout + p.stderr)[-300:]}
+
+
+def rt(dest, dep, ret):
+    pace()
+    p = subprocess.run(["fli", "flights", "TLV", dest, dep, "--return", ret, "--class", "ECONOMY",
+                        "--currency", "USD", "--format", "json", "--exclude-airlines", ",".join(P.EXCLUDE_AIRLINES)],
+                       capture_output=True, text=True, timeout=200)
+    try:
+        d = json.loads(p.stdout)
     except json.JSONDecodeError:
-        return {"success": False, "error": (p.stdout + p.stderr)[-200:]}
+        return None
+    ps = [f["price"] for f in d.get("flights") or [] if f.get("price")]
+    return round(min(ps)) if ps else None
 
 
-EX = ["--exclude-airlines", ",".join(P.EXCLUDE_AIRLINES)]
-PES = ["--from", "2027-04-05", "--to", "2027-04-25", "--round", "-d", "15", "--currency", "USD"]
-
-
-def cal(label, dest, extra, cabin="ECONOMY", win=PES):
-    d = fli(["dates", "TLV", dest, *win, "--class", cabin, *extra])
-    pts = sorted(round(x["price"]) for x in d.get("dates", []) if x.get("price"))
-    say(f"| {label} | {dest} | {d.get('success')} | {len(pts)} | {pts[0] if pts else '-'} | {str(d.get('error') or '')[:80]} |")
+CASES = [
+    ("אזרביז'אן: לילה בבאקו הלוך, 2 לילות חזור (כמו הכרטיס לסין)", "DEL",
+     [("TLV", "GYD", "2027-04-16"), ("GYD", "DEL", "2027-04-17"), ("DEL", "GYD", "2027-04-30"), ("GYD", "TLV", "2027-05-02")]),
+    ("אוזבקיסטן: לילה בטשקנט הלוך, לילה בחזור", "BKK",
+     [("TLV", "TAS", "2027-04-16"), ("TAS", "BKK", "2027-04-17"), ("BKK", "TAS", "2027-04-30"), ("TAS", "TLV", "2027-05-01")]),
+    ("איתיחאד: 2 לילות באבו דאבי בהלוך בלבד", "BKK",
+     [("TLV", "AUH", "2027-04-16"), ("AUH", "BKK", "2027-04-18"), ("BKK", "TLV", "2027-05-01")]),
+    ("אמירייטס: לילה בדובאי בחזור בלבד", "HKT",
+     [("TLV", "HKT", "2027-04-16"), ("HKT", "DXB", "2027-04-30"), ("DXB", "TLV", "2027-05-01")]),
+    ("אזרביז'אן לסין, תשרי 2027 (רחוק: האם גוגל כבר רואה)", "PEK",
+     [("TLV", "GYD", "2027-10-04"), ("GYD", "PEK", "2027-10-05"), ("PEK", "GYD", "2027-10-20"), ("GYD", "TLV", "2027-10-22")]),
+]
 
 
 def main():
-    say("# אבחון לוח מחירים מ-GitHub")
-    say("| ניסוי | יעד | הצליח | תאריכים עם מחיר | הזול | שגיאה |")
-    say("|---|---|---|---|---|---|")
-    cal("רגיל", "BKK", [])
-    cal("עם החרגת חברות", "BKK", EX)
-    cal("country IL", "BKK", ["--country", "IL"])
-    cal("country IL + he", "BKK", ["--country", "IL", "--language", "he"])
-    cal("ביקורת (היה מלא)", "HAN", EX)
-    cal("רגיל שוב", "BKK", [])
-    cal("country IL", "SGN", ["--country", "IL"])
-    cal("country IL", "DPS", ["--country", "IL"])
-    cal("country IL", "NRT", ["--country", "IL"])
-    cal("רגיל, 14 לילות", "BKK", [], win=["--from", "2027-04-05", "--to", "2027-04-25", "--round", "-d", "14", "--currency", "USD"])
-    far = ["--from", "2027-07-01", "--to", "2027-07-31", "--round", "-d", "14", "--currency", "USD"]
-    cal("ביזנס יולי 27, רגיל", "SGN", EX, "BUSINESS", far)
-    cal("ביזנס יולי 27, country IL", "SGN", EX + ["--country", "IL"], "BUSINESS", far)
-    say("\n## חיפוש טיסות (לא לוח) לתאריך אחד")
-    for extra, lab in (([], "רגיל"), (["--country", "IL"], "country IL")):
-        d = fli(["flights", "TLV", "BKK", "2027-04-16", "--return", "2027-05-01", "--class", "ECONOMY",
-                 "--currency", "USD", *EX, *extra])
-        fl = d.get("flights") or []
-        ps = sorted(round(f["price"]) for f in fl if f.get("price"))
-        say(f"- {lab}: success={d.get('success')}, {len(fl)} טיסות, הזול {ps[:3]} {str(d.get('error') or '')[:100]}")
+    say("# אבחון: עצירה של לילה-שניים בכרטיס אחד (גוגל, חיפוש רב-יעדי)")
+    for title, dest, legs in CASES:
+        m = multi(legs)
+        trips = m.get("trips") or []
+        dep, ret = legs[0][2], legs[-1][2]
+        base = rt(dest, dep, ret)
+        say(f"\n## {title}")
+        say("מסלול: " + " · ".join(f"{a}-{b} {d[5:]}" for a, b, d in legs))
+        if not trips:
+            say(f"- רב-יעדי: אין תוצאות ({str(m.get('error') or 'ריק')[:150]})")
+        for t in trips[:3]:
+            airl = sorted({f['airline'] for l in t['legs'] for f in l['flights']})
+            say(f"- רב-יעדי: ${round(t['price'])} · {', '.join(airl)} · "
+                + " | ".join(f"{l['flights'][0]['from']}-{l['flights'][-1]['to']} {l['hours']}ש'" for l in t['legs']))
+        say(f"- הלוך חזור רגיל TLV-{dest} לאותם תאריכים: " + (f"${base}" if base else "אין"))
     text = "\n".join(lines) + "\n"
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(text, encoding="utf-8")

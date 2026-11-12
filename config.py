@@ -204,6 +204,11 @@ DIGEST_HOUR_IL = 9
 
 # Deal rule: price at least this fraction below the reference price.
 DROP = 0.35
+# ...and (12/11) also this much below the route's usual price over the whole year (the
+# median over months of each month's cheapest, cheapest source). Found 12/11: Kiwi July
+# Zurich $881 and Nice $1,018 were "35% below July" only because July had been expensive;
+# all year Zurich is ~$700 and Nice ~$1,010 in business, so they were not real deals.
+ROUTE_DROP = 0.15
 # Seconds between requests to Google. Slow on purpose: ~20 quick calls got HTTP 429.
 PACE_SECONDS = 30
 # After a 429/block, do not search again for this long.

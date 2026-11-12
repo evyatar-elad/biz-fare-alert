@@ -290,6 +290,24 @@ def reference(hist: dict, rk: str, month: str, today: str, current: list[float],
     return None, "אין עדיין מספיק היסטוריה"
 
 
+def route_floor(hist: dict, dest: str, today: str) -> float | None:
+    """Usual business price of the route over the whole year: per source (Google TLV-X-dur,
+    Kiwi K-TLV-X), the median over months of the latest well-measured scan's minimum;
+    the cheaper source wins."""
+    meds = []
+    for rk, by_month in hist.items():
+        if not (rk.startswith(f"TLV-{dest}-") or rk == f"K-TLV-{dest}"):
+            continue
+        mins = []
+        for m, rows in by_month.items():
+            ok = [r for r in rows if r[3] >= C.KIWI_MIN_POINTS and m >= today[:7]]
+            if ok:
+                mins.append(ok[-1][2])
+        if len(mins) >= 3:
+            meds.append(statistics.median(mins))
+    return min(meds) if meds else None
+
+
 def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict]:
     rk = route_key(t)
     region = C.REGIONS[t["region"]]
@@ -318,8 +336,11 @@ def find_deals(t: dict, points: list[dict], hist: dict, today: str) -> list[dict
         else:
             ref, why = reference(hist, rk, month, today, [], min_pts)
         reasons = []
-        if ref and price <= ref * (1 - C.DROP):
-            reasons.append(f"{round(100 * (1 - price / ref))}% מתחת למחיר הרגיל (${ref:,.0f}, {why})")
+        floor = route_floor(hist, t["dest"], today)
+        if ref and price <= ref * (1 - C.DROP) and (floor is None or price <= floor * (1 - C.ROUTE_DROP)):
+            reasons.append(f"{round(100 * (1 - price / ref))}% מתחת למחיר הרגיל (${ref:,.0f}, {why})"
+                           + (f", וגם {round(100 * (1 - price / floor))}% מתחת למחיר הרגיל במסלול כל השנה (${floor:,.0f})"
+                              if floor else ""))
         cap = min(C.CAP_OVERRIDE.get(t["dest"], region["cap"]), C.MAX_PRICE)
         if price <= cap:
             reasons.append(f"מתחת לסף הקבוע (${cap:,})")
