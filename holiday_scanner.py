@@ -119,7 +119,7 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
     seen: dict = {}
     for t in tasks:
         g = (t["h"], t.get("dest") or t.get("a"))
-        if t["src"] in ("kiwi_noeu", "kiwi_fast", "kiwi_oj", "gf_check", "gf_biz", "gf_stop", "gf_oj"):
+        if t["src"] in ("kiwi_noeu", "kiwi_fast", "kiwi_oj", "gf_check", "gf_biz"):
             t["rr"] = -1  # one task per holiday and destination, and the most informative: first
             continue
         t["rr"] = seen.get(g, 0)
@@ -504,6 +504,7 @@ def main() -> int:
     alerts: list = []
     price_cache: dict[str, dict] = {}
     route_cache: dict[str, dict] = {}
+    multi_left = P.MULTI_PER_RUN
     gf_last = 0.0
     for task in tasks:
         if time.time() - t0 > a.minutes * 60:
@@ -521,6 +522,9 @@ def main() -> int:
                 print(f"  {task['key']}: " + ", ".join(f"{k} ${v['price']}" for k, v in g.items()))
                 continue
             if task["src"] in ("gf_stop", "gf_oj"):
+                if multi_left <= 0:
+                    continue
+                multi_left -= 1
                 if not P.GOOGLE_ENABLED or (state.get("blocked_until") and now() < datetime.fromisoformat(state["blocked_until"])):
                     continue
                 wait = P.PACE_SECONDS - (time.time() - gf_last)

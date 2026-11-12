@@ -385,7 +385,7 @@ def remember_cheap_dates(state: dict, t: dict, pts: list[dict], today: str) -> N
 def multi(cabin: str, legs: list) -> list[dict]:
     """Google multi-city search (one ticket); replaced by a fake in test_logic.py."""
     import fli_multi
-    return fli_multi.search(cabin, legs, C.EXCLUDE_AIRLINES)["trips"]
+    return fli_multi.search(cabin, legs, C.EXCLUDE_AIRLINES, top_n=2)["trips"]
 
 
 def stopover_search(t: dict, state: dict, today: str) -> list[dict]:
@@ -478,6 +478,7 @@ def main() -> int:
     kc, kiwi_off = None, False
     econ_budget = C.MAX_ECONOMY_LOOKUPS
     cont_budget = C.MAX_CONTINUATION_LOOKUPS
+    stop_left = C.STOPOVER_PER_RUN
 
     try:
         for t in todo:
@@ -488,8 +489,9 @@ def main() -> int:
                 continue
             if t.get("src") == "stop":
                 cd = state.get("cheap_dates", {}).get(t["dest"])
-                if not cd or cd["dep"] <= today:
-                    continue  # no recent business dates for this destination yet: next run
+                if not cd or cd["dep"] <= today or stop_left <= 0:
+                    continue  # no recent business dates yet, or this run's quota is used: next run
+                stop_left -= 1
                 if run["calls"]:
                     time.sleep(C.PACE_SECONDS)
                 run["calls"] += 1

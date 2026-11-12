@@ -98,6 +98,9 @@ STOPOVER_HUBS = {
 # trip together). Kiwi does not return such itineraries; Google's multi-city search does
 # (tested: TLV-GYD-DEL with a night out and two nights back = one J2 ticket, $959).
 # Each plan: (hub, nights at the hub on the way out, nights at the hub on the way back).
+# Google multi-city searches are slow (several requests each): at most this many per run,
+# so the Kiwi sweep keeps moving (12/11: a run spent most of its time on them).
+MULTI_PER_RUN = 12
 STOPOVER_PLANS = [("GYD", 1, 2), ("TAS", 1, 1), ("AUH", 1, 1), ("DXB", 1, 1)]
 STOPOVER_EXTRA = {"DPS": [("BKK", 1, 1), ("SIN", 1, 1)], "HKT": [("BKK", 0, 2)], "GOI": [("BOM", 1, 1)],
                   "DAD": [("BKK", 1, 1)], "TYO": [("ICN", 1, 1)], "KIX": [("ICN", 1, 1)]}

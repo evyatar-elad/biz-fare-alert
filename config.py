@@ -246,3 +246,4 @@ REALERT_DAYS = 14
 STOPOVER_PLANS = [("GYD", 1, 2), ("TAS", 1, 1), ("AUH", 1, 1), ("DXB", 1, 1)]
 STOPOVER_REGIONS = {"asia", "far"}
 STOPOVER_DUE_HOURS = 48
+STOPOVER_PER_RUN = 6  # multi-city searches are several requests each: keep the regular scan going

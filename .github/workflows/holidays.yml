@@ -28,6 +28,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   holidays:
@@ -37,11 +38,13 @@ jobs:
       group: holidays
       cancel-in-progress: false
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 150
     env:
       PYTHONUNBUFFERED: "1"
       MODE: ${{ inputs.mode || (contains(github.event.head_commit.message, '[hol-scan]') && 'scan') || (contains(github.event.head_commit.message, '[hol-probe]') && 'probe') || (contains(github.event.head_commit.message, '[hol-aitest]') && 'aitest') || 'diag' }}
     steps:
+      - name: start time
+        run: echo "JOB_START=$(date +%s)" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -79,3 +82,13 @@ jobs:
           git add data/holidays docs/holidays.html docs/pesach.html docs/tishrei.html 2>/dev/null || true
           git diff --cached --quiet || git commit -m "holidays: $MODE $(date -u +%F_%H%M)"
           for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
+      # GitHub's schedule did not fire for this new workflow (12/11, like scan.yml at first),
+      # so each scan run queues the next one, about 2 hours after this one started.
+      - name: queue next run
+        if: always() && env.MODE == 'scan' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          left=$(( 115*60 - ($(date +%s) - JOB_START) ))
+          if [ $left -gt 0 ]; then echo "waiting $left s"; sleep $left; fi
+          gh workflow run holidays.yml --ref main -f mode=scan
