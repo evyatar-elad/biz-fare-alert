@@ -1433,14 +1433,12 @@
   "K-TLV-CMB": {
    "2026-11": {
     "air": [
-     "Azerbaijan Airlines",
-     "SriLankan Airlines"
+     "Etihad Airways"
     ],
-    "p": 3190.0,
-    "sep": true,
+    "p": 3025.0,
+    "sep": false,
     "via": [
-     "GYD",
-     "BOM"
+     "AUH"
     ]
    },
    "2026-12": {
@@ -1448,7 +1446,7 @@
      "El Al Israel Airlines",
      "SriLankan Airlines"
     ],
-    "p": 2929.0,
+    "p": 2894.0,
     "sep": false,
     "via": [
      "DXB"
@@ -1456,35 +1454,36 @@
    },
    "2027-01": {
     "air": [
-     "El Al Israel Airlines",
+     "Azerbaijan Airlines",
      "SriLankan Airlines"
     ],
-    "p": 2889.0,
-    "sep": false,
+    "p": 2891.0,
+    "sep": true,
     "via": [
-     "DXB"
+     "GYD",
+     "BOM"
     ]
    },
    "2027-02": {
     "air": [
-     "El Al Israel Airlines",
+     "Azerbaijan Airlines",
      "SriLankan Airlines"
     ],
-    "p": 2889.0,
-    "sep": false,
+    "p": 2893.0,
+    "sep": true,
     "via": [
-     "DXB"
+     "GYD",
+     "BOM"
     ]
    },
    "2027-03": {
     "air": [
-     "El Al Israel Airlines",
-     "SriLankan Airlines"
+     "Air India Limited"
     ],
-    "p": 3384.0,
-    "sep": true,
+    "p": 3099.0,
+    "sep": false,
     "via": [
-     "DXB"
+     "DEL"
     ]
    },
    "2027-04": {
@@ -1492,7 +1491,7 @@
      "El Al Israel Airlines",
      "SriLankan Airlines"
     ],
-    "p": 3451.0,
+    "p": 3411.0,
     "sep": true,
     "via": [
      "DXB"
@@ -1503,7 +1502,7 @@
      "El Al Israel Airlines",
      "SriLankan Airlines"
     ],
-    "p": 3383.0,
+    "p": 3354.0,
     "sep": true,
     "via": [
      "DXB"
@@ -1514,7 +1513,7 @@
      "El Al Israel Airlines",
      "SriLankan Airlines"
     ],
-    "p": 3450.0,
+    "p": 3354.0,
     "sep": true,
     "via": [
      "DXB"
@@ -1525,7 +1524,7 @@
      "El Al Israel Airlines",
      "SriLankan Airlines"
     ],
-    "p": 3547.0,
+    "p": 3354.0,
     "sep": true,
     "via": [
      "DXB"
@@ -1536,7 +1535,7 @@
      "El Al Israel Airlines",
      "SriLankan Airlines"
     ],
-    "p": 3373.0,
+    "p": 3354.0,
     "sep": true,
     "via": [
      "DXB"
@@ -1547,7 +1546,7 @@
      "El Al Israel Airlines",
      "SriLankan Airlines"
     ],
-    "p": 3641.0,
+    "p": 3354.0,
     "sep": true,
     "via": [
      "DXB"
@@ -4005,7 +4004,7 @@
     "air": [
      "Uzbekistan Airways"
     ],
-    "p": 3075.0,
+    "p": 3079.0,
     "sep": false,
     "via": [
      "TAS"
@@ -4015,7 +4014,7 @@
     "air": [
      "Uzbekistan Airways"
     ],
-    "p": 3075.0,
+    "p": 3050.0,
     "sep": false,
     "via": [
      "TAS"
@@ -4023,19 +4022,19 @@
    },
    "2027-01": {
     "air": [
-     "LOT Polish Airlines"
+     "Uzbekistan Airways"
     ],
-    "p": 3099.0,
+    "p": 3077.0,
     "sep": false,
     "via": [
-     "WAW"
+     "TAS"
     ]
    },
    "2027-02": {
     "air": [
      "LOT Polish Airlines"
     ],
-    "p": 3104.0,
+    "p": 3109.0,
     "sep": false,
     "via": [
      "WAW"
@@ -4043,19 +4042,19 @@
    },
    "2027-03": {
     "air": [
-     "LOT Polish Airlines"
+     "Uzbekistan Airways"
     ],
-    "p": 3366.0,
+    "p": 3081.0,
     "sep": false,
     "via": [
-     "WAW"
+     "TAS"
     ]
    },
    "2027-04": {
     "air": [
      "Uzbekistan Airways"
     ],
-    "p": 3077.0,
+    "p": 3080.0,
     "sep": false,
     "via": [
      "TAS"
@@ -4073,19 +4072,19 @@
    },
    "2027-06": {
     "air": [
-     "Uzbekistan Airways"
+     "LOT Polish Airlines"
     ],
-    "p": 3591.0,
-    "sep": true,
+    "p": 3458.0,
+    "sep": false,
     "via": [
-     "TAS"
+     "WAW"
     ]
    },
    "2027-07": {
     "air": [
      "Uzbekistan Airways"
     ],
-    "p": 3591.0,
+    "p": 3607.0,
     "sep": true,
     "via": [
      "TAS"
@@ -4095,7 +4094,7 @@
     "air": [
      "Uzbekistan Airways"
     ],
-    "p": 3082.0,
+    "p": 3077.0,
     "sep": false,
     "via": [
      "TAS"
@@ -4105,8 +4104,8 @@
     "air": [
      "Uzbekistan Airways"
     ],
-    "p": 3591.0,
-    "sep": true,
+    "p": 3081.0,
+    "sep": false,
     "via": [
      "TAS"
     ]
@@ -4341,7 +4340,7 @@
      "Asiana Airlines",
      "Uzbekistan Airways"
     ],
-    "p": 4362.0,
+    "p": 4465.0,
     "sep": true,
     "via": [
      "TAS",
@@ -4350,58 +4349,58 @@
    },
    "2026-12": {
     "air": [
-     "Korean Air",
-     "Uzbekistan Airways"
-    ],
-    "p": 4496.0,
-    "sep": true,
-    "via": [
-     "TAS",
-     "ICN"
-    ]
-   },
-   "2027-01": {
-    "air": [
      "ITA Airways",
      "Japan Airlines"
     ],
-    "p": 4125.0,
+    "p": 4347.0,
     "sep": true,
     "via": [
      "FCO",
      "HND"
     ]
    },
-   "2027-02": {
+   "2027-01": {
     "air": [
-     "Air China",
-     "LOT Polish Airlines"
+     "Tway Airlines",
+     "Uzbekistan Airways"
     ],
-    "p": 3731.0,
+    "p": 4347.0,
     "sep": true,
     "via": [
-     "WAW",
-     "PEK"
+     "TAS",
+     "ICN"
+    ]
+   },
+   "2027-02": {
+    "air": [
+     "China Eastern Airlines",
+     "Condor"
+    ],
+    "p": 4351.0,
+    "sep": true,
+    "via": [
+     "FRA",
+     "PVG"
     ]
    },
    "2027-03": {
     "air": [
-     "Arkia",
-     "Vietnam Airlines"
+     "Asiana Airlines",
+     "Uzbekistan Airways"
     ],
-    "p": 4723.0,
+    "p": 4981.0,
     "sep": true,
     "via": [
-     "BKK",
-     "HAN"
+     "TAS",
+     "ICN"
     ]
    },
    "2027-04": {
     "air": [
-     "Asiana Airlines",
+     "Korean Air",
      "Uzbekistan Airways"
     ],
-    "p": 4841.0,
+    "p": 5073.0,
     "sep": true,
     "via": [
      "TAS",
@@ -4412,7 +4411,7 @@
     "air": [
      "Etihad Airways"
     ],
-    "p": 4861.0,
+    "p": 4667.0,
     "sep": false,
     "via": [
      "AUH"
@@ -4420,14 +4419,14 @@
    },
    "2027-06": {
     "air": [
-     "Japan Airlines",
-     "LOT Polish Airlines"
+     "Korean Air",
+     "Uzbekistan Airways"
     ],
-    "p": 4932.0,
+    "p": 4853.0,
     "sep": true,
     "via": [
-     "WAW",
-     "NRT"
+     "TAS",
+     "ICN"
     ]
    },
    "2027-07": {
@@ -4435,7 +4434,7 @@
      "Korean Air",
      "Uzbekistan Airways"
     ],
-    "p": 5040.0,
+    "p": 5056.0,
     "sep": true,
     "via": [
      "TAS",
@@ -4444,14 +4443,14 @@
    },
    "2027-08": {
     "air": [
-     "Japan Airlines",
-     "LOT Polish Airlines"
+     "Korean Air",
+     "Uzbekistan Airways"
     ],
-    "p": 4931.0,
+    "p": 5470.0,
     "sep": true,
     "via": [
-     "WAW",
-     "NRT"
+     "TAS",
+     "ICN"
     ]
    },
    "2027-09": {
@@ -4459,7 +4458,7 @@
      "Japan Airlines",
      "Lufthansa"
     ],
-    "p": 4864.0,
+    "p": 4799.0,
     "sep": true,
     "via": [
      "MUC",
@@ -5318,7 +5317,7 @@
      "Aegean",
      "Gulf Air Bahrain"
     ],
-    "p": 4232.0,
+    "p": 4172.0,
     "sep": true,
     "via": [
      "ATH",
@@ -5328,37 +5327,37 @@
    "2026-12": {
     "air": [
      "El Al Israel Airlines",
-     "Fly Dubai"
+     "Gulf Air Bahrain"
     ],
-    "p": 4172.0,
+    "p": 4062.0,
     "sep": true,
     "via": [
-     "DXB",
-     "CMB"
+     "ATH",
+     "BAH"
     ]
    },
    "2027-01": {
     "air": [
      "El Al Israel Airlines",
-     "Fly Dubai"
+     "Gulf Air Bahrain"
     ],
-    "p": 3777.0,
+    "p": 4256.0,
     "sep": true,
     "via": [
-     "DXB",
-     "CMB"
+     "ATH",
+     "BAH"
     ]
    },
    "2027-02": {
     "air": [
-     "Air India Limited",
-     "Ethiopian Airlines"
+     "El Al Israel Airlines",
+     "Gulf Air Bahrain"
     ],
-    "p": 4474.0,
+    "p": 3838.0,
     "sep": true,
     "via": [
-     "ADD",
-     "DEL"
+     "ATH",
+     "BAH"
     ]
    },
    "2027-03": {
@@ -5366,7 +5365,7 @@
      "Air India Limited",
      "Ethiopian Airlines"
     ],
-    "p": 4434.0,
+    "p": 4447.0,
     "sep": true,
     "via": [
      "ADD",
@@ -5378,7 +5377,7 @@
      "Air India Limited",
      "Ethiopian Airlines"
     ],
-    "p": 4554.0,
+    "p": 4514.0,
     "sep": true,
     "via": [
      "ADD",
@@ -5387,14 +5386,14 @@
    },
    "2027-05": {
     "air": [
-     "Air India Limited",
-     "Ethiopian Airlines"
+     "Aegean",
+     "Gulf Air Bahrain"
     ],
-    "p": 4382.0,
+    "p": 4230.0,
     "sep": true,
     "via": [
-     "ADD",
-     "DEL"
+     "ATH",
+     "BAH"
     ]
    },
    "2027-06": {
@@ -5403,7 +5402,7 @@
      "El Al Israel Airlines",
      "SriLankan Airlines"
     ],
-    "p": 4538.0,
+    "p": 4591.0,
     "sep": true,
     "via": [
      "DXB",
@@ -5412,14 +5411,15 @@
    },
    "2027-07": {
     "air": [
-     "Air India Limited",
-     "Ethiopian Airlines"
+     "China Southern Airlines",
+     "El Al Israel Airlines",
+     "SriLankan Airlines"
     ],
-    "p": 4370.0,
+    "p": 4597.0,
     "sep": true,
     "via": [
-     "ADD",
-     "DEL"
+     "DXB",
+     "CMB"
     ]
    },
    "2027-08": {
@@ -5428,7 +5428,7 @@
      "El Al Israel Airlines",
      "SriLankan Airlines"
     ],
-    "p": 4699.0,
+    "p": 4591.0,
     "sep": true,
     "via": [
      "DXB",
@@ -5437,15 +5437,14 @@
    },
    "2027-09": {
     "air": [
-     "China Southern Airlines",
      "El Al Israel Airlines",
-     "SriLankan Airlines"
+     "Etihad Airways"
     ],
-    "p": 4798.0,
+    "p": 4824.0,
     "sep": true,
     "via": [
-     "DXB",
-     "CMB"
+     "FCO",
+     "AUH"
     ]
    }
   },
@@ -5454,7 +5453,7 @@
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 3300.0,
+    "p": 3292.0,
     "sep": false,
     "via": [
      "ADD"
@@ -5464,7 +5463,7 @@
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 3298.0,
+    "p": 3289.0,
     "sep": false,
     "via": [
      "ADD"
@@ -5472,12 +5471,14 @@
    },
    "2027-01": {
     "air": [
-     "Ethiopian Airlines"
+     "Aegean",
+     "Gulf Air Bahrain"
     ],
-    "p": 3302.0,
-    "sep": false,
+    "p": 3246.0,
+    "sep": true,
     "via": [
-     "ADD"
+     "ATH",
+     "BAH"
     ]
    },
    "2027-02": {
@@ -5485,7 +5486,7 @@
      "Aegean",
      "Gulf Air Bahrain"
     ],
-    "p": 3296.0,
+    "p": 3246.0,
     "sep": true,
     "via": [
      "ATH",
@@ -5497,7 +5498,7 @@
      "Aegean",
      "Gulf Air Bahrain"
     ],
-    "p": 3284.0,
+    "p": 3247.0,
     "sep": true,
     "via": [
      "ATH",
@@ -5508,7 +5509,7 @@
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 3426.0,
+    "p": 3318.0,
     "sep": false,
     "via": [
      "ADD",
@@ -5517,44 +5518,44 @@
    },
    "2027-05": {
     "air": [
-     "Aegean",
-     "Gulf Air Bahrain"
+     "Arkia",
+     "Philippine Airlines"
     ],
-    "p": 3234.0,
+    "p": 3644.0,
     "sep": true,
     "via": [
-     "ATH",
-     "BAH"
+     "BKK"
     ]
    },
    "2027-06": {
     "air": [
-     "Aegean",
-     "Gulf Air Bahrain"
+     "Air India Limited",
+     "Arkia"
     ],
-    "p": 3290.0,
+    "p": 3820.0,
     "sep": true,
     "via": [
-     "ATH",
-     "BAH"
+     "CDG",
+     "DEL"
     ]
    },
    "2027-07": {
     "air": [
-     "Ethiopian Airlines"
+     "Aegean",
+     "Gulf Air Bahrain"
     ],
-    "p": 3332.0,
-    "sep": false,
+    "p": 3237.0,
+    "sep": true,
     "via": [
-     "ADD",
-     "HKG"
+     "ATH",
+     "BAH"
     ]
    },
    "2027-08": {
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 3332.0,
+    "p": 3318.0,
     "sep": false,
     "via": [
      "ADD",
@@ -5567,7 +5568,7 @@
      "Fly Dubai",
      "Oman Air"
     ],
-    "p": 4220.0,
+    "p": 4209.0,
     "sep": true,
     "via": [
      "DXB",
@@ -5578,19 +5579,19 @@
   "K-TLV-MRU": {
    "2026-11": {
     "air": [
-     "Austrian Airlines"
+     "Air Seychelles"
     ],
-    "p": 4632.0,
+    "p": 3788.0,
     "sep": false,
     "via": [
-     "VIE"
+     "SEZ"
     ]
    },
    "2026-12": {
     "air": [
      "Air Seychelles"
     ],
-    "p": 3103.0,
+    "p": 3071.0,
     "sep": false,
     "via": [
      "SEZ"
@@ -5600,7 +5601,7 @@
     "air": [
      "Air Seychelles"
     ],
-    "p": 3133.0,
+    "p": 3090.0,
     "sep": false,
     "via": [
      "SEZ"
@@ -6166,17 +6167,18 @@
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 3605.0,
+    "p": 3592.0,
     "sep": false,
     "via": [
-     "ADD"
+     "ADD",
+     "ICN"
     ]
    },
    "2026-12": {
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 3603.0,
+    "p": 3590.0,
     "sep": false,
     "via": [
      "ADD",
@@ -6185,21 +6187,20 @@
    },
    "2027-01": {
     "air": [
-     "Aegean",
-     "Swiss International Air Lines"
+     "Ethiopian Airlines"
     ],
-    "p": 2985.0,
+    "p": 3592.0,
     "sep": false,
     "via": [
-     "ATH",
-     "ZRH"
+     "ADD",
+     "ICN"
     ]
    },
    "2027-02": {
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 3606.0,
+    "p": 3592.0,
     "sep": false,
     "via": [
      "ADD",
@@ -6210,7 +6211,7 @@
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 3606.0,
+    "p": 3592.0,
     "sep": false,
     "via": [
      "ADD",
@@ -6219,19 +6220,20 @@
    },
    "2027-04": {
     "air": [
-     "Swiss International Air Lines"
+     "Ethiopian Airlines"
     ],
-    "p": 4031.0,
+    "p": 3592.0,
     "sep": false,
     "via": [
-     "ZRH"
+     "ADD",
+     "ICN"
     ]
    },
    "2027-05": {
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 3606.0,
+    "p": 3592.0,
     "sep": false,
     "via": [
      "ADD",
@@ -6240,19 +6242,19 @@
    },
    "2027-06": {
     "air": [
-     "LOT Polish Airlines"
+     "Swiss International Air Lines"
     ],
-    "p": 4530.0,
-    "sep": true,
+    "p": 4020.0,
+    "sep": false,
     "via": [
-     "WAW"
+     "ZRH"
     ]
    },
    "2027-07": {
     "air": [
      "Lufthansa"
     ],
-    "p": 4333.0,
+    "p": 4320.0,
     "sep": false,
     "via": [
      "FRA"
@@ -6262,7 +6264,7 @@
     "air": [
      "Austrian Airlines"
     ],
-    "p": 4539.0,
+    "p": 4080.0,
     "sep": false,
     "via": [
      "VIE"
@@ -6270,13 +6272,12 @@
    },
    "2027-09": {
     "air": [
-     "Ethiopian Airlines"
+     "Austrian Airlines"
     ],
-    "p": 3782.0,
+    "p": 4074.0,
     "sep": false,
     "via": [
-     "ADD",
-     "ICN"
+     "VIE"
     ]
    }
   },
@@ -6753,14 +6754,14 @@
    },
    "2027-09": {
     "air": [
-     "Ethiopian Airlines",
-     "Shanghai Airlines"
+     "El Al Israel Airlines",
+     "Swiss International Air Lines"
     ],
-    "p": 4727.0,
+    "p": 4547.0,
     "sep": true,
     "via": [
-     "ADD",
-     "BKK"
+     "BUD",
+     "ZRH"
     ]
    }
   },
@@ -6886,19 +6887,19 @@
   "K-TLV-SEZ": {
    "2026-11": {
     "air": [
-     "Ethiopian Airlines"
+     "Etihad Airways"
     ],
-    "p": 2746.0,
+    "p": 2517.0,
     "sep": false,
     "via": [
-     "ADD"
+     "AUH"
     ]
    },
    "2026-12": {
     "air": [
      "Air Seychelles"
     ],
-    "p": 2099.0,
+    "p": 2056.0,
     "sep": false,
     "via": []
    },
@@ -6906,7 +6907,7 @@
     "air": [
      "Air Seychelles"
     ],
-    "p": 2081.0,
+    "p": 2060.0,
     "sep": false,
     "via": []
    },
@@ -6914,7 +6915,7 @@
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 2244.0,
+    "p": 2231.0,
     "sep": false,
     "via": [
      "ADD"
@@ -6922,17 +6923,19 @@
    },
    "2027-03": {
     "air": [
-     "Air Seychelles"
+     "Ethiopian Airlines"
     ],
-    "p": 2081.0,
+    "p": 2231.0,
     "sep": false,
-    "via": []
+    "via": [
+     "ADD"
+    ]
    },
    "2027-04": {
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 2244.0,
+    "p": 2231.0,
     "sep": false,
     "via": [
      "ADD"
@@ -6942,7 +6945,7 @@
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 2244.0,
+    "p": 2231.0,
     "sep": false,
     "via": [
      "ADD"
@@ -6952,7 +6955,7 @@
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 2244.0,
+    "p": 2231.0,
     "sep": false,
     "via": [
      "ADD"
@@ -6962,7 +6965,7 @@
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 2244.0,
+    "p": 2235.0,
     "sep": false,
     "via": [
      "ADD"
@@ -6972,7 +6975,7 @@
     "air": [
      "Ethiopian Airlines"
     ],
-    "p": 2244.0,
+    "p": 2231.0,
     "sep": false,
     "via": [
      "ADD"
@@ -6982,7 +6985,7 @@
     "air": [
      "Air Seychelles"
     ],
-    "p": 3122.0,
+    "p": 3100.0,
     "sep": true,
     "via": []
    }
@@ -8442,17 +8445,17 @@
   "K-ALL-CDG-M2027-07": "2026-11-12T01:43:21+00:00",
   "K-ALL-CDG-M2027-08": "2026-11-12T02:08:43+00:00",
   "K-ALL-CDG-M2027-09": "2026-11-12T02:09:41+00:00",
-  "K-ALL-CMB-M2026-11": "2026-11-10T07:49:12+00:00",
-  "K-ALL-CMB-M2026-12": "2026-11-10T07:49:33+00:00",
-  "K-ALL-CMB-M2027-01": "2026-11-10T07:49:54+00:00",
-  "K-ALL-CMB-M2027-02": "2026-11-10T07:50:13+00:00",
-  "K-ALL-CMB-M2027-03": "2026-11-10T07:50:33+00:00",
-  "K-ALL-CMB-M2027-04": "2026-11-10T07:50:55+00:00",
-  "K-ALL-CMB-M2027-05": "2026-11-10T07:51:12+00:00",
-  "K-ALL-CMB-M2027-06": "2026-11-10T07:51:31+00:00",
-  "K-ALL-CMB-M2027-07": "2026-11-10T07:51:49+00:00",
-  "K-ALL-CMB-M2027-08": "2026-11-10T07:52:08+00:00",
-  "K-ALL-CMB-M2027-09": "2026-11-10T07:52:28+00:00",
+  "K-ALL-CMB-M2026-11": "2026-11-12T07:02:56+00:00",
+  "K-ALL-CMB-M2026-12": "2026-11-12T07:03:16+00:00",
+  "K-ALL-CMB-M2027-01": "2026-11-12T07:03:38+00:00",
+  "K-ALL-CMB-M2027-02": "2026-11-12T07:03:56+00:00",
+  "K-ALL-CMB-M2027-03": "2026-11-12T07:04:16+00:00",
+  "K-ALL-CMB-M2027-04": "2026-11-12T07:04:35+00:00",
+  "K-ALL-CMB-M2027-05": "2026-11-12T07:04:52+00:00",
+  "K-ALL-CMB-M2027-06": "2026-11-12T07:05:10+00:00",
+  "K-ALL-CMB-M2027-07": "2026-11-12T07:05:26+00:00",
+  "K-ALL-CMB-M2027-08": "2026-11-12T07:05:47+00:00",
+  "K-ALL-CMB-M2027-09": "2026-11-12T07:06:09+00:00",
   "K-ALL-CMN-M2026-11": "2026-11-12T05:43:53+00:00",
   "K-ALL-CMN-M2026-12": "2026-11-12T05:44:12+00:00",
   "K-ALL-CMN-M2027-01": "2026-11-12T05:44:31+00:00",
@@ -8673,17 +8676,17 @@
   "K-ALL-HKT-M2027-07": "2026-11-12T05:58:27+00:00",
   "K-ALL-HKT-M2027-08": "2026-11-12T05:58:47+00:00",
   "K-ALL-HKT-M2027-09": "2026-11-12T05:59:08+00:00",
-  "K-ALL-ICN-M2026-11": "2026-11-10T07:41:16+00:00",
-  "K-ALL-ICN-M2026-12": "2026-11-10T07:41:38+00:00",
-  "K-ALL-ICN-M2027-01": "2026-11-10T07:42:00+00:00",
-  "K-ALL-ICN-M2027-02": "2026-11-10T07:42:20+00:00",
-  "K-ALL-ICN-M2027-03": "2026-11-10T07:42:42+00:00",
-  "K-ALL-ICN-M2027-04": "2026-11-10T07:43:06+00:00",
-  "K-ALL-ICN-M2027-05": "2026-11-10T07:43:24+00:00",
-  "K-ALL-ICN-M2027-06": "2026-11-10T07:43:43+00:00",
-  "K-ALL-ICN-M2027-07": "2026-11-10T07:44:04+00:00",
-  "K-ALL-ICN-M2027-08": "2026-11-10T07:44:25+00:00",
-  "K-ALL-ICN-M2027-09": "2026-11-10T07:44:48+00:00",
+  "K-ALL-ICN-M2026-11": "2026-11-12T06:55:29+00:00",
+  "K-ALL-ICN-M2026-12": "2026-11-12T06:55:50+00:00",
+  "K-ALL-ICN-M2027-01": "2026-11-12T06:56:14+00:00",
+  "K-ALL-ICN-M2027-02": "2026-11-12T06:56:38+00:00",
+  "K-ALL-ICN-M2027-03": "2026-11-12T06:56:54+00:00",
+  "K-ALL-ICN-M2027-04": "2026-11-12T06:57:15+00:00",
+  "K-ALL-ICN-M2027-05": "2026-11-12T06:57:35+00:00",
+  "K-ALL-ICN-M2027-06": "2026-11-12T06:57:59+00:00",
+  "K-ALL-ICN-M2027-07": "2026-11-12T06:58:16+00:00",
+  "K-ALL-ICN-M2027-08": "2026-11-12T06:58:33+00:00",
+  "K-ALL-ICN-M2027-09": "2026-11-12T06:58:53+00:00",
   "K-ALL-JNB-M2026-11": "2026-11-10T08:16:28+00:00",
   "K-ALL-JNB-M2026-12": "2026-11-10T08:16:51+00:00",
   "K-ALL-JNB-M2027-01": "2026-11-10T08:17:14+00:00",
@@ -8695,17 +8698,17 @@
   "K-ALL-JNB-M2027-07": "2026-11-10T08:33:05+00:00",
   "K-ALL-JNB-M2027-08": "2026-11-10T08:33:30+00:00",
   "K-ALL-JNB-M2027-09": "2026-11-10T08:33:56+00:00",
-  "K-ALL-KIX-M2026-11": "2026-11-10T06:55:11+00:00",
-  "K-ALL-KIX-M2026-12": "2026-11-10T07:37:55+00:00",
-  "K-ALL-KIX-M2027-01": "2026-11-10T07:38:16+00:00",
-  "K-ALL-KIX-M2027-02": "2026-11-10T07:38:37+00:00",
-  "K-ALL-KIX-M2027-03": "2026-11-10T07:38:58+00:00",
-  "K-ALL-KIX-M2027-04": "2026-11-10T07:39:15+00:00",
-  "K-ALL-KIX-M2027-05": "2026-11-10T07:39:37+00:00",
-  "K-ALL-KIX-M2027-06": "2026-11-10T07:40:00+00:00",
-  "K-ALL-KIX-M2027-07": "2026-11-10T07:40:18+00:00",
-  "K-ALL-KIX-M2027-08": "2026-11-10T07:40:35+00:00",
-  "K-ALL-KIX-M2027-09": "2026-11-10T07:40:54+00:00",
+  "K-ALL-KIX-M2026-11": "2026-11-12T06:33:42+00:00",
+  "K-ALL-KIX-M2026-12": "2026-11-12T06:51:59+00:00",
+  "K-ALL-KIX-M2027-01": "2026-11-12T06:52:20+00:00",
+  "K-ALL-KIX-M2027-02": "2026-11-12T06:52:44+00:00",
+  "K-ALL-KIX-M2027-03": "2026-11-12T06:53:05+00:00",
+  "K-ALL-KIX-M2027-04": "2026-11-12T06:53:29+00:00",
+  "K-ALL-KIX-M2027-05": "2026-11-12T06:53:45+00:00",
+  "K-ALL-KIX-M2027-06": "2026-11-12T06:54:06+00:00",
+  "K-ALL-KIX-M2027-07": "2026-11-12T06:54:23+00:00",
+  "K-ALL-KIX-M2027-08": "2026-11-12T06:54:43+00:00",
+  "K-ALL-KIX-M2027-09": "2026-11-12T06:55:04+00:00",
   "K-ALL-KUL-M2026-11": "2026-11-12T06:03:38+00:00",
   "K-ALL-KUL-M2026-12": "2026-11-12T06:04:00+00:00",
   "K-ALL-KUL-M2027-01": "2026-11-12T06:04:25+00:00",
@@ -8783,31 +8786,31 @@
   "K-ALL-MEX-M2027-07": "2026-11-10T08:56:24+00:00",
   "K-ALL-MEX-M2027-08": "2026-11-10T08:56:48+00:00",
   "K-ALL-MEX-M2027-09": "2026-11-10T08:57:12+00:00",
-  "K-ALL-MLE-M2026-11": "2026-11-10T07:52:49+00:00",
-  "K-ALL-MLE-M2026-12": "2026-11-10T07:53:10+00:00",
-  "K-ALL-MLE-M2027-01": "2026-11-10T07:53:31+00:00",
-  "K-ALL-MLE-M2027-02": "2026-11-10T07:53:51+00:00",
-  "K-ALL-MLE-M2027-03": "2026-11-10T07:54:08+00:00",
-  "K-ALL-MLE-M2027-04": "2026-11-10T07:54:32+00:00",
-  "K-ALL-MLE-M2027-05": "2026-11-10T07:54:50+00:00",
-  "K-ALL-MLE-M2027-06": "2026-11-10T07:55:11+00:00",
-  "K-ALL-MLE-M2027-07": "2026-11-10T07:55:33+00:00",
-  "K-ALL-MLE-M2027-08": "2026-11-10T07:55:50+00:00",
-  "K-ALL-MLE-M2027-09": "2026-11-10T07:56:07+00:00",
-  "K-ALL-MNL-M2026-11": "2026-11-10T07:45:14+00:00",
-  "K-ALL-MNL-M2026-12": "2026-11-10T07:45:36+00:00",
-  "K-ALL-MNL-M2027-01": "2026-11-10T07:46:00+00:00",
-  "K-ALL-MNL-M2027-02": "2026-11-10T07:46:22+00:00",
-  "K-ALL-MNL-M2027-03": "2026-11-10T07:46:44+00:00",
-  "K-ALL-MNL-M2027-04": "2026-11-10T07:47:08+00:00",
-  "K-ALL-MNL-M2027-05": "2026-11-10T07:47:25+00:00",
-  "K-ALL-MNL-M2027-06": "2026-11-10T07:47:45+00:00",
-  "K-ALL-MNL-M2027-07": "2026-11-10T07:48:06+00:00",
-  "K-ALL-MNL-M2027-08": "2026-11-10T07:48:27+00:00",
-  "K-ALL-MNL-M2027-09": "2026-11-10T07:48:49+00:00",
-  "K-ALL-MRU-M2026-11": "2026-11-10T08:00:02+00:00",
-  "K-ALL-MRU-M2026-12": "2026-11-10T08:00:25+00:00",
-  "K-ALL-MRU-M2027-01": "2026-11-10T08:00:51+00:00",
+  "K-ALL-MLE-M2026-11": "2026-11-12T07:06:30+00:00",
+  "K-ALL-MLE-M2026-12": "2026-11-12T07:06:49+00:00",
+  "K-ALL-MLE-M2027-01": "2026-11-12T07:07:10+00:00",
+  "K-ALL-MLE-M2027-02": "2026-11-12T07:07:30+00:00",
+  "K-ALL-MLE-M2027-03": "2026-11-12T07:07:48+00:00",
+  "K-ALL-MLE-M2027-04": "2026-11-12T07:08:09+00:00",
+  "K-ALL-MLE-M2027-05": "2026-11-12T07:08:30+00:00",
+  "K-ALL-MLE-M2027-06": "2026-11-12T07:08:51+00:00",
+  "K-ALL-MLE-M2027-07": "2026-11-12T07:09:12+00:00",
+  "K-ALL-MLE-M2027-08": "2026-11-12T07:09:32+00:00",
+  "K-ALL-MLE-M2027-09": "2026-11-12T07:09:52+00:00",
+  "K-ALL-MNL-M2026-11": "2026-11-12T06:59:17+00:00",
+  "K-ALL-MNL-M2026-12": "2026-11-12T06:59:38+00:00",
+  "K-ALL-MNL-M2027-01": "2026-11-12T06:59:58+00:00",
+  "K-ALL-MNL-M2027-02": "2026-11-12T07:00:19+00:00",
+  "K-ALL-MNL-M2027-03": "2026-11-12T07:00:35+00:00",
+  "K-ALL-MNL-M2027-04": "2026-11-12T07:01:00+00:00",
+  "K-ALL-MNL-M2027-05": "2026-11-12T07:01:20+00:00",
+  "K-ALL-MNL-M2027-06": "2026-11-12T07:01:40+00:00",
+  "K-ALL-MNL-M2027-07": "2026-11-12T07:01:58+00:00",
+  "K-ALL-MNL-M2027-08": "2026-11-12T07:02:18+00:00",
+  "K-ALL-MNL-M2027-09": "2026-11-12T07:02:36+00:00",
+  "K-ALL-MRU-M2026-11": "2026-11-12T07:13:49+00:00",
+  "K-ALL-MRU-M2026-12": "2026-11-12T07:14:11+00:00",
+  "K-ALL-MRU-M2027-01": "2026-11-12T07:14:32+00:00",
   "K-ALL-MRU-M2027-02": "2026-11-10T08:01:25+00:00",
   "K-ALL-MRU-M2027-03": "2026-11-10T08:01:44+00:00",
   "K-ALL-MRU-M2027-04": "2026-11-10T08:02:07+00:00",
@@ -8860,17 +8863,17 @@
   "K-ALL-NCE-M2027-07": "2026-11-12T05:11:51+00:00",
   "K-ALL-NCE-M2027-08": "2026-11-12T05:12:27+00:00",
   "K-ALL-NCE-M2027-09": "2026-11-12T05:12:47+00:00",
-  "K-ALL-NRT-M2026-11": "2026-11-10T06:51:20+00:00",
-  "K-ALL-NRT-M2026-12": "2026-11-10T06:51:41+00:00",
-  "K-ALL-NRT-M2027-01": "2026-11-10T06:52:03+00:00",
-  "K-ALL-NRT-M2027-02": "2026-11-10T06:52:26+00:00",
-  "K-ALL-NRT-M2027-03": "2026-11-10T06:52:46+00:00",
-  "K-ALL-NRT-M2027-04": "2026-11-10T06:53:10+00:00",
-  "K-ALL-NRT-M2027-05": "2026-11-10T06:53:27+00:00",
-  "K-ALL-NRT-M2027-06": "2026-11-10T06:53:47+00:00",
-  "K-ALL-NRT-M2027-07": "2026-11-10T06:54:05+00:00",
-  "K-ALL-NRT-M2027-08": "2026-11-10T06:54:25+00:00",
-  "K-ALL-NRT-M2027-09": "2026-11-10T06:54:46+00:00",
+  "K-ALL-NRT-M2026-11": "2026-11-12T06:29:53+00:00",
+  "K-ALL-NRT-M2026-12": "2026-11-12T06:30:13+00:00",
+  "K-ALL-NRT-M2027-01": "2026-11-12T06:30:34+00:00",
+  "K-ALL-NRT-M2027-02": "2026-11-12T06:30:56+00:00",
+  "K-ALL-NRT-M2027-03": "2026-11-12T06:31:17+00:00",
+  "K-ALL-NRT-M2027-04": "2026-11-12T06:31:40+00:00",
+  "K-ALL-NRT-M2027-05": "2026-11-12T06:31:59+00:00",
+  "K-ALL-NRT-M2027-06": "2026-11-12T06:32:23+00:00",
+  "K-ALL-NRT-M2027-07": "2026-11-12T06:32:44+00:00",
+  "K-ALL-NRT-M2027-08": "2026-11-12T06:33:01+00:00",
+  "K-ALL-NRT-M2027-09": "2026-11-12T06:33:17+00:00",
   "K-ALL-OSL-M2026-11": "2026-11-12T04:53:32+00:00",
   "K-ALL-OSL-M2026-12": "2026-11-12T04:53:53+00:00",
   "K-ALL-OSL-M2027-01": "2026-11-12T04:54:14+00:00",
@@ -8914,7 +8917,7 @@
   "K-ALL-PVG-M2027-06": "2026-11-12T06:18:17+00:00",
   "K-ALL-PVG-M2027-07": "2026-11-12T06:18:40+00:00",
   "K-ALL-PVG-M2027-08": "2026-11-12T06:19:03+00:00",
-  "K-ALL-PVG-M2027-09": "2026-11-10T06:50:53+00:00",
+  "K-ALL-PVG-M2027-09": "2026-11-12T06:29:29+00:00",
   "K-ALL-RAK-M2026-11": "2026-11-12T05:47:47+00:00",
   "K-ALL-RAK-M2026-12": "2026-11-12T05:48:09+00:00",
   "K-ALL-RAK-M2027-01": "2026-11-12T05:48:32+00:00",
@@ -8926,17 +8929,17 @@
   "K-ALL-RAK-M2027-07": "2026-11-12T05:50:46+00:00",
   "K-ALL-RAK-M2027-08": "2026-11-12T05:51:04+00:00",
   "K-ALL-RAK-M2027-09": "2026-11-12T05:51:23+00:00",
-  "K-ALL-SEZ-M2026-11": "2026-11-10T07:56:30+00:00",
-  "K-ALL-SEZ-M2026-12": "2026-11-10T07:56:51+00:00",
-  "K-ALL-SEZ-M2027-01": "2026-11-10T07:57:13+00:00",
-  "K-ALL-SEZ-M2027-02": "2026-11-10T07:57:33+00:00",
-  "K-ALL-SEZ-M2027-03": "2026-11-10T07:57:50+00:00",
-  "K-ALL-SEZ-M2027-04": "2026-11-10T07:58:10+00:00",
-  "K-ALL-SEZ-M2027-05": "2026-11-10T07:58:26+00:00",
-  "K-ALL-SEZ-M2027-06": "2026-11-10T07:58:47+00:00",
-  "K-ALL-SEZ-M2027-07": "2026-11-10T07:59:04+00:00",
-  "K-ALL-SEZ-M2027-08": "2026-11-10T07:59:19+00:00",
-  "K-ALL-SEZ-M2027-09": "2026-11-10T07:59:38+00:00",
+  "K-ALL-SEZ-M2026-11": "2026-11-12T07:10:14+00:00",
+  "K-ALL-SEZ-M2026-12": "2026-11-12T07:10:34+00:00",
+  "K-ALL-SEZ-M2027-01": "2026-11-12T07:10:54+00:00",
+  "K-ALL-SEZ-M2027-02": "2026-11-12T07:11:14+00:00",
+  "K-ALL-SEZ-M2027-03": "2026-11-12T07:11:34+00:00",
+  "K-ALL-SEZ-M2027-04": "2026-11-12T07:11:54+00:00",
+  "K-ALL-SEZ-M2027-05": "2026-11-12T07:12:10+00:00",
+  "K-ALL-SEZ-M2027-06": "2026-11-12T07:12:30+00:00",
+  "K-ALL-SEZ-M2027-07": "2026-11-12T07:12:50+00:00",
+  "K-ALL-SEZ-M2027-08": "2026-11-12T07:13:09+00:00",
+  "K-ALL-SEZ-M2027-09": "2026-11-12T07:13:28+00:00",
   "K-ALL-SGN-M2026-11": "2026-11-12T00:16:55+00:00",
   "K-ALL-SGN-M2026-12": "2026-11-12T00:17:18+00:00",
   "K-ALL-SGN-M2027-01": "2026-11-12T00:17:44+00:00",
@@ -9955,8 +9958,8 @@
   "TLV-CDG-M2026-12": "2026-11-11T21:20:06+00:00",
   "TLV-CDG-M2027-01": "2026-11-11T21:20:37+00:00",
   "TLV-CDG-M2027-02": "2026-11-11T21:21:07+00:00",
-  "TLV-CDG-far0": "2026-11-09T07:57:40+00:00",
-  "TLV-CDG-far1": "2026-11-09T07:58:10+00:00",
+  "TLV-CDG-far0": "2026-11-12T06:48:34+00:00",
+  "TLV-CDG-far1": "2026-11-12T06:49:05+00:00",
   "TLV-CDG-far10": "2026-11-09T08:55:50+00:00",
   "TLV-CDG-far11": "2026-11-09T08:56:21+00:00",
   "TLV-CDG-far12": "2026-11-09T08:56:52+00:00",
@@ -9967,7 +9970,7 @@
   "TLV-CDG-far17": "2026-11-09T08:59:49+00:00",
   "TLV-CDG-far18": "2026-11-09T09:00:19+00:00",
   "TLV-CDG-far19": "2026-11-09T09:00:50+00:00",
-  "TLV-CDG-far2": "2026-11-09T07:58:41+00:00",
+  "TLV-CDG-far2": "2026-11-12T06:49:35+00:00",
   "TLV-CDG-far20": "2026-11-09T09:01:41+00:00",
   "TLV-CDG-far21": "2026-11-09T09:02:12+00:00",
   "TLV-CDG-far22": "2026-11-09T09:02:43+00:00",
@@ -9976,10 +9979,10 @@
   "TLV-CDG-far25": "2026-11-09T09:11:12+00:00",
   "TLV-CDG-far26": "2026-11-09T09:12:04+00:00",
   "TLV-CDG-far27": "2026-11-09T09:12:35+00:00",
-  "TLV-CDG-far3": "2026-11-09T07:59:12+00:00",
-  "TLV-CDG-far4": "2026-11-09T07:59:42+00:00",
-  "TLV-CDG-far5": "2026-11-09T08:00:13+00:00",
-  "TLV-CDG-far6": "2026-11-09T08:00:44+00:00",
+  "TLV-CDG-far3": "2026-11-12T06:50:06+00:00",
+  "TLV-CDG-far4": "2026-11-12T06:50:37+00:00",
+  "TLV-CDG-far5": "2026-11-12T06:51:08+00:00",
+  "TLV-CDG-far6": "2026-11-12T06:51:38+00:00",
   "TLV-CDG-far7": "2026-11-09T08:54:18+00:00",
   "TLV-CDG-far8": "2026-11-09T08:54:49+00:00",
   "TLV-CDG-far9": "2026-11-09T08:55:19+00:00",
@@ -10787,34 +10790,34 @@
   "TLV-LHR-M2026-12": "2026-11-11T21:18:03+00:00",
   "TLV-LHR-M2027-01": "2026-11-11T21:18:34+00:00",
   "TLV-LHR-M2027-02": "2026-11-11T21:19:05+00:00",
-  "TLV-LHR-far0": "2026-11-09T07:43:20+00:00",
-  "TLV-LHR-far1": "2026-11-09T07:43:51+00:00",
-  "TLV-LHR-far10": "2026-11-09T07:48:27+00:00",
-  "TLV-LHR-far11": "2026-11-09T07:48:58+00:00",
-  "TLV-LHR-far12": "2026-11-09T07:49:28+00:00",
-  "TLV-LHR-far13": "2026-11-09T07:49:59+00:00",
-  "TLV-LHR-far14": "2026-11-09T07:50:30+00:00",
-  "TLV-LHR-far15": "2026-11-09T07:51:00+00:00",
-  "TLV-LHR-far16": "2026-11-09T07:51:31+00:00",
-  "TLV-LHR-far17": "2026-11-09T07:52:02+00:00",
-  "TLV-LHR-far18": "2026-11-09T07:52:33+00:00",
-  "TLV-LHR-far19": "2026-11-09T07:53:03+00:00",
-  "TLV-LHR-far2": "2026-11-09T07:44:22+00:00",
-  "TLV-LHR-far20": "2026-11-09T07:53:34+00:00",
-  "TLV-LHR-far21": "2026-11-09T07:54:05+00:00",
-  "TLV-LHR-far22": "2026-11-09T07:54:35+00:00",
-  "TLV-LHR-far23": "2026-11-09T07:55:06+00:00",
-  "TLV-LHR-far24": "2026-11-09T07:55:37+00:00",
-  "TLV-LHR-far25": "2026-11-09T07:56:08+00:00",
-  "TLV-LHR-far26": "2026-11-09T07:56:38+00:00",
-  "TLV-LHR-far27": "2026-11-09T07:57:09+00:00",
-  "TLV-LHR-far3": "2026-11-09T07:44:52+00:00",
-  "TLV-LHR-far4": "2026-11-09T07:45:23+00:00",
-  "TLV-LHR-far5": "2026-11-09T07:45:54+00:00",
-  "TLV-LHR-far6": "2026-11-09T07:46:24+00:00",
-  "TLV-LHR-far7": "2026-11-09T07:46:55+00:00",
-  "TLV-LHR-far8": "2026-11-09T07:47:26+00:00",
-  "TLV-LHR-far9": "2026-11-09T07:47:56+00:00",
+  "TLV-LHR-far0": "2026-11-12T06:34:14+00:00",
+  "TLV-LHR-far1": "2026-11-12T06:34:45+00:00",
+  "TLV-LHR-far10": "2026-11-12T06:39:21+00:00",
+  "TLV-LHR-far11": "2026-11-12T06:39:52+00:00",
+  "TLV-LHR-far12": "2026-11-12T06:40:23+00:00",
+  "TLV-LHR-far13": "2026-11-12T06:40:53+00:00",
+  "TLV-LHR-far14": "2026-11-12T06:41:24+00:00",
+  "TLV-LHR-far15": "2026-11-12T06:41:55+00:00",
+  "TLV-LHR-far16": "2026-11-12T06:42:25+00:00",
+  "TLV-LHR-far17": "2026-11-12T06:42:56+00:00",
+  "TLV-LHR-far18": "2026-11-12T06:43:27+00:00",
+  "TLV-LHR-far19": "2026-11-12T06:43:58+00:00",
+  "TLV-LHR-far2": "2026-11-12T06:35:16+00:00",
+  "TLV-LHR-far20": "2026-11-12T06:44:28+00:00",
+  "TLV-LHR-far21": "2026-11-12T06:44:59+00:00",
+  "TLV-LHR-far22": "2026-11-12T06:45:30+00:00",
+  "TLV-LHR-far23": "2026-11-12T06:46:00+00:00",
+  "TLV-LHR-far24": "2026-11-12T06:46:31+00:00",
+  "TLV-LHR-far25": "2026-11-12T06:47:02+00:00",
+  "TLV-LHR-far26": "2026-11-12T06:47:33+00:00",
+  "TLV-LHR-far27": "2026-11-12T06:48:03+00:00",
+  "TLV-LHR-far3": "2026-11-12T06:35:46+00:00",
+  "TLV-LHR-far4": "2026-11-12T06:36:17+00:00",
+  "TLV-LHR-far5": "2026-11-12T06:36:48+00:00",
+  "TLV-LHR-far6": "2026-11-12T06:37:18+00:00",
+  "TLV-LHR-far7": "2026-11-12T06:37:49+00:00",
+  "TLV-LHR-far8": "2026-11-12T06:38:20+00:00",
+  "TLV-LHR-far9": "2026-11-12T06:38:50+00:00",
   "TLV-LIM-M2026-11": "2026-11-12T01:27:10+00:00",
   "TLV-LIM-M2026-12": "2026-11-12T01:27:41+00:00",
   "TLV-LIM-M2027-01": "2026-11-12T01:28:12+00:00",
@@ -11776,190 +11779,9 @@
   "TLV-ZRH-far8": "2026-11-09T12:39:22+00:00",
   "TLV-ZRH-far9": "2026-11-09T12:39:52+00:00"
  },
- "last_digest": "2026-11-10",
- "last_email": "2026-11-10T07:28:14+00:00",
- "pending": [
-  {
-   "airline_focus": null,
-   "dep": "2027-07-05",
-   "dest": "ZRH",
-   "details": {
-    "booking_url": "https://kiwi.com/u/8jpr2x",
-    "out": {
-     "airlines": [
-      "TAP Portugal"
-     ],
-     "hours": 13.2,
-     "legs": [
-      {
-       "aircraft": null,
-       "airline": "TAP Portugal",
-       "flight": "TP1604",
-       "from": "TLV",
-       "hours": 6.2,
-       "seat": null,
-       "to": "LIS"
-      },
-      {
-       "aircraft": null,
-       "airline": "TAP Portugal",
-       "flight": "TP932",
-       "from": "LIS",
-       "hours": 2.8,
-       "seat": null,
-       "to": "ZRH"
-      }
-     ],
-     "mixed_cabin": false,
-     "stops": 1,
-     "via": [
-      "LIS"
-     ]
-    },
-    "price": 881.0,
-    "ret": {
-     "airlines": [
-      "TAP Portugal"
-     ],
-     "hours": 12.8,
-     "legs": [
-      {
-       "aircraft": null,
-       "airline": "TAP Portugal",
-       "flight": "TP921",
-       "from": "ZRH",
-       "hours": 2.6,
-       "seat": null,
-       "to": "OPO"
-      },
-      {
-       "aircraft": null,
-       "airline": "TAP Portugal",
-       "flight": "TP1607",
-       "from": "OPO",
-       "hours": 5.4,
-       "seat": null,
-       "to": "TLV"
-      }
-     ],
-     "mixed_cabin": false,
-     "stops": 1,
-     "via": [
-      "OPO"
-     ]
-    },
-    "separate_tickets": false
-   },
-   "dur": 7,
-   "economy": 372.0,
-   "effective": 881.0,
-   "month": "2027-07",
-   "origin": "TLV",
-   "other_months": [],
-   "parts": null,
-   "price": 881.0,
-   "reasons": [
-    "35% מתחת למחיר הרגיל ($1,364, הזול שנמצא לחודש הזה ב-3 בדיקות קודמות)"
-   ],
-   "ref": 1364,
-   "ref_why": "הזול שנמצא לחודש הזה ב-3 בדיקות קודמות",
-   "ret": "2027-07-12",
-   "route": "K-TLV-ZRH",
-   "similar_dates": 5,
-   "src": "kiwi",
-   "via": null
-  },
-  {
-   "airline_focus": null,
-   "dep": "2027-07-21",
-   "dest": "NCE",
-   "details": {
-    "booking_url": "https://kiwi.com/u/9wjcwq",
-    "out": {
-     "airlines": [
-      "TAP Portugal"
-     ],
-     "hours": 20.0,
-     "legs": [
-      {
-       "aircraft": null,
-       "airline": "TAP Portugal",
-       "flight": "TP1604",
-       "from": "TLV",
-       "hours": 6.2,
-       "seat": null,
-       "to": "LIS"
-      },
-      {
-       "aircraft": null,
-       "airline": "TAP Portugal",
-       "flight": "TP484",
-       "from": "LIS",
-       "hours": 2.5,
-       "seat": null,
-       "to": "NCE"
-      }
-     ],
-     "mixed_cabin": false,
-     "stops": 1,
-     "via": [
-      "LIS"
-     ]
-    },
-    "price": 1018.0,
-    "ret": {
-     "airlines": [
-      "TAP Portugal"
-     ],
-     "hours": 14.0,
-     "legs": [
-      {
-       "aircraft": null,
-       "airline": "TAP Portugal",
-       "flight": "TP481",
-       "from": "NCE",
-       "hours": 2.8,
-       "seat": null,
-       "to": "LIS"
-      },
-      {
-       "aircraft": null,
-       "airline": "TAP Portugal",
-       "flight": "TP1603",
-       "from": "LIS",
-       "hours": 5.4,
-       "seat": null,
-       "to": "TLV"
-      }
-     ],
-     "mixed_cabin": false,
-     "stops": 1,
-     "via": [
-      "LIS"
-     ]
-    },
-    "separate_tickets": false
-   },
-   "dur": 7,
-   "economy": 387.0,
-   "effective": 1018.0,
-   "month": "2027-07",
-   "origin": "TLV",
-   "other_months": [],
-   "parts": null,
-   "price": 1018.0,
-   "reasons": [
-    "36% מתחת למחיר הרגיל ($1,595, הזול שנמצא לחודש הזה ב-3 בדיקות קודמות)"
-   ],
-   "ref": 1595,
-   "ref_why": "הזול שנמצא לחודש הזה ב-3 בדיקות קודמות",
-   "ret": "2027-07-28",
-   "route": "K-TLV-NCE",
-   "similar_dates": 1,
-   "src": "kiwi",
-   "via": null
-  }
- ],
+ "last_digest": "2026-11-12",
+ "last_email": "2026-11-12T07:14:36+00:00",
+ "pending": [],
  "routes": {
   "K-ALL-AKL": {
    "empty_streak": 0,
@@ -12014,7 +11836,7 @@
   },
   "K-ALL-CMB": {
    "empty_streak": 0,
-   "last_found": "2026-11-10"
+   "last_found": "2026-11-12"
   },
   "K-ALL-CMN": {
    "empty_streak": 0,
@@ -12098,7 +11920,7 @@
   },
   "K-ALL-ICN": {
    "empty_streak": 0,
-   "last_found": "2026-11-10"
+   "last_found": "2026-11-12"
   },
   "K-ALL-JNB": {
    "empty_streak": 0,
@@ -12106,7 +11928,7 @@
   },
   "K-ALL-KIX": {
    "empty_streak": 0,
-   "last_found": "2026-11-10"
+   "last_found": "2026-11-12"
   },
   "K-ALL-KUL": {
    "empty_streak": 0,
@@ -12138,15 +11960,15 @@
   },
   "K-ALL-MLE": {
    "empty_streak": 0,
-   "last_found": "2026-11-10"
+   "last_found": "2026-11-12"
   },
   "K-ALL-MNL": {
    "empty_streak": 0,
-   "last_found": "2026-11-10"
+   "last_found": "2026-11-12"
   },
   "K-ALL-MRU": {
    "empty_streak": 0,
-   "last_found": "2026-11-10"
+   "last_found": "2026-11-12"
   },
   "K-ALL-MUC": {
    "empty_streak": 0,
@@ -12166,7 +11988,7 @@
   },
   "K-ALL-NRT": {
    "empty_streak": 0,
-   "last_found": "2026-11-10"
+   "last_found": "2026-11-12"
   },
   "K-ALL-OSL": {
    "empty_streak": 0,
@@ -12190,7 +12012,7 @@
   },
   "K-ALL-SEZ": {
    "empty_streak": 0,
-   "last_found": "2026-11-10"
+   "last_found": "2026-11-12"
   },
   "K-ALL-SGN": {
    "empty_streak": 0,
@@ -12365,7 +12187,7 @@
   },
   "TLV-CDG": {
    "empty_streak": 0,
-   "last_found": "2026-11-11"
+   "last_found": "2026-11-12"
   },
   "TLV-CMB": {
    "empty_streak": 0,
@@ -12468,8 +12290,8 @@
    "last_found": "2026-11-11"
   },
   "TLV-LHR": {
-   "empty_streak": 1,
-   "last_found": "2026-11-11"
+   "empty_streak": 0,
+   "last_found": "2026-11-12"
   },
   "TLV-LIM": {
    "empty_streak": 0,
