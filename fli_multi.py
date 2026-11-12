@@ -12,7 +12,9 @@ import json
 import sys
 
 
-def search(cabin: str, legs: list[tuple[str, str, str]], exclude: list[str] | None = None) -> dict:
+def search(cabin: str, legs: list[tuple[str, str, str]], exclude: list[str] | None = None, top_n: int = 2) -> dict:
+    """top_n: how many options of each leg Google expands (each one is another request).
+    The library default is 5; 2 keeps a 4-leg search to a few requests (12/11: slow runs)."""
     from fli.core import build_multi_city_segments, parse_airlines, parse_cabin_class, resolve_airport
     from fli.models import FlightSearchFilters, PassengerInfo
     from fli.search import SearchFlights
@@ -30,7 +32,7 @@ def search(cabin: str, legs: list[tuple[str, str, str]], exclude: list[str] | No
         kw["airlines_exclude"] = excl
     filters = FlightSearchFilters(trip_type=trip_type, passenger_info=PassengerInfo(adults=1),
                                   flight_segments=segments, seat_type=parse_cabin_class(cabin), **kw)
-    res = SearchFlights().search(filters, currency="USD") or []
+    res = SearchFlights().search(filters, top_n=top_n, currency="USD") or []
     trips = []
     for r in res:
         segs = list(r) if isinstance(r, tuple) else [r]
