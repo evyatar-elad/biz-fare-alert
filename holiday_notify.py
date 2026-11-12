@@ -117,9 +117,22 @@ def summary(best: dict, news: list) -> str:
     return "".join(parts)
 
 
-def main(dry_run: bool = False, force: bool = False, weekly: bool = False) -> int:
+def sample_alerts(best: dict) -> list[dict]:
+    """For a sample email: the cheapest option of the two cheapest destinations, as if new lows."""
+    out = []
+    for h in HC.upcoming(date.today())[:1]:
+        rows = sorted(((g, b) for g, b in best.get(h.key, {}).items() if not g.startswith("_") and b.get("now")),
+                      key=lambda x: x[1]["now"]["price"])[:2]
+        out += [{"type": "low", "h": h.key, "hname": h.name, "group": g, "o": b["now"],
+                 "prev": round(b["now"]["price"] * 1.12)} for g, b in rows]
+    return out
+
+
+def main(dry_run: bool = False, force: bool = False, weekly: bool = False, sample: bool = False) -> int:
     st = jload(STATE_F, {})
     pending = jload(DATA / "pending.json", [])
+    if sample:  # a one-off example: alert cards + the weekly summary, nothing marked as sent
+        force = weekly = True
     best = jload(DATA / "best.json", {})
     news = jload(DATA / "pending_news.json", [])
     now_il = datetime.now(IL)
@@ -131,8 +144,12 @@ def main(dry_run: bool = False, force: bool = False, weekly: bool = False) -> in
     if not (alerts_due or weekly_due):
         print(f"holiday mail: nothing now ({len(pending)} alerts, {len(new_news)} news waiting)")
         return 0
+    if sample:
+        pending = sample_alerts(best)
     head = (f'<div style="background:{GREEN};color:#fff;border-radius:12px;padding:14px 16px;margin-bottom:12px;{notify.FONT}">'
-            f'<div style="font-size:20px;font-weight:bold">🌴 חגים - תיירים</div></div>')
+            f'<div style="font-size:20px;font-weight:bold">🌴 חגים - תיירים</div>'
+            + ('<div style="font-size:13px;margin-top:4px">מייל לדוגמה: כך ייראו התראה (שיא זול חדש או ירידה של 10%) והסיכום השבועי. '
+               'המחירים אמיתיים, ה"היה" בהתראות מומצא לצורך הדוגמה.</div>' if sample else '') + '</div>')
     parts = [head]
     if pending:
         parts.append(f'<div style="{notify.FONT}font-size:18px;font-weight:bold;margin:6px 4px 10px">מחירים חדשים ({len(pending)})</div>')
@@ -159,9 +176,11 @@ def main(dry_run: bool = False, force: bool = False, weekly: bool = False) -> in
         subject = "🌴 סיכום שבועי: חגים בתיירים"
     else:
         subject = f"🌴 {len(new_news)} מבצעים מניוזלטרים לחגים"
+    if sample:
+        subject = "דוגמה: " + subject
     if not notify._send(subject, wrap("".join(parts), subject), dry_run):
         return 1
-    if not dry_run:
+    if not dry_run and not sample:
         if pending or new_news:
             st["last_alert"] = today
         if weekly_due:
@@ -176,4 +195,4 @@ def main(dry_run: bool = False, force: bool = False, weekly: bool = False) -> in
 
 
 if __name__ == "__main__":
-    sys.exit(main("--dry-run" in sys.argv, "--force" in sys.argv, "--weekly" in sys.argv))
+    sys.exit(main("--dry-run" in sys.argv, "--force" in sys.argv, "--weekly" in sys.argv, "--sample" in sys.argv))

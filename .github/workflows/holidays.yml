@@ -5,7 +5,7 @@ name: holidays
 # own data (data/holidays/), own page (docs/holidays.html) and own email.
 #
 # Scheduled every 2 hours (approved by the user 12/11). Schedules run only from main.
-# The email is still printed only (send_email) until the user approves sending it.
+# The holidays email is sent (approved by the user 12/11); dispatch with dry_run to only print it.
 
 on:
   schedule:
@@ -13,13 +13,13 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "scan | probe | diag | aitest"
+        description: "scan | mailtest (send a sample email now) | probe | diag | aitest"
         default: "scan"
       minutes:
         description: "time budget (minutes)"
         default: "45"
-      send_email:
-        description: "really send the holidays email (otherwise only printed)"
+      dry_run:
+        description: "print the email instead of sending it"
         type: boolean
         default: false
   # On a claude/** branch, a commit message with [hol-scan], [hol-probe] or [hol-diag] runs that mode.
@@ -56,17 +56,18 @@ jobs:
         run: |
           case "$MODE" in
             scan)  python holiday_scanner.py --minutes "${{ inputs.minutes || '45' }}" ;;
+            mailtest) echo "sample email only" ;;
             probe) python holiday_probe.py ;;
             aitest) python news_ai.py --selftest ;;
             *)     python holiday_diag.py ;;
           esac
       - name: holidays email
-        if: always() && env.MODE == 'scan'
+        if: always() && (env.MODE == 'scan' || env.MODE == 'mailtest')
         env:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           MAIL_TO: ${{ secrets.MAIL_TO }}
-        run: python holiday_notify.py ${{ inputs.send_email != true && '--dry-run' || '' }}
+        run: python holiday_notify.py ${{ inputs.dry_run && '--dry-run' || '' }} ${{ env.MODE == 'mailtest' && '--sample' || '' }}
       - name: holidays page
         if: always() && env.MODE == 'scan'
         run: python holiday_status.py
