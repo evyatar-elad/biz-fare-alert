@@ -142,6 +142,10 @@ def main() -> None:
     nstats = jload("news_stats.json", {})
     nlog = jload("news_log.json", [])
     nwait = jload("pending_news.json", [])
+    ai_u = jload("news_ai_usage.json", {})
+    ai_m = ai_u.get(now.strftime("%Y-%m"), {})
+    ai_txt = (f"החודש נקראו עם AI {ai_m['mails']} מיילים, עלות ${ai_m['usd']:.2f}." if ai_m.get("mails")
+              else "עוד לא הגיעו מיילים חדשים מאז שה-AI הופעל.")
     days = sorted(nstats)[-7:]
     n_read = sum(nstats[d]["read"] for d in days)
     n_match = sum(nstats[d]["matched"] for d in days)
@@ -186,7 +190,7 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 .scroll{{overflow-x:auto}}
 </style></head><body><div class="wrap">
 <header><h1>✈️ בוט מציאות ביזנס</h1>
-<div style="opacity:.8;margin-top:4px">ביזנס הלוך חזור מתל אביב. מקורות: Google Flights ו-Kiwi.com, וגם ניוזלטרים של חברות תעופה ו-Fly4free. עודכן {t(now.isoformat())}</div></header>
+<div style="opacity:.8;margin-top:4px"><a href="holidays.html" style="color:#fff">🌴 לדף "חגים - תיירים" ←</a><br>ביזנס הלוך חזור מתל אביב. מקורות: Google Flights ו-Kiwi.com, וגם ניוזלטרים של חברות תעופה ו-Fly4free. עודכן {t(now.isoformat())}</div></header>
 <div class="card"><span id=health style="color:{color};font-weight:bold">● {health}</span></div>
 <script>
 // The page is regenerated after every run. If it is old, the bot (or this page) stopped: say so.
@@ -215,7 +219,7 @@ h.style.color='#b91c1c'; h.textContent='● הדף לא עודכן כבר '+Math
 <div class=scroll><table>
 <tr><th>נשלח</th><th>מסלול</th><th>חודש</th><th>מחיר</th><th></th></tr>{al_rows}</table></div></div>
 <div class="card"><h2>ניוזלטרים ואתרי מציאות</h2>
-<div class=m style="font-size:13px;margin-bottom:8px">הבוט קורא בכל ריצה את התיבה הייעודית ואת אתר Fly4free. נשלח במייל היומי רק מה שמזכיר ביזנס עם מחיר (בקרוב: קריאה חכמה עם AI).</div>
+<div class=m style="font-size:13px;margin-bottom:8px">הבוט קורא בכל ריצה את התיבה הייעודית ואת אתר Fly4free. מ-12/11 כל מייל נקרא עם AI (Claude Haiku), שמחלץ את המבצע (מסלול, מחלקה, מחיר, תאריכים, תוקף) ומסכם בעברית. ביזנס מתל אביב נכנס למייל היומי עם המחיר שלנו לאותו מסלול; תיירים בתאריכי החגים עובר <a href="holidays.html" style="color:inherit">לדף החגים</a>. {ai_txt}</div>
 <div class="kpis"><div class="kpi"><span class=m>נקראו ב-7 ימים</span><b>{n_read}</b><span class=m>מיילים</span></div>
 <div class="kpi"><span class=m>עם ביזנס ומחיר</span><b>{n_match}</b><span class=m>נכנסו למייל היומי</span></div></div>
 <div class=scroll style="margin-top:10px"><table><tr><th>מי שולח (7 ימים)</th><th>מיילים</th></tr>{sender_rows}</table></div>
