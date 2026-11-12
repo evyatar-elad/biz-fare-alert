@@ -135,6 +135,29 @@ def matrix(h: HC.Holiday, prices: dict, group: str, today: date) -> str:
             f"מחירים מ-{FRESH_DAYS} הימים האחרונים, הזול מבין Kiwi וגוגל.</div>")
 
 
+def cheapest_within(h: HC.Holiday, prices: dict, group: str, today: date, max_vac: int) -> dict | None:
+    """Cheapest fresh price (14-21 nights) whose trip costs at most max_vac vacation days."""
+    best = None
+    for sk, series in prices.items():
+        src, dest = sk.split("|", 1)
+        if ("TYO" if dest in ("NRT", "HND", "TYO") else dest) != group:
+            continue
+        for k, rows in series.items():
+            dep_s, n_s = k.split("|")
+            n = int(n_s)
+            seen, price = rows[-1]
+            if not (P.NIGHTS_MAIN[0] <= n <= P.NIGHTS_MAIN[1]) or (today - date.fromisoformat(seen)).days > FRESH_DAYS:
+                continue
+            if best and price >= best["price"]:
+                continue
+            dep = date.fromisoformat(dep_s)
+            v = HC.vacation(h, dep, dep + timedelta(days=n))["vac"]
+            if v <= max_vac:
+                best = {"price": price, "dep": dep_s, "ret": (dep + timedelta(days=n)).isoformat(), "nights": n,
+                        "vac": v, "src": src}
+    return best
+
+
 def main(out: Path = OUT) -> None:
     today = date.today()
     now = datetime.now(timezone.utc)
@@ -159,6 +182,7 @@ def main(out: Path = OUT) -> None:
                         for r in bs["per_nights"])
         oj = hb.get("_open_jaw", {})
         groups = sorted((g for g in hb if not g.startswith("_")), key=lambda g: (hb[g].get("now") or {}).get("price", 10 ** 9))
+        few = bs["top"][0]["vac"] + 2  # e.g. Tishrei 5787: at most 5 vacation days
         drows = []
         for g in groups:
             b = hb[g]
@@ -169,7 +193,11 @@ def main(out: Path = OUT) -> None:
             biz_txt = ("<td class=m>-</td>" if not bz else
                        f"<td{' class=good' if bz['price'] <= P.BIZ_PEEK_MAX else ''}><b>${bz['price']:,}</b>"
                        f"<br><span class=m>{dshort(bz['dep'])}, {bz['nights']} לילות</span></td>")
-            drows.append(f"<tr><th>{e(group_name(g))}</th>{opt_cell(b.get('now'))}{low_txt}"
+            cw = cheapest_within(h, prices, g, today, few)
+            few_txt = ("<td class=m>-</td>" if not cw else
+                       f"<td><b>${cw['price']:,}</b><br><span class=m>{dshort(cw['dep'])} - {dshort(cw['ret'])}, "
+                       f"{cw['nights']} לילות, <b>{cw['vac']}</b> ימי חופש</span></td>")
+            drows.append(f"<tr><th>{e(group_name(g))}</th>{opt_cell(b.get('now'))}{few_txt}{low_txt}"
                          f"<td>{trend(curve.get(h.key, {}).get(g, []))}</td>{opt_cell(b.get('noeu'))}{opt_cell(b.get('onestop'))}{biz_txt}</tr>")
         def rt_price(code):
             g = "TYO" if code in ("NRT", "HND") else code
@@ -198,8 +226,8 @@ def main(out: Path = OUT) -> None:
 <details class=sub><summary>לפי אורך הטיול</summary><table><tr><th>לילות</th><th>תאריכים</th><th>ימי חופש</th></tr>{per_n}</table></details></div>
 </div>
 <h3>הזול לכל יעד (תיירים, הלוך חזור, נוסע אחד)</h3>
-<div class=scroll><table class=dest><tr><th>יעד</th><th>הזול עכשיו</th><th>הזול מאז שהתחלנו</th><th>מגמה בשבוע</th><th>הזול בלי אירופה</th><th>הזול עם עצירה אחת לכל היותר</th><th>ביזנס (הצצה)</th></tr>
-{''.join(drows) or "<tr><td colspan=7 class=m>עוד אין מחירים לחג הזה</td></tr>"}</table></div>
+<div class=scroll><table class=dest><tr><th>יעד</th><th>הזול עכשיו</th><th>הזול עם עד {few} ימי חופש</th><th>הזול מאז שהתחלנו</th><th>מגמה בשבוע</th><th>הזול בלי אירופה</th><th>הזול עם עצירה אחת לכל היותר</th><th>ביזנס (הצצה)</th></tr>
+{''.join(drows) or "<tr><td colspan=8 class=m>עוד אין מחירים לחג הזה</td></tr>"}</table></div>
 <details class=sub><summary><b>Open jaw (בונוס):</b> הלוך לעיר אחת וחזור מאחרת, שני כרטיסים לכיוון אחד</summary>
 <div class=scroll><table>{oj_rows or "<tr><td class=m>עוד אין</td></tr>"}</table></div></details>
 <h3>לוח מחירים לכל יעד</h3>{mats or "<div class=m>עוד אין</div>"}
