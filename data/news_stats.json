@@ -27,8 +27,10 @@
   }
  },
  "2026-11-13": {
-  "read": 0,
+  "read": 1,
   "matched": 0,
-  "senders": {}
+  "senders": {
+   "Etihad Airways": 1
+  }
  }
 }
