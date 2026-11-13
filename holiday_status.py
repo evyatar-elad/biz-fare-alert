@@ -173,6 +173,8 @@ def convenient(o: dict, group: str) -> bool:
 
 def short_route(o: dict) -> str:
     """'ישירה · 11.7 שעות' / 'עצירה אחת (באקו) · 12 שעות' / '2 עצירות · 31 שעות'."""
+    if o.get("unverified"):
+        return "מלוח המחירים של גוגל, עוד לא אומת בחיפוש (יכול להיות שהמחיר האמיתי גבוה יותר)"
     if o.get("via_out") is None:
         return "מסלול בקישור"
     n = max(len(o["via_out"]), len(o["via_ret"]))
@@ -286,12 +288,24 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
                 cands.append({**gc, "notes": HC.notes(h, date.fromisoformat(gc["dep"]), date.fromisoformat(gc["ret"]))})
         if not cands:
             continue
-        # a Google calendar price has no route; Google's own check of the same dates does
-        for gc in (b.get("google") or {}).values():
-            for o in cands:
-                if o.get("via_out") is None and (o["dep"], o["ret"]) == (gc["dep"], gc["ret"]) and o["price"] == gc["price"]:
-                    o.update({k: gc[k] for k in ("via_out", "via_ret", "hours_out", "hours_ret", "airlines", "separate") if k in gc})
+        # Google's price calendar is a cache: found 13/11 that it can be far below what Google's
+        # own flight search shows for the same dates (Bangkok 23/4-14/5: calendar $778, search
+        # $1,091). The daily check (gf_check) searches the cheapest dates. A calendar price on
+        # checked dates is replaced by the searched price (with its route); an unchecked one
+        # is marked as not verified.
+        any_gc = (b.get("google") or {}).get("any")
+        for o in cands:
+            if o["src"] != "google" or o.get("via_out") is not None:
+                continue
+            if any_gc and (o["dep"], o["ret"]) == (any_gc["dep"], any_gc["ret"]):
+                o.update({k: any_gc[k] for k in ("price", "via_out", "via_ret", "hours_out", "hours_ret", "airlines", "separate")
+                          if k in any_gc})
+                o["verified"] = True
+            else:
+                o["unverified"] = True
         key = lambda o: (o["price"], o["vac"])
+        verified = [o for o in cands if not o.get("unverified")]
+        cands = verified or cands  # unverified calendar prices only when there is nothing else
         cheap = min(cands, key=key)
         conv_l = [o for o in cands if convenient(o, g)]
         conv = min(conv_l, key=key) if conv_l else None
