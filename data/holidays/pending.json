@@ -269,5 +269,87 @@
   },
   "prev": 957,
   "type": "low"
+ },
+ {
+  "at": "2026-11-13T03:36:20+00:00",
+  "group": "BKK",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "airlines": [
+    "Aegean",
+    "ITA Airways",
+    "Swiss International Air Lines"
+   ],
+   "dep": "2027-04-05",
+   "dest": "BKK",
+   "europe": true,
+   "hours_out": 33.9,
+   "hours_ret": 18.7,
+   "legs_out": [
+    {
+     "airline": "Aegean",
+     "arr": "2027-04-05T22:05:00",
+     "dep": "2027-04-05T19:55:00",
+     "flight": "A3927",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Swiss International Air Lines",
+     "arr": "2027-04-06T08:45:00",
+     "dep": "2027-04-06T06:55:00",
+     "flight": "LX1843",
+     "from": "ATH",
+     "to": "ZRH"
+    },
+    {
+     "airline": "Swiss International Air Lines",
+     "arr": "2027-04-07T09:50:00",
+     "dep": "2027-04-06T17:55:00",
+     "flight": "LX180",
+     "from": "ZRH",
+     "to": "BKK"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "ITA Airways",
+     "arr": "2027-04-19T19:20:00",
+     "dep": "2027-04-19T12:30:00",
+     "flight": "AZ759",
+     "from": "BKK",
+     "to": "FCO"
+    },
+    {
+     "airline": "ITA Airways",
+     "arr": "2027-04-20T03:10:00",
+     "dep": "2027-04-19T22:50:00",
+     "flight": "AZ810",
+     "from": "FCO",
+     "to": "TLV"
+    }
+   ],
+   "nights": 14,
+   "notes": [
+    "ליל הסדר בבית"
+   ],
+   "price": 732,
+   "ret": "2027-04-19",
+   "seen": "2026-11-13",
+   "separate": false,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/gv5mm8m",
+   "vac": 11,
+   "via_out": [
+    "ATH",
+    "ZRH"
+   ],
+   "via_ret": [
+    "FCO"
+   ]
+  },
+  "prev": 778,
+  "type": "low"
  }
 ]
