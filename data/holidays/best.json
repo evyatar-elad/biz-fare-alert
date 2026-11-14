@@ -1337,7 +1337,60 @@
    },
    "now_day": "2026-11-14",
    "prev_day_price": 1010,
-   "stops": {}
+   "stops": {
+    "AUH": {
+     "airlines": [
+      "Etihad Airways",
+      "Thai Airways"
+     ],
+     "banned": false,
+     "hours": [
+      3.2,
+      12.7,
+      11.4,
+      3.4
+     ],
+     "hub": "AUH",
+     "legs": [
+      [
+       "TLV",
+       "AUH",
+       "2027-04-06"
+      ],
+      [
+       "AUH",
+       "DAD",
+       "2027-04-07"
+      ],
+      [
+       "DAD",
+       "AUH",
+       "2027-04-20"
+      ],
+      [
+       "AUH",
+       "TLV",
+       "2027-04-21"
+      ]
+     ],
+     "n_back": 1,
+     "n_out": 1,
+     "nights": 15,
+     "price": 1781,
+     "seen": "2026-11-14",
+     "vac": 11,
+     "via": [
+      [],
+      [
+       "BKK"
+      ],
+      [
+       "BKK"
+      ],
+      []
+     ]
+    }
+   }
   },
   "DEL": {
    "biz": {
@@ -2278,7 +2331,55 @@
     ]
    },
    "prev_day_price": 1003,
-   "stops": {}
+   "stops": {
+    "AUH": {
+     "airlines": [
+      "Etihad Airways"
+     ],
+     "banned": false,
+     "hours": [
+      3.2,
+      9.6,
+      8.9,
+      3.4
+     ],
+     "hub": "AUH",
+     "legs": [
+      [
+       "TLV",
+       "AUH",
+       "2027-04-06"
+      ],
+      [
+       "AUH",
+       "DPS",
+       "2027-04-07"
+      ],
+      [
+       "DPS",
+       "AUH",
+       "2027-04-19"
+      ],
+      [
+       "AUH",
+       "TLV",
+       "2027-04-20"
+      ]
+     ],
+     "n_back": 1,
+     "n_out": 1,
+     "nights": 14,
+     "price": 1808,
+     "seen": "2026-11-14",
+     "vac": 11,
+     "via": [
+      [],
+      [],
+      [],
+      []
+     ]
+    }
+   }
   },
   "GOI": {
    "biz": {
@@ -2703,7 +2804,60 @@
    },
    "now_day": "2026-11-14",
    "prev_day_price": 901,
-   "stops": {}
+   "stops": {
+    "AUH": {
+     "airlines": [
+      "Air India",
+      "Etihad Airways"
+     ],
+     "banned": false,
+     "hours": [
+      3.2,
+      8.9,
+      9.0,
+      3.4
+     ],
+     "hub": "AUH",
+     "legs": [
+      [
+       "TLV",
+       "AUH",
+       "2027-04-12"
+      ],
+      [
+       "AUH",
+       "GOI",
+       "2027-04-13"
+      ],
+      [
+       "GOI",
+       "AUH",
+       "2027-04-30"
+      ],
+      [
+       "AUH",
+       "TLV",
+       "2027-05-01"
+      ]
+     ],
+     "n_back": 1,
+     "n_out": 1,
+     "nights": 19,
+     "price": 2182,
+     "seen": "2026-11-14",
+     "vac": 8,
+     "via": [
+      [],
+      [
+       "BOM"
+      ],
+      [
+       "BOM"
+      ],
+      []
+     ]
+    }
+   }
   },
   "HAN": {
    "biz": {
