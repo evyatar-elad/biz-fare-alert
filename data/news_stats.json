@@ -32,5 +32,10 @@
   "senders": {
    "Etihad Airways": 1
   }
+ },
+ "2026-11-14": {
+  "read": 0,
+  "matched": 0,
+  "senders": {}
  }
 }
