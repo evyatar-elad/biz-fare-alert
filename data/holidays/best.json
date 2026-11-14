@@ -15,7 +15,7 @@
     "src": "google",
     "vac": 12
    },
-   "checked": "2026-11-14T19:50:46+00:00",
+   "checked": "2026-11-14T21:18:42+00:00",
    "fast": {
     "airlines": [
      "Air India Limited",
@@ -3704,7 +3704,7 @@
     "src": "google",
     "vac": 8
    },
-   "checked": "2026-11-14T19:51:16+00:00",
+   "checked": "2026-11-14T21:20:12+00:00",
    "fast": {
     "airlines": [
      "Air India Limited"
@@ -4284,7 +4284,7 @@
     "src": "google",
     "vac": 8
    },
-   "checked": "2026-11-14T19:52:06+00:00",
+   "checked": "2026-11-14T21:20:52+00:00",
    "fast": {
     "airlines": [
      "Etihad Airways"
@@ -6814,7 +6814,7 @@
  },
  "tishrei-5788": {
   "BKK": {
-   "checked": "2026-11-14T19:53:36+00:00",
+   "checked": "2026-11-14T21:07:06+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines"
@@ -7258,7 +7258,7 @@
    "stops": {}
   },
   "BOM": {
-   "checked": "2026-11-14T19:53:12+00:00",
+   "checked": "2026-11-14T21:06:43+00:00",
    "fast": {
     "airlines": [
      "Azerbaijan Airlines"
@@ -7704,7 +7704,7 @@
    "stops": {}
   },
   "DAD": {
-   "checked": "2026-11-14T19:52:40+00:00",
+   "checked": "2026-11-14T21:06:11+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -8266,7 +8266,64 @@
     ]
    },
    "prev_day_price": 1383,
-   "stops": {}
+   "stops": {
+    "GYD": {
+     "airlines": [
+      "Azerbaijan Airlines",
+      "Emirates",
+      "Thai Airways",
+      "flydubai"
+     ],
+     "banned": false,
+     "hours": [
+      3.1,
+      24.8,
+      18.9,
+      3.4
+     ],
+     "hub": "GYD",
+     "legs": [
+      [
+       "TLV",
+       "GYD",
+       "2027-09-24"
+      ],
+      [
+       "GYD",
+       "DAD",
+       "2027-09-25"
+      ],
+      [
+       "DAD",
+       "GYD",
+       "2027-10-07"
+      ],
+      [
+       "GYD",
+       "TLV",
+       "2027-10-09"
+      ]
+     ],
+     "n_back": 2,
+     "n_out": 1,
+     "nights": 15,
+     "price": 4540,
+     "seen": "2026-11-14",
+     "vac": 9,
+     "via": [
+      [],
+      [
+       "DXB",
+       "BKK"
+      ],
+      [
+       "BKK",
+       "DXB"
+      ],
+      []
+     ]
+    }
+   }
   },
   "DEL": {
    "checked": "2026-11-14T19:53:01+00:00",
@@ -8712,7 +8769,7 @@
    "stops": {}
   },
   "DPS": {
-   "checked": "2026-11-14T19:52:51+00:00",
+   "checked": "2026-11-14T21:06:22+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -9281,7 +9338,61 @@
     ]
    },
    "prev_day_price": 1148,
-   "stops": {}
+   "stops": {
+    "GYD": {
+     "airlines": [
+      "Azerbaijan Airlines",
+      "Emirates",
+      "flydubai"
+     ],
+     "banned": false,
+     "hours": [
+      3.1,
+      24.5,
+      19.6,
+      3.4
+     ],
+     "hub": "GYD",
+     "legs": [
+      [
+       "TLV",
+       "GYD",
+       "2027-09-25"
+      ],
+      [
+       "GYD",
+       "DPS",
+       "2027-09-26"
+      ],
+      [
+       "DPS",
+       "GYD",
+       "2027-10-07"
+      ],
+      [
+       "GYD",
+       "TLV",
+       "2027-10-09"
+      ]
+     ],
+     "n_back": 2,
+     "n_out": 1,
+     "nights": 14,
+     "price": 5342,
+     "seen": "2026-11-14",
+     "vac": 9,
+     "via": [
+      [],
+      [
+       "DXB"
+      ],
+      [
+       "DXB"
+      ],
+      []
+     ]
+    }
+   }
   },
   "GOI": {
    "checked": "2026-11-14T19:53:24+00:00",
@@ -9763,7 +9874,7 @@
    "stops": {}
   },
   "HAN": {
-   "checked": "2026-11-14T19:52:28+00:00",
+   "checked": "2026-11-14T21:06:00+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -10349,7 +10460,7 @@
      "hours": [
       3.1,
       25.2,
-      25.2,
+      17.7,
       3.4
      ],
      "hub": "GYD",
@@ -10367,19 +10478,19 @@
       [
        "HAN",
        "GYD",
-       "2027-10-06"
+       "2027-10-07"
       ],
       [
        "GYD",
        "TLV",
-       "2027-10-08"
+       "2027-10-09"
       ]
      ],
      "n_back": 2,
      "n_out": 1,
-     "nights": 14,
-     "price": 4867,
-     "seen": "2026-11-12",
+     "nights": 15,
+     "price": 4929,
+     "seen": "2026-11-14",
      "vac": 9,
      "via": [
       [],
@@ -10395,7 +10506,7 @@
    }
   },
   "HKT": {
-   "checked": "2026-11-14T19:53:47+00:00",
+   "checked": "2026-11-14T21:07:17+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines"
@@ -10742,7 +10853,7 @@
    "stops": {}
   },
   "KIX": {
-   "checked": "2026-11-14T19:54:09+00:00",
+   "checked": "2026-11-14T21:07:39+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -11879,10 +11990,64 @@
     ]
    },
    "prev_day_price": 1330,
-   "stops": {}
+   "stops": {
+    "GYD": {
+     "airlines": [
+      "Azerbaijan Airlines",
+      "Emirates",
+      "flydubai"
+     ],
+     "banned": false,
+     "hours": [
+      3.1,
+      23.4,
+      19.3,
+      3.4
+     ],
+     "hub": "GYD",
+     "legs": [
+      [
+       "TLV",
+       "GYD",
+       "2027-09-25"
+      ],
+      [
+       "GYD",
+       "SGN",
+       "2027-09-26"
+      ],
+      [
+       "SGN",
+       "GYD",
+       "2027-10-07"
+      ],
+      [
+       "GYD",
+       "TLV",
+       "2027-10-09"
+      ]
+     ],
+     "n_back": 2,
+     "n_out": 1,
+     "nights": 14,
+     "price": 4614,
+     "seen": "2026-11-14",
+     "vac": 9,
+     "via": [
+      [],
+      [
+       "DXB"
+      ],
+      [
+       "DXB"
+      ],
+      []
+     ]
+    }
+   }
   },
   "TYO": {
-   "checked": "2026-11-14T19:53:59+00:00",
+   "checked": "2026-11-14T21:07:28+00:00",
    "fast": {
     "airlines": [
      "ITA Airways"
