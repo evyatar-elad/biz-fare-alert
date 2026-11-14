@@ -5084,6 +5084,7 @@
      "nights": 16,
      "price": 3021,
      "seen": "2026-11-12",
+     "stale": true,
      "vac": 7,
      "via": [
       [],
