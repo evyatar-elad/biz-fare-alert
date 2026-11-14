@@ -15,7 +15,7 @@
     "src": "google",
     "vac": 12
    },
-   "checked": "2026-11-14T11:38:41+00:00",
+   "checked": "2026-11-14T19:50:46+00:00",
    "fast": {
     "airlines": [
      "Air India Limited",
@@ -3704,7 +3704,7 @@
     "src": "google",
     "vac": 8
    },
-   "checked": "2026-11-14T17:57:38+00:00",
+   "checked": "2026-11-14T19:51:16+00:00",
    "fast": {
     "airlines": [
      "Air India Limited"
@@ -4284,7 +4284,7 @@
     "src": "google",
     "vac": 8
    },
-   "checked": "2026-11-14T17:58:02+00:00",
+   "checked": "2026-11-14T19:52:06+00:00",
    "fast": {
     "airlines": [
      "Etihad Airways"
@@ -4808,7 +4808,60 @@
     ]
    },
    "prev_day_price": 983,
-   "stops": {}
+   "stops": {
+    "ICN": {
+     "airlines": [
+      "Korean Air",
+      "LOT Polish Airlines"
+     ],
+     "banned": false,
+     "hours": [
+      19.2,
+      2.0,
+      1.9,
+      17.7
+     ],
+     "hub": "ICN",
+     "legs": [
+      [
+       "TLV",
+       "ICN",
+       "2027-04-06"
+      ],
+      [
+       "ICN",
+       "KIX",
+       "2027-04-07"
+      ],
+      [
+       "KIX",
+       "ICN",
+       "2027-04-20"
+      ],
+      [
+       "ICN",
+       "TLV",
+       "2027-04-21"
+      ]
+     ],
+     "n_back": 1,
+     "n_out": 1,
+     "nights": 15,
+     "price": 2427,
+     "seen": "2026-11-14",
+     "vac": 11,
+     "via": [
+      [
+       "WAW"
+      ],
+      [],
+      [],
+      [
+       "WAW"
+      ]
+     ]
+    }
+   }
   },
   "SGN": {
    "biz": {
@@ -5480,7 +5533,7 @@
     "src": "google",
     "vac": 6
    },
-   "checked": "2026-11-14T17:57:50+00:00",
+   "checked": "2026-11-14T19:34:59+00:00",
    "fast": {
     "airlines": [
      "Etihad Airways",
@@ -6033,7 +6086,60 @@
     ]
    },
    "prev_day_price": 945,
-   "stops": {}
+   "stops": {
+    "ICN": {
+     "airlines": [
+      "Korean Air",
+      "LOT Polish Airlines"
+     ],
+     "banned": false,
+     "hours": [
+      16.7,
+      2.4,
+      2.5,
+      17.7
+     ],
+     "hub": "ICN",
+     "legs": [
+      [
+       "TLV",
+       "ICN",
+       "2027-04-05"
+      ],
+      [
+       "ICN",
+       "NRT",
+       "2027-04-06"
+      ],
+      [
+       "NRT",
+       "ICN",
+       "2027-04-20"
+      ],
+      [
+       "ICN",
+       "TLV",
+       "2027-04-21"
+      ]
+     ],
+     "n_back": 1,
+     "n_out": 1,
+     "nights": 16,
+     "price": 2468,
+     "seen": "2026-11-14",
+     "vac": 12,
+     "via": [
+      [
+       "WAW"
+      ],
+      [],
+      [],
+      [
+       "WAW"
+      ]
+     ]
+    }
+   }
   },
   "_open_jaw": {
    "BKK-HKT": {
@@ -6563,6 +6669,78 @@
      ]
     ]
    },
+   "HND-KIX": {
+    "airlines": [
+     "Alitalia",
+     "All Nippon Airways"
+    ],
+    "banned": false,
+    "hours": [
+     37.9,
+     23.8
+    ],
+    "legs": [
+     [
+      "TLV",
+      "HND",
+      "2027-04-05"
+     ],
+     [
+      "KIX",
+      "TLV",
+      "2027-04-21"
+     ]
+    ],
+    "nights": 16,
+    "price": 1286,
+    "seen": "2026-11-14",
+    "vac": 12,
+    "via": [
+     [
+      "FCO"
+     ],
+     [
+      "HND",
+      "FCO"
+     ]
+    ]
+   },
+   "KIX-HND": {
+    "airlines": [
+     "Alitalia",
+     "All Nippon Airways"
+    ],
+    "banned": false,
+    "hours": [
+     27.8,
+     20.4
+    ],
+    "legs": [
+     [
+      "TLV",
+      "KIX",
+      "2027-04-06"
+     ],
+     [
+      "HND",
+      "TLV",
+      "2027-04-21"
+     ]
+    ],
+    "nights": 15,
+    "price": 1236,
+    "seen": "2026-11-14",
+    "vac": 11,
+    "via": [
+     [
+      "FCO",
+      "HND"
+     ],
+     [
+      "FCO"
+     ]
+    ]
+   },
    "NRT-KIX": {
     "airlines": [
      "Etihad Airways"
@@ -6636,7 +6814,7 @@
  },
  "tishrei-5788": {
   "BKK": {
-   "checked": "2026-11-14T17:56:53+00:00",
+   "checked": "2026-11-14T19:53:36+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines"
@@ -7080,7 +7258,7 @@
    "stops": {}
   },
   "BOM": {
-   "checked": "2026-11-14T17:59:08+00:00",
+   "checked": "2026-11-14T19:53:12+00:00",
    "fast": {
     "airlines": [
      "Azerbaijan Airlines"
@@ -7526,7 +7704,7 @@
    "stops": {}
   },
   "DAD": {
-   "checked": "2026-11-14T17:58:34+00:00",
+   "checked": "2026-11-14T19:52:40+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -8091,7 +8269,7 @@
    "stops": {}
   },
   "DEL": {
-   "checked": "2026-11-14T17:58:57+00:00",
+   "checked": "2026-11-14T19:53:01+00:00",
    "fast": {
     "airlines": [
      "Azerbaijan Airlines"
@@ -8534,7 +8712,7 @@
    "stops": {}
   },
   "DPS": {
-   "checked": "2026-11-14T17:58:45+00:00",
+   "checked": "2026-11-14T19:52:51+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -9106,7 +9284,7 @@
    "stops": {}
   },
   "GOI": {
-   "checked": "2026-11-14T17:54:28+00:00",
+   "checked": "2026-11-14T19:53:24+00:00",
    "fewvac": {
     "airlines": [
      "Air India Limited",
@@ -9585,7 +9763,7 @@
    "stops": {}
   },
   "HAN": {
-   "checked": "2026-11-14T17:58:23+00:00",
+   "checked": "2026-11-14T19:52:28+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -10217,7 +10395,7 @@
    }
   },
   "HKT": {
-   "checked": "2026-11-14T17:57:04+00:00",
+   "checked": "2026-11-14T19:53:47+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines"
@@ -10564,7 +10742,7 @@
    "stops": {}
   },
   "KIX": {
-   "checked": "2026-11-14T17:57:26+00:00",
+   "checked": "2026-11-14T19:54:09+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -11102,7 +11280,7 @@
    "stops": {}
   },
   "SGN": {
-   "checked": "2026-11-14T17:55:35+00:00",
+   "checked": "2026-11-14T19:45:41+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -11704,29 +11882,29 @@
    "stops": {}
   },
   "TYO": {
-   "checked": "2026-11-14T17:57:15+00:00",
+   "checked": "2026-11-14T19:53:59+00:00",
    "fast": {
     "airlines": [
      "ITA Airways"
     ],
-    "dep": "2027-09-29",
+    "dep": "2027-10-13",
     "dest": "HND",
     "europe": true,
     "hours_out": 20.4,
-    "hours_ret": 20.4,
+    "hours_ret": 20.8,
     "legs_out": [
      {
       "airline": "ITA Airways",
-      "arr": "2027-09-29T10:45:00",
-      "dep": "2027-09-29T08:00:00",
+      "arr": "2027-10-13T10:45:00",
+      "dep": "2027-10-13T08:00:00",
       "flight": "AZ815",
       "from": "TLV",
       "to": "FCO"
      },
      {
       "airline": "ITA Airways",
-      "arr": "2027-09-30T10:25:00",
-      "dep": "2027-09-29T14:55:00",
+      "arr": "2027-10-14T10:25:00",
+      "dep": "2027-10-13T14:55:00",
       "flight": "AZ792",
       "from": "FCO",
       "to": "HND"
@@ -11735,29 +11913,31 @@
     "legs_ret": [
      {
       "airline": "ITA Airways",
-      "arr": "2027-10-19T20:30:00",
-      "dep": "2027-10-19T12:45:00",
+      "arr": "2027-11-01T20:25:00",
+      "dep": "2027-11-01T13:20:00",
       "flight": "AZ793",
       "from": "HND",
       "to": "FCO"
      },
      {
       "airline": "ITA Airways",
-      "arr": "2027-10-20T03:10:00",
-      "dep": "2027-10-19T22:50:00",
+      "arr": "2027-11-02T03:10:00",
+      "dep": "2027-11-01T22:50:00",
       "flight": "AZ810",
       "from": "FCO",
       "to": "TLV"
      }
     ],
-    "nights": 20,
-    "notes": [],
-    "price": 1435,
-    "ret": "2027-10-19",
+    "nights": 19,
+    "notes": [
+     "ראש השנה בבית"
+    ],
+    "price": 1374,
+    "ret": "2027-11-01",
     "seen": "2026-11-14",
     "separate": false,
     "src": "kiwi",
-    "url": "https://kiwi.com/u/kcsuqxm",
+    "url": "https://kiwi.com/u/qvbmfh",
     "vac": 9,
     "via_out": [
      "FCO"
