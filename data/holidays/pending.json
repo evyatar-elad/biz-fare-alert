@@ -604,5 +604,380 @@
   },
   "prev": 732,
   "type": "low"
+ },
+ {
+  "at": "2026-11-14T06:28:02+00:00",
+  "group": "DAD",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Aegean",
+    "Scoot",
+    "VietJet Air",
+    "Wizz Air Malta"
+   ],
+   "dep": "2027-09-24",
+   "dest": "DAD",
+   "europe": true,
+   "hours_out": 32.5,
+   "hours_ret": 24.7,
+   "legs_out": [
+    {
+     "airline": "Aegean",
+     "arr": "2027-09-24T07:10:00",
+     "dep": "2027-09-24T05:00:00",
+     "flight": "A3929",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-09-25T01:10:00",
+     "dep": "2027-09-24T08:55:00",
+     "flight": "TR51",
+     "from": "ATH",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-09-25T17:30:00",
+     "dep": "2027-09-25T15:40:00",
+     "flight": "TR518",
+     "from": "SIN",
+     "to": "DAD"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "VietJet Air",
+     "arr": "2027-10-09T19:15:00",
+     "dep": "2027-10-09T15:20:00",
+     "flight": "VJ889",
+     "from": "DAD",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-10T07:40:00",
+     "dep": "2027-10-10T01:10:00",
+     "flight": "TR50",
+     "from": "SIN",
+     "to": "ATH"
+    },
+    {
+     "airline": "Wizz Air Malta",
+     "arr": "2027-10-10T12:00:00",
+     "dep": "2027-10-10T09:55:00",
+     "flight": "W48402",
+     "from": "ATH",
+     "to": "TLV"
+    }
+   ],
+   "nights": 15,
+   "notes": [
+    "ערב סוכות בבית"
+   ],
+   "price": 1127,
+   "ret": "2027-10-09",
+   "seen": "2026-11-14",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/tzxrf23",
+   "vac": 9,
+   "via_out": [
+    "ATH",
+    "SIN"
+   ],
+   "via_ret": [
+    "SIN",
+    "ATH"
+   ]
+  },
+  "prev": 1368,
+  "type": "low"
+ },
+ {
+  "at": "2026-11-14T06:28:02+00:00",
+  "group": "DPS",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Aegean",
+    "Scoot",
+    "Wizz Air Malta"
+   ],
+   "dep": "2027-09-24",
+   "dest": "DPS",
+   "europe": true,
+   "hours_out": 24.2,
+   "hours_ret": 21.3,
+   "legs_out": [
+    {
+     "airline": "Aegean",
+     "arr": "2027-09-24T07:10:00",
+     "dep": "2027-09-24T05:00:00",
+     "flight": "A3929",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-09-25T01:10:00",
+     "dep": "2027-09-24T08:55:00",
+     "flight": "TR51",
+     "from": "ATH",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-09-25T10:15:00",
+     "dep": "2027-09-25T07:30:00",
+     "flight": "TR280",
+     "from": "SIN",
+     "to": "DPS"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-09T22:35:00",
+     "dep": "2027-10-09T19:40:00",
+     "flight": "TR283",
+     "from": "DPS",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-10T07:40:00",
+     "dep": "2027-10-10T01:10:00",
+     "flight": "TR50",
+     "from": "SIN",
+     "to": "ATH"
+    },
+    {
+     "airline": "Wizz Air Malta",
+     "arr": "2027-10-10T12:00:00",
+     "dep": "2027-10-10T09:55:00",
+     "flight": "W48402",
+     "from": "ATH",
+     "to": "TLV"
+    }
+   ],
+   "nights": 15,
+   "notes": [
+    "ערב סוכות בבית"
+   ],
+   "price": 1126,
+   "ret": "2027-10-09",
+   "seen": "2026-11-14",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/kbnr9r",
+   "vac": 9,
+   "via_out": [
+    "ATH",
+    "SIN"
+   ],
+   "via_ret": [
+    "SIN",
+    "ATH"
+   ]
+  },
+  "prev": 1147,
+  "type": "low"
+ },
+ {
+  "at": "2026-11-14T06:28:02+00:00",
+  "group": "KIX",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "airlines": [
+    "Air India Limited",
+    "SKY express",
+    "Scoot"
+   ],
+   "dep": "2027-04-06",
+   "dest": "KIX",
+   "europe": true,
+   "hours_out": 32.6,
+   "hours_ret": 27.7,
+   "legs_out": [
+    {
+     "airline": "SKY express",
+     "arr": "2027-04-07T01:45:00",
+     "dep": "2027-04-06T23:30:00",
+     "flight": "GQ721",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-04-08T01:10:00",
+     "dep": "2027-04-07T08:55:00",
+     "flight": "TR51",
+     "from": "ATH",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-04-08T14:05:00",
+     "dep": "2027-04-08T06:25:00",
+     "flight": "TR820",
+     "from": "SIN",
+     "to": "KIX"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Air India Limited",
+     "arr": "2027-04-21T18:20:00",
+     "dep": "2027-04-21T11:50:00",
+     "flight": "AI359",
+     "from": "KIX",
+     "to": "DEL"
+    },
+    {
+     "airline": "Air India Limited",
+     "arr": "2027-04-22T09:30:00",
+     "dep": "2027-04-22T05:30:00",
+     "flight": "AI139",
+     "from": "DEL",
+     "to": "TLV"
+    }
+   ],
+   "nights": 15,
+   "notes": [],
+   "price": 973,
+   "ret": "2027-04-21",
+   "seen": "2026-11-14",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/hysf8s",
+   "vac": 11,
+   "via_out": [
+    "ATH",
+    "SIN"
+   ],
+   "via_ret": [
+    "DEL"
+   ]
+  },
+  "prev": 983,
+  "type": "low"
+ },
+ {
+  "at": "2026-11-14T06:28:02+00:00",
+  "group": "SGN",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Israir",
+    "Scoot",
+    "Wizz Air Malta"
+   ],
+   "dep": "2027-09-25",
+   "dest": "SGN",
+   "europe": true,
+   "hours_out": 40.0,
+   "hours_ret": 21.8,
+   "legs_out": [
+    {
+     "airline": "Israir",
+     "arr": "2027-09-25T20:55:00",
+     "dep": "2027-09-25T18:40:00",
+     "flight": "6H569",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-09-27T01:10:00",
+     "dep": "2027-09-26T08:55:00",
+     "flight": "TR51",
+     "from": "ATH",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-09-27T14:40:00",
+     "dep": "2027-09-27T13:25:00",
+     "flight": "TR552",
+     "from": "SIN",
+     "to": "SGN"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-09T21:20:00",
+     "dep": "2027-10-09T18:15:00",
+     "flight": "TR517",
+     "from": "SGN",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-10T07:40:00",
+     "dep": "2027-10-10T01:10:00",
+     "flight": "TR50",
+     "from": "SIN",
+     "to": "ATH"
+    },
+    {
+     "airline": "Wizz Air Malta",
+     "arr": "2027-10-10T12:00:00",
+     "dep": "2027-10-10T09:55:00",
+     "flight": "W48402",
+     "from": "ATH",
+     "to": "TLV"
+    }
+   ],
+   "nights": 14,
+   "notes": [
+    "ערב סוכות בבית"
+   ],
+   "price": 1118,
+   "ret": "2027-10-09",
+   "seen": "2026-11-14",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/rguj8rw",
+   "vac": 9,
+   "via_out": [
+    "ATH",
+    "SIN"
+   ],
+   "via_ret": [
+    "SIN",
+    "ATH"
+   ]
+  },
+  "prev": 1330,
+  "type": "drop"
+ },
+ {
+  "at": "2026-11-14T06:28:02+00:00",
+  "group": "DEL",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "dep": "2027-04-24",
+   "dest": "DEL",
+   "nights": 20,
+   "notes": [
+    "ליל הסדר בבית"
+   ],
+   "price": 543,
+   "ret": "2027-05-14",
+   "seen": "2026-11-14",
+   "src": "google",
+   "vac": 10
+  },
+  "prev": 575,
+  "type": "low"
  }
 ]
