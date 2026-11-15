@@ -314,6 +314,11 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
         key = lambda o: (o["price"], o["vac"])
         verified = [o for o in cands if not o.get("unverified")]
         cands = verified or cands  # unverified calendar prices only when there is nothing else
+        # missing a holiday day or two only when it is really cheaper than using the whole week
+        full = [o for o in cands if HC.missed(h, date.fromisoformat(o["dep"]), date.fromisoformat(o["ret"])) == 0]
+        if full:
+            floor = min(o["price"] for o in full)
+            cands = [o for o in cands if o in full or o["price"] < floor]
         cheap = min(cands, key=key)
         conv_l = [o for o in cands if convenient(o, g)]
         conv = min(conv_l, key=key) if conv_l else None

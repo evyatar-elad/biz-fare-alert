@@ -40,14 +40,16 @@ KIWI_NIGHT_CHUNKS = [(12, 17), (18, 24)]
 TISHREI_DEP_BEFORE_EREV_RH = 7
 TISHREI_DEP_AFTER_EREV_SUKKOT = 2
 
-# Pesach (the user, 11/11): a 14-21 night trip that CONTAINS the Pesach week, which can be at
-# the start, the middle or the end of the trip. The week = erev Pesach (Seder) to the seventh
-# day. Leaving the day after the Seder, or the day after that, is fine ("sometimes I prefer the
-# Seder at home and fly the next day or the day after"). Found 15/11: trips returning before the
-# Seder were offered. Tishrei has NO such rule: any departure from a few days before Rosh
-# Hashana up to the first day of Chol Hamoed Sukkot, 14-21 nights; more days on the Sukkot week
-# is a preference, which the vacation-day count already rewards.
-PESACH_LATEST_DEP_AFTER_EREV = 2
+# The holiday week inside the trip (the user, 11/11 and 15/11):
+# - Pesach: a 14-21 night trip that contains the Pesach week (erev Pesach / Seder to the seventh
+#   day); the week can be at the start, the middle or the end of the trip.
+# - Sukkot (Tishrei): departure from a few days before Rosh Hashana up to the first day of Chol
+#   Hamoed; the trip should use the Sukkot week (erev Sukkot to Simchat Torah).
+# - "I'm willing to give up a holiday day or two abroad if most of the holiday is used and it is
+#   really cheaper": an option may miss up to MAX_MISSED_HOLIDAY_DAYS days of that week (at the
+#   start, the end, or both), and is shown only when it is cheaper than the cheapest option for
+#   the same destination that uses the whole week. It says how many holiday days it misses.
+MAX_MISSED_HOLIDAY_DAYS = 2
 
 # Alerts: a new lowest price for a holiday and destination, or a drop of this much
 # since the previous check. No price cap (the user wants the cheapest, not only deals).

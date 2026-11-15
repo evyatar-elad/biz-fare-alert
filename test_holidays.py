@@ -14,18 +14,20 @@ def main():
     assert t.labels[d(2027, 10, 1)] == "ערב ראש השנה"
     assert t.labels[d(2027, 10, 11)] == "יום כיפור"
     assert t.core == (d(2027, 10, 15), d(2027, 10, 23)), t.core
-    assert t.dep == (d(2027, 9, 24), d(2027, 10, 17)), t.dep        # a week before erev RH .. 1st day Chol Hamoed
-    assert HC.covers(t, d(2027, 9, 24), d(2027, 10, 15))           # Tishrei: any trip in the window
+    assert t.dep == (d(2027, 9, 27), d(2027, 10, 17)), t.dep
+    assert HC.missed(t, d(2027, 10, 8), d(2027, 10, 23)) == 0
+    assert HC.covers(t, d(2027, 10, 1), d(2027, 10, 21))          # misses Hoshana Raba + Simchat Torah: ok
+    assert not HC.covers(t, d(2027, 9, 27), d(2027, 10, 15))      # misses all of Sukkot: no
     assert d(2027, 10, 4) not in t.free  # Tzom Gedalia = normal day
     p = HC.pesach(5787)
     assert p.labels[d(2027, 4, 21)].startswith("ערב פסח")
     assert p.labels[d(2027, 5, 12)] == "יום העצמאות"
-    assert p.dep == (d(2027, 4, 4), d(2027, 4, 23)), p.dep
-    assert not HC.covers(p, d(2027, 4, 5), d(2027, 4, 19))        # back before the Seder: not offered
-    assert not HC.covers(p, d(2027, 4, 24), d(2027, 5, 10))       # leaving 3 days after the Seder: no
+    assert p.dep == (d(2027, 4, 2), d(2027, 4, 23)), p.dep
+    assert not HC.covers(p, d(2027, 4, 5), d(2027, 4, 19))        # back before the Seder: no
     assert HC.covers(p, d(2027, 4, 21), d(2027, 5, 5))            # leaving on erev Pesach, week at the start
-    assert HC.covers(p, d(2027, 4, 14), d(2027, 4, 28))           # week at the end, back on the 7th day
-    assert not HC.covers(p, d(2027, 4, 13), d(2027, 4, 27))       # back before the 7th day: no
+    assert HC.covers(p, d(2027, 4, 13), d(2027, 4, 27))           # misses the 7th day only: ok
+    assert HC.notes(p, d(2027, 4, 13), d(2027, 4, 27)) == ["מפספס 1 יום חג"]
+    assert not HC.covers(p, d(2027, 4, 24), d(2027, 5, 10))       # misses 3 days at the start: no
     # Yom Ha'atzmaut moves: 5 Iyar 5788 is Monday 1/5/2028 -> Tuesday 2/5
     assert HC.yom_haatzmaut(5788) == d(2028, 5, 2), HC.yom_haatzmaut(5788)
 
@@ -34,7 +36,7 @@ def main():
     assert v["vac"] == 3, v   # Tue-Thu 12-14/10 after Yom Kippur
     v = HC.vacation(p, d(2027, 4, 16), d(2027, 5, 1))
     assert v["vac"] == 4, v   # Sun-Tue 18-20/4 + Thu 29/4
-    assert HC.notes(p, d(2027, 4, 22), d(2027, 5, 6)) == ["ליל הסדר בבית"]
+    assert HC.notes(p, d(2027, 4, 22), d(2027, 5, 6)) == ["מפספס 1 יום חג", "ליל הסדר בבית"]
     assert HC.notes(p, d(2027, 4, 16), d(2027, 5, 1)) == []
 
     b = HC.best_spread(t)
