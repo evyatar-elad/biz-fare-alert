@@ -370,6 +370,30 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
         if low and ok(low) and low["price"] < cheap["price"]:
             det.append(line("היה זול יותר", f"<td class=m>${low['price']:,} ב-{low['found'][8:10]}/{low['found'][5:7]} "
                             f"({dshort(low['dep'])} - {dshort(low['ret'])}). המחיר הזה כבר לא נמצא בבדיקות האחרונות.</td>"))
+        wl = b.get("watch_ly")
+        if wl and ok(wl):
+            det.append(line("✈️ אל על דרך בנגקוק (כרטיס אחד)", opt_cell(wl, f" <span class=m>({'+' if wl['price'] >= cheap['price'] else '-'}"
+                                                                     f"${abs(wl['price'] - cheap['price']):,} מהזול)</span>")))
+        hop = b.get("hop_bkk")
+        bkk = hb.get("BKK") or {}
+        if hop and g != "BKK":
+            bkk_cands = candidates(h, prices, routes, "BKK", today)
+            bkk_cheap = min(bkk_cands, key=lambda o: o["price"]) if bkk_cands else None
+            bkk_conv_l = [o for o in bkk_cands if convenient(o, "BKK")]
+            bkk_conv = min(bkk_conv_l, key=lambda o: o["price"]) if bkk_conv_l else None
+            parts_ = []
+            for lab, o in (("הזול לבנגקוק", bkk_cheap), ("הנוח לבנגקוק", bkk_conv)):
+                if o:
+                    tot = o["price"] + hop["price"]
+                    parts_.append(f"{lab} ${o['price']:,} + המשך ${hop['price']:,} = <b>${tot:,}</b> "
+                                  f"<span class=m>({'+' if tot >= cheap['price'] else '-'}${abs(tot - cheap['price']):,} מהזול ישירות; "
+                                  f"{e(short_route(o))})</span>")
+            if parts_:
+                det.append(line("🧩 בנגקוק בכרטיס נפרד + המשך",
+                                f"<td>{'<br>'.join(parts_)}<br><span class=m>ההמשך מבנגקוק: הלוך חזור ב-{e(', '.join(hop['airlines']))}, "
+                                f"כרטיס נפרד (אם הטיסה הראשונה מתעכבת, ההמשך באחריותך). מחיר לתאריכים קרובים, לא בדיוק אותם תאריכים.</span>"
+                                + (f"<br><a href='{e(hop['url'])}' class=lnk target=_blank>ההמשך ב-Kiwi</a>" if hop.get("url") else "")
+                                + "</td>"))
         bz = b.get("biz")
         if bz:
             det.append(line("ביזנס (הצצה)", f"<td{' class=good' if bz['price'] <= P.BIZ_PEEK_MAX else ''}><b>${bz['price']:,}</b> "

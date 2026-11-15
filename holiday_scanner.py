@@ -40,7 +40,7 @@ LOG_F = DATA / "runs.jsonl"
 D1 = timedelta(days=1)
 
 # How often each task is due (hours)
-DUE_H = {"kiwi_day": 24, "kiwi_noeu": 24, "kiwi_fast": 24, "gf_cal": 24, "gf_biz": 48, "kiwi_oj": 48,
+DUE_H = {"kiwi_day": 24, "kiwi_noeu": 24, "kiwi_fast": 24, "kiwi_watch": 24, "kiwi_hop": 24, "gf_cal": 24, "gf_biz": 48, "kiwi_oj": 48,
          "gf_check": 24, "gf_stop": 48, "gf_oj": 48}
 BIZ_NIGHTS = 15  # business "peek": one Google calendar per destination and holiday
 TOKYO = {"NRT", "HND"}
@@ -100,6 +100,10 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
                                       "dest": kd, "dep": dep.isoformat(), "nights": (lo, hi)})
                 tasks.append({"key": f"KN|{h.key}|{kd}", "src": "kiwi_noeu", "h": h.key, "dest": kd})
                 tasks.append({"key": f"KF|{h.key}|{kd}", "src": "kiwi_fast", "h": h.key, "dest": kd})
+                if kd in P.WATCH_EL_AL_VIA_BKK:
+                    tasks.append({"key": f"KW|{h.key}|{kd}", "src": "kiwi_watch", "h": h.key, "dest": kd})
+                if kd in P.HOP_FROM_BKK:
+                    tasks.append({"key": f"KH|{h.key}|{kd}", "src": "kiwi_hop", "h": h.key, "dest": kd})
                 tasks.append({"key": f"GC|{h.key}|{kd}", "src": "gf_check", "h": h.key, "dest": kd})
                 for hub, n_out, n_back in P.STOPOVER_PLANS + P.STOPOVER_EXTRA.get(kd, []):
                     tasks.append({"key": f"ST|{h.key}|{kd}|{hub}", "src": "gf_stop", "h": h.key, "dest": kd,
@@ -121,12 +125,65 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
     seen: dict = {}
     for t in tasks:
         g = (t["h"], t.get("dest") or t.get("a"))
-        if t["src"] in ("kiwi_noeu", "kiwi_fast", "kiwi_oj", "gf_check", "gf_biz"):
+        if t["src"] in ("kiwi_noeu", "kiwi_fast", "kiwi_oj", "gf_check", "gf_biz", "kiwi_watch", "kiwi_hop"):
             t["rr"] = -1  # one task per holiday and destination, and the most informative: first
             continue
         t["rr"] = seen.get(g, 0)
         seen[g] = t["rr"] + 1
     return tasks
+
+
+def kiwi_watch(k: kiwi.Client, task: dict, h: HC.Holiday, best: dict, today: str) -> int:
+    """El Al to the destination via Bangkok, one ticket (El Al / Thai / Vietnam Airlines flights).
+    Departure window in 5-day slices, each with the nights that still reach the holiday week:
+    one search over the whole window returned only trips before the holiday (15/11)."""
+    its = []
+    last_ret = h.core[1] - P.MAX_MISSED_HOLIDAY_DAYS * D1
+    d0 = h.dep[0]
+    while d0 <= h.dep[1]:
+        d1 = min(d0 + 4 * D1, h.dep[1])
+        lo = max(P.NIGHTS_MAIN[0], (last_ret - d0).days)
+        if lo <= P.NIGHTS_MAIN[1]:
+            its += k.search(flyFrom=P.ORIGIN, flyTo=task["dest"], departureDate=kiwi.ddmmyyyy(d0.isoformat()),
+                            departureDateTo=kiwi.ddmmyyyy(d1.isoformat()), nights_in_dst_from=lo,
+                            nights_in_dst_to=P.NIGHTS_MAIN[1], cabinClass="M", currency="USD", adults=1,
+                            select_airlines="LY,TG,VN", stopover_airports="BKK", max_sector_stopovers=1,
+                            allow_self_transfer=False)
+            time.sleep(P.KIWI_PACE_SECONDS)
+        d0 = d1 + D1
+    pts = []
+    for it in its:
+        o, r = it.get("outbound") or {}, it.get("inbound") or it.get("return") or {}
+        if not (o.get("departureTime") and r.get("departureTime") and it.get("price")):
+            continue
+        info = itin_info(it)
+        if info["separate"] or "El Al" not in " ".join(info["out"]["airlines"] + info["ret"]["airlines"]):
+            continue
+        dep, ret = date.fromisoformat(o["departureTime"][:10]), date.fromisoformat(r["departureTime"][:10])
+        if not HC.covers(h, dep, ret) or not (P.NIGHTS_MAIN[0] <= (ret - dep).days <= P.NIGHTS_MAIN[1]):
+            continue
+        pts.append({"dep": dep.isoformat(), "nights": (ret - dep).days, "price": round(float(it["price"])),
+                    "src": "kiwi", "dest": task["dest"], "arr": info["out"]["to"], "info": info})
+    b = best.setdefault(h.key, {}).setdefault(task["dest"], {})
+    if pts:
+        b["watch_ly"] = option(h, min(pts, key=lambda p: (p["price"], p["nights"])), today)
+    return len(pts)
+
+
+def kiwi_hop(k: kiwi.Client, task: dict, h: HC.Holiday, best: dict, today: str) -> int:
+    """Bangkok -> destination round trip on its own ticket, for the 'Bangkok + onward' comparison."""
+    its = k.search(flyFrom="BKK", flyTo=task["dest"], departureDate=kiwi.ddmmyyyy((h.dep[0] + D1).isoformat()),
+                   departureDateTo=kiwi.ddmmyyyy((h.dep[1] + 2 * D1).isoformat()),
+                   nights_in_dst_from=P.NIGHTS_MAIN[0] - 4, nights_in_dst_to=P.NIGHTS_MAIN[1] - 2,
+                   cabinClass="M", currency="USD", adults=1, max_sector_stopovers=0)
+    ps = [(round(float(i["price"])), i) for i in its if i.get("price")]
+    b = best.setdefault(h.key, {}).setdefault(task["dest"], {})
+    if ps:
+        price, it = min(ps, key=lambda x: x[0])
+        info = itin_info(it)
+        b["hop_bkk"] = {"price": price, "airlines": sorted(set(info["out"]["airlines"]) | set(info["ret"]["airlines"])),
+                        "url": info["url"], "seen": today}
+    return len(ps)
 
 
 def kiwi_oneway(k: kiwi.Client, frm: str, to: str, d0: date, d1: date) -> list[dict]:
@@ -541,6 +598,15 @@ def main() -> int:
                     state["last"][task["key"]] = now().isoformat(timespec="seconds")
                     stats["calls"] += n
                     print(f"  {task['key']}: נבדק")
+                continue
+            if task["src"] in ("kiwi_watch", "kiwi_hop"):
+                if k is None:
+                    k = kiwi.Client()
+                n = (kiwi_watch if task["src"] == "kiwi_watch" else kiwi_hop)(k, task, hols[task["h"]], best, today)
+                time.sleep(P.KIWI_PACE_SECONDS)
+                state["last"][task["key"]] = now().isoformat(timespec="seconds")
+                stats["calls"] += 1
+                print(f"  {task['key']}: {n} תוצאות")
                 continue
             if task["src"] == "kiwi_oj":
                 if k is None:

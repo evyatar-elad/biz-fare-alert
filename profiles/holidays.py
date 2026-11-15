@@ -138,3 +138,14 @@ GOOGLE_ENABLED = True
 GOOGLE_EXTRA_ARGS: list[str] = []
 
 __all__ = ["BANNED_AIRPORTS", "EXCLUDE_AIRLINES"]
+
+# Watched itineraries shown in a destination's card even when they are not the cheapest (15/11):
+# - El Al to Vietnam via Bangkok on ONE El Al ticket (the user: people buy it at El Al, bags go
+#   through, a cancellation cancels everything). Found 15/11: Kiwi LY83 + LY8385 TLV-BKK-HAN
+#   $2,923 for Pesach, Google El Al + Thai $3,442; El Al's own TLV-BKK in the Pesach week is
+#   ~$2,569 (early April ~$1,220), so the El Al leg is what makes it expensive.
+WATCH_EL_AL_VIA_BKK = ["HAN", "SGN", "DAD"]
+# - "Bangkok on its own ticket + a separate ticket onward" (BKK-HAN/SGN/DAD round trip ~$160):
+#   compared with flying straight to the destination.
+HOP_FROM_BKK = ["HAN", "SGN", "DAD", "DPS", "HKT"]
+
