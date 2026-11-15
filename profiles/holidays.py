@@ -38,10 +38,17 @@ KIWI_NIGHT_CHUNKS = [(12, 17), (18, 24)]
 # Departure windows, relative to the holiday (see holiday_cal.windows()).
 # Tishrei: from a few days before erev Rosh Hashana up to the first days of Chol Hamoed Sukkot.
 TISHREI_DEP_BEFORE_EREV_RH = 7
-TISHREI_DEP_AFTER_EREV_SUKKOT = 3
+TISHREI_DEP_AFTER_EREV_SUKKOT = 2
 # Passover: any trip that can contain the holiday week, up to a few days after the Seder.
 PESACH_DEP_SLACK = 2
-PESACH_DEP_AFTER_EREV = 4
+PESACH_DEP_AFTER_EREV = 2
+
+# The trip must CONTAIN the holiday week (agreed 11/11: the week can be at the start, middle
+# or end of the trip). Found 15/11: trips returning before the Seder were offered. Rule: leave
+# at the latest COVER_START_SLACK days after erev chag (the day after the Seder, or the day
+# after that), and come back at the earliest COVER_END_SLACK days before the last holiday day.
+COVER_START_SLACK = 2
+COVER_END_SLACK = 1
 
 # Alerts: a new lowest price for a holiday and destination, or a drop of this much
 # since the previous check. No price cap (the user wants the cheapest, not only deals).

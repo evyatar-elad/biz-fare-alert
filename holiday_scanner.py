@@ -94,6 +94,8 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
                     if dep <= today + 2 * D1:
                         continue
                     for lo, hi in P.KIWI_NIGHT_CHUNKS:
+                        if not HC.covers(h, dep, dep + hi * D1):
+                            continue  # even the longest stay in this chunk ends before the holiday week
                         tasks.append({"key": f"K|{h.key}|{kd}|{dep}|{lo}-{hi}", "src": "kiwi_day", "h": h.key,
                                       "dest": kd, "dep": dep.isoformat(), "nights": (lo, hi)})
                 tasks.append({"key": f"KN|{h.key}|{kd}", "src": "kiwi_noeu", "h": h.key, "dest": kd})
@@ -151,7 +153,8 @@ def open_jaw(k: kiwi.Client, task: dict, h: HC.Holiday, best: dict, today: str) 
     for o in outs:
         for r in rets:
             n = (date.fromisoformat(r["day"]) - date.fromisoformat(o["day"])).days
-            if P.NIGHTS_MAIN[0] <= n <= P.NIGHTS_MAIN[1]:
+            if P.NIGHTS_MAIN[0] <= n <= P.NIGHTS_MAIN[1] and HC.covers(h, date.fromisoformat(o["day"]),
+                                                                         date.fromisoformat(r["day"])):
                 dep = date.fromisoformat(o["day"])
                 combos.append({"price": o["price"] + r["price"], "dep": o["day"], "ret": r["day"], "nights": n,
                                "parts": [o["price"], r["price"]], "via_out": o["via"], "via_ret": r["via"],
@@ -426,6 +429,7 @@ def main_window(o: dict) -> bool:
 def update_best(best: dict, h: HC.Holiday, group: str, pts: list[dict], today: str, alerts: list) -> None:
     """Keep the summary per holiday and destination group, and raise alerts."""
     b = best.setdefault(h.key, {}).setdefault(group, {})
+    pts = [p for p in pts if HC.covers(h, date.fromisoformat(p["dep"]), date.fromisoformat(p["dep"]) + p["nights"] * D1)]
     opts = [option(h, p, today) for p in pts]
     if not opts:
         return

@@ -14,12 +14,17 @@ def main():
     assert t.labels[d(2027, 10, 1)] == "ערב ראש השנה"
     assert t.labels[d(2027, 10, 11)] == "יום כיפור"
     assert t.core == (d(2027, 10, 15), d(2027, 10, 23)), t.core
-    assert t.dep == (d(2027, 9, 24), d(2027, 10, 18)), t.dep
+    assert t.dep == (d(2027, 9, 28), d(2027, 10, 17)), t.dep
+    assert not HC.covers(t, d(2027, 9, 28), d(2027, 10, 15))      # back before Sukkot: not offered
+    assert HC.covers(t, d(2027, 10, 8), d(2027, 10, 22))
     assert d(2027, 10, 4) not in t.free  # Tzom Gedalia = normal day
     p = HC.pesach(5787)
     assert p.labels[d(2027, 4, 21)].startswith("ערב פסח")
     assert p.labels[d(2027, 5, 12)] == "יום העצמאות"
-    assert p.dep == (d(2027, 4, 5), d(2027, 4, 25)), p.dep
+    assert p.dep == (d(2027, 4, 5), d(2027, 4, 23)), p.dep
+    assert not HC.covers(p, d(2027, 4, 5), d(2027, 4, 19))        # back before the Seder: not offered
+    assert not HC.covers(p, d(2027, 4, 24), d(2027, 5, 10))       # leaving mid Chol Hamoed: not offered
+    assert HC.covers(p, d(2027, 4, 23), d(2027, 5, 7))
     # Yom Ha'atzmaut moves: 5 Iyar 5788 is Monday 1/5/2028 -> Tuesday 2/5
     assert HC.yom_haatzmaut(5788) == d(2028, 5, 2), HC.yom_haatzmaut(5788)
 
