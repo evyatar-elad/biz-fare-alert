@@ -290,6 +290,9 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
         ok = lambda o: HC.covers(h, date.fromisoformat(o["dep"]), date.fromisoformat(o["ret"]))
         if b.get("fast") and ok(b["fast"]) and (today - date.fromisoformat(b["fast"]["seen"])).days <= FRESH_DAYS and P.NIGHTS_MAIN[0] <= b["fast"]["nights"] <= P.NIGHTS_MAIN[1]:
             cands.append(b["fast"])
+        dr = b.get("direct")
+        if dr and ok(dr) and (today - date.fromisoformat(dr["seen"])).days <= FRESH_DAYS:
+            cands.append(dr)
         for k in ("any", "onestop"):
             gc = (b.get("google") or {}).get(k)
             if gc and ok(gc) and (today - date.fromisoformat(gc["seen"])).days <= FRESH_DAYS:
@@ -370,6 +373,10 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
         if low and ok(low) and low["price"] < cheap["price"]:
             det.append(line("היה זול יותר", f"<td class=m>${low['price']:,} ב-{low['found'][8:10]}/{low['found'][5:7]} "
                             f"({dshort(low['dep'])} - {dshort(low['ret'])}). המחיר הזה כבר לא נמצא בבדיקות האחרונות.</td>"))
+        if dr and ok(dr):
+            det.append(line("🛫 טיסה ישירה", opt_cell(dr, f" <span class=m>({'+' if dr['price'] >= cheap['price'] else '-'}"
+                                                         f"${abs(dr['price'] - cheap['price']):,} מהזול · "
+                                                         f"{e(', '.join(b.get('direct_airlines') or []))})</span>")))
         wl = b.get("watch_ly")
         if wl and ok(wl):
             det.append(line("✈️ אל על דרך בנגקוק (כרטיס אחד)", opt_cell(wl, f" <span class=m>({'+' if wl['price'] >= cheap['price'] else '-'}"

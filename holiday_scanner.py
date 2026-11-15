@@ -40,7 +40,7 @@ LOG_F = DATA / "runs.jsonl"
 D1 = timedelta(days=1)
 
 # How often each task is due (hours)
-DUE_H = {"kiwi_day": 24, "kiwi_noeu": 24, "kiwi_fast": 24, "kiwi_watch": 24, "kiwi_hop": 24, "gf_cal": 24, "gf_biz": 48, "kiwi_oj": 48,
+DUE_H = {"kiwi_day": 24, "kiwi_noeu": 24, "kiwi_fast": 24, "kiwi_watch": 24, "kiwi_hop": 24, "kiwi_direct": 24, "gf_cal": 24, "gf_biz": 48, "kiwi_oj": 48,
          "gf_check": 24, "gf_stop": 48, "gf_oj": 48}
 BIZ_NIGHTS = 15  # business "peek": one Google calendar per destination and holiday
 TOKYO = {"NRT", "HND"}
@@ -100,6 +100,7 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
                                       "dest": kd, "dep": dep.isoformat(), "nights": (lo, hi)})
                 tasks.append({"key": f"KN|{h.key}|{kd}", "src": "kiwi_noeu", "h": h.key, "dest": kd})
                 tasks.append({"key": f"KF|{h.key}|{kd}", "src": "kiwi_fast", "h": h.key, "dest": kd})
+                tasks.append({"key": f"KD|{h.key}|{kd}", "src": "kiwi_direct", "h": h.key, "dest": kd})
                 if kd in P.WATCH_EL_AL_VIA_BKK:
                     tasks.append({"key": f"KW|{h.key}|{kd}", "src": "kiwi_watch", "h": h.key, "dest": kd})
                 if kd in P.HOP_FROM_BKK:
@@ -125,7 +126,7 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
     seen: dict = {}
     for t in tasks:
         g = (t["h"], t.get("dest") or t.get("a"))
-        if t["src"] in ("kiwi_noeu", "kiwi_fast", "kiwi_oj", "gf_check", "gf_biz", "kiwi_watch", "kiwi_hop"):
+        if t["src"] in ("kiwi_noeu", "kiwi_fast", "kiwi_oj", "gf_check", "gf_biz", "kiwi_watch", "kiwi_hop", "kiwi_direct"):
             t["rr"] = -1  # one task per holiday and destination, and the most informative: first
             continue
         t["rr"] = seen.get(g, 0)
@@ -133,10 +134,10 @@ def build_tasks(today: date, only: set[str] | None) -> list[dict]:
     return tasks
 
 
-def kiwi_watch(k: kiwi.Client, task: dict, h: HC.Holiday, best: dict, today: str) -> int:
-    """El Al to the destination via Bangkok, one ticket (El Al / Thai / Vietnam Airlines flights).
-    Departure window in 5-day slices, each with the nights that still reach the holiday week:
-    one search over the whole window returned only trips before the holiday (15/11)."""
+def kiwi_sliced(k: kiwi.Client, h: HC.Holiday, dest: str, **extra) -> list[dict]:
+    """Kiwi search over the departure window in 5-day slices, each with the nights that still reach
+    the holiday week (one search over the whole window returned only trips before the holiday, 15/11).
+    Returns covering points with itinerary info."""
     its = []
     last_ret = h.core[1] - P.MAX_MISSED_HOLIDAY_DAYS * D1
     d0 = h.dep[0]
@@ -144,11 +145,9 @@ def kiwi_watch(k: kiwi.Client, task: dict, h: HC.Holiday, best: dict, today: str
         d1 = min(d0 + 4 * D1, h.dep[1])
         lo = max(P.NIGHTS_MAIN[0], (last_ret - d0).days)
         if lo <= P.NIGHTS_MAIN[1]:
-            its += k.search(flyFrom=P.ORIGIN, flyTo=task["dest"], departureDate=kiwi.ddmmyyyy(d0.isoformat()),
+            its += k.search(flyFrom=P.ORIGIN, flyTo=dest, departureDate=kiwi.ddmmyyyy(d0.isoformat()),
                             departureDateTo=kiwi.ddmmyyyy(d1.isoformat()), nights_in_dst_from=lo,
-                            nights_in_dst_to=P.NIGHTS_MAIN[1], cabinClass="M", currency="USD", adults=1,
-                            select_airlines="LY,TG,VN", stopover_airports="BKK", max_sector_stopovers=1,
-                            allow_self_transfer=False)
+                            nights_in_dst_to=P.NIGHTS_MAIN[1], cabinClass="M", currency="USD", adults=1, **extra)
             time.sleep(P.KIWI_PACE_SECONDS)
         d0 = d1 + D1
     pts = []
@@ -157,16 +156,35 @@ def kiwi_watch(k: kiwi.Client, task: dict, h: HC.Holiday, best: dict, today: str
         if not (o.get("departureTime") and r.get("departureTime") and it.get("price")):
             continue
         info = itin_info(it)
-        if info["separate"] or "El Al" not in " ".join(info["out"]["airlines"] + info["ret"]["airlines"]):
-            continue
         dep, ret = date.fromisoformat(o["departureTime"][:10]), date.fromisoformat(r["departureTime"][:10])
         if not HC.covers(h, dep, ret) or not (P.NIGHTS_MAIN[0] <= (ret - dep).days <= P.NIGHTS_MAIN[1]):
             continue
+        if any(v in P.BANNED_AIRPORTS for s_ in ("out", "ret") for v in info[s_]["via"]):
+            continue
         pts.append({"dep": dep.isoformat(), "nights": (ret - dep).days, "price": round(float(it["price"])),
-                    "src": "kiwi", "dest": task["dest"], "arr": info["out"]["to"], "info": info})
+                    "src": "kiwi", "dest": dest, "arr": info["out"]["to"], "info": info})
+    return pts
+
+
+def kiwi_watch(k: kiwi.Client, task: dict, h: HC.Holiday, best: dict, today: str) -> int:
+    """El Al to the destination via Bangkok, one ticket (El Al / Thai / Vietnam Airlines flights)."""
+    pts = [p for p in kiwi_sliced(k, h, task["dest"], select_airlines="LY,TG,VN", stopover_airports="BKK",
+                                  max_sector_stopovers=1, allow_self_transfer=False)
+           if not p["info"]["separate"] and "El Al" in " ".join(p["info"]["out"]["airlines"] + p["info"]["ret"]["airlines"])]
     b = best.setdefault(h.key, {}).setdefault(task["dest"], {})
     if pts:
         b["watch_ly"] = option(h, min(pts, key=lambda p: (p["price"], p["nights"])), today)
+    return len(pts)
+
+
+def kiwi_direct(k: kiwi.Client, task: dict, h: HC.Holiday, best: dict, today: str) -> int:
+    """Nonstop flights only, any airline (found 15/11: Arkia TLV-HAN IZ595 nonstop on Kiwi, Pesach from
+    $1,756, never among the 15 cheapest of the regular searches and not on Google Flights)."""
+    pts = kiwi_sliced(k, h, task["dest"], max_sector_stopovers=0, exclude_airlines=",".join(P.EXCLUDE_AIRLINES))
+    b = best.setdefault(h.key, {}).setdefault(task["dest"], {})
+    if pts:
+        b["direct"] = option(h, min(pts, key=lambda p: (p["price"], p["nights"])), today)
+        b["direct_airlines"] = sorted({a for p in pts for a in p["info"]["out"]["airlines"]})
     return len(pts)
 
 
@@ -599,10 +617,11 @@ def main() -> int:
                     stats["calls"] += n
                     print(f"  {task['key']}: נבדק")
                 continue
-            if task["src"] in ("kiwi_watch", "kiwi_hop"):
+            if task["src"] in ("kiwi_watch", "kiwi_hop", "kiwi_direct"):
                 if k is None:
                     k = kiwi.Client()
-                n = (kiwi_watch if task["src"] == "kiwi_watch" else kiwi_hop)(k, task, hols[task["h"]], best, today)
+                fn = {"kiwi_watch": kiwi_watch, "kiwi_hop": kiwi_hop, "kiwi_direct": kiwi_direct}[task["src"]]
+                n = fn(k, task, hols[task["h"]], best, today)
                 time.sleep(P.KIWI_PACE_SECONDS)
                 state["last"][task["key"]] = now().isoformat(timespec="seconds")
                 stats["calls"] += 1
