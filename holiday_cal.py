@@ -79,7 +79,9 @@ def tishrei(hy: int) -> Holiday:
     return Holiday(
         key=f"tishrei-{hy}", kind="tishrei", name=f"חגי תשרי {heb_year(hy)}",
         core=(erev_suk, suk + 7 * D1), free=free, labels=labels,
-        dep=(erev_rh - P.TISHREI_DEP_BEFORE_EREV_RH * D1, erev_suk + P.TISHREI_DEP_AFTER_EREV_SUKKOT * D1),
+        dep=(max(erev_rh - P.TISHREI_DEP_BEFORE_EREV_RH * D1,  # earlier departures cannot reach Sukkot
+                 suk + (7 - P.MAX_MISSED_HOLIDAY_DAYS - P.NIGHTS_FLEX[1]) * D1),
+             erev_suk + P.TISHREI_DEP_AFTER_EREV_SUKKOT * D1),
         prefs=[("ראש השנה בבית", erev_rh), ("ערב סוכות בבית", erev_suk)],
     )
 
@@ -99,7 +101,7 @@ def pesach(hy: int) -> Holiday:
     return Holiday(
         key=f"pesach-{hy}", kind="pesach", name=f"פסח {heb_year(hy)}",
         core=core, free=free, labels=labels,
-        dep=(core[1] - P.NIGHTS_FLEX[1] * D1, erev + P.PESACH_LATEST_DEP_AFTER_EREV * D1),
+        dep=(core[1] - (P.NIGHTS_FLEX[1] + P.MAX_MISSED_HOLIDAY_DAYS) * D1, erev + P.MAX_MISSED_HOLIDAY_DAYS * D1),
         prefs=[("ליל הסדר בבית", erev)],
     )
 
@@ -134,17 +136,27 @@ def vacation(h: Holiday, dep: date, ret: date) -> dict:
     return {"vac": work, "weekend": weekend, "hol": hol}
 
 
+def missed(h: Holiday, dep: date, ret: date) -> int:
+    """Days of the holiday week (erev chag .. last day) that fall outside the trip."""
+    n, d = 0, h.core[0]
+    while d <= h.core[1]:
+        if d < dep or d > ret:
+            n += 1
+        d += D1
+    return n
+
+
 def covers(h: Holiday, dep: date, ret: date) -> bool:
-    """Pesach: the trip contains the Pesach week (leave by 2 days after the Seder, come back on the
-    seventh day or later). Tishrei: no condition beyond the departure window (see the profile)."""
-    if h.kind != "pesach":
-        return True
-    return dep <= h.core[0] + P.PESACH_LATEST_DEP_AFTER_EREV * D1 and ret >= h.core[1]
+    """Most of the holiday week is inside the trip: at most MAX_MISSED_HOLIDAY_DAYS days missed."""
+    return missed(h, dep, ret) <= P.MAX_MISSED_HOLIDAY_DAYS
 
 
 def notes(h: Holiday, dep: date, ret: date) -> list[str]:
     """Preferences that do not hide anything, only explain (e.g. "ליל הסדר בארץ")."""
     out = []
+    m = missed(h, dep, ret)
+    if m:
+        out.append(f"מפספס {m} {'יום' if m == 1 else 'ימי'} חג")
     for label, day in h.prefs:
         if dep > day or ret < day:
             out.append(label)
