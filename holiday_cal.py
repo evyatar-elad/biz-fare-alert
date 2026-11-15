@@ -79,7 +79,9 @@ def tishrei(hy: int) -> Holiday:
     return Holiday(
         key=f"tishrei-{hy}", kind="tishrei", name=f"חגי תשרי {heb_year(hy)}",
         core=(erev_suk, suk + 7 * D1), free=free, labels=labels,
-        dep=(erev_rh - P.TISHREI_DEP_BEFORE_EREV_RH * D1, erev_suk + P.TISHREI_DEP_AFTER_EREV_SUKKOT * D1),
+        dep=(max(erev_rh - P.TISHREI_DEP_BEFORE_EREV_RH * D1,
+                 suk + (7 - P.COVER_END_SLACK - P.NIGHTS_FLEX[1]) * D1),
+             erev_suk + P.TISHREI_DEP_AFTER_EREV_SUKKOT * D1),
         prefs=[("ראש השנה בבית", erev_rh), ("ערב סוכות בבית", erev_suk)],
     )
 
@@ -134,6 +136,11 @@ def vacation(h: Holiday, dep: date, ret: date) -> dict:
     return {"vac": work, "weekend": weekend, "hol": hol}
 
 
+def covers(h: Holiday, dep: date, ret: date) -> bool:
+    """The trip contains the holiday week (see COVER_* in the profile)."""
+    return dep <= h.core[0] + P.COVER_START_SLACK * D1 and ret >= h.core[1] - P.COVER_END_SLACK * D1
+
+
 def notes(h: Holiday, dep: date, ret: date) -> list[str]:
     """Preferences that do not hide anything, only explain (e.g. "ליל הסדר בארץ")."""
     out = []
@@ -151,6 +158,8 @@ def best_spread(h: Holiday, nights: tuple[int, int] | None = None, top: int = 6)
     for dep in h.departures():
         for n in range(lo, hi + 1):
             ret = dep + n * D1
+            if not covers(h, dep, ret):
+                continue
             v = vacation(h, dep, ret)
             rows.append({"dep": dep, "ret": ret, "nights": n, **v, "notes": notes(h, dep, ret)})
     per_n = {}

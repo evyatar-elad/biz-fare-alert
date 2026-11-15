@@ -127,6 +127,9 @@ def matrix(h: HC.Holiday, prices: dict, group: str, today: date) -> str:
             if p is None:
                 tds.append("<td class=empty></td>")
                 continue
+            if not HC.covers(h, dep, dep + timedelta(days=n)):
+                tds.append("<td class=empty></td>")
+                continue
             v = HC.vacation(h, dep, dep + timedelta(days=n))["vac"]
             ring = " ring" if (di, n) in best else ""
             tds.append(f"<td class='cell{ring}' style='background:{color(p)}' title='{e(HC.fmt(dep))} + {n} לילות: "
@@ -154,6 +157,8 @@ def candidates(h: HC.Holiday, prices: dict, routes: dict, group: str, today: dat
                 continue
             dep = date.fromisoformat(dep_s)
             ret = dep + timedelta(days=n)
+            if not HC.covers(h, dep, ret):
+                continue
             o = {"price": price, "dep": dep_s, "ret": ret.isoformat(), "nights": n, "src": src, "dest": dest,
                  "vac": HC.vacation(h, dep, ret)["vac"], "notes": HC.notes(h, dep, ret), "seen": seen}
             r = rmap.get(k)
@@ -204,6 +209,8 @@ def cheapest_within(h: HC.Holiday, prices: dict, group: str, today: date, max_va
             if best and price >= best["price"]:
                 continue
             dep = date.fromisoformat(dep_s)
+            if not HC.covers(h, dep, dep + timedelta(days=n)):
+                continue
             v = HC.vacation(h, dep, dep + timedelta(days=n))["vac"]
             if v <= max_vac:
                 best = {"price": price, "dep": dep_s, "ret": (dep + timedelta(days=n)).isoformat(), "nights": n,
@@ -280,11 +287,12 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
     for g in [g for g in hb if not g.startswith("_")]:
         b = hb[g]
         cands = candidates(h, prices, routes, g, today)
-        if b.get("fast") and (today - date.fromisoformat(b["fast"]["seen"])).days <= FRESH_DAYS and P.NIGHTS_MAIN[0] <= b["fast"]["nights"] <= P.NIGHTS_MAIN[1]:
+        ok = lambda o: HC.covers(h, date.fromisoformat(o["dep"]), date.fromisoformat(o["ret"]))
+        if b.get("fast") and ok(b["fast"]) and (today - date.fromisoformat(b["fast"]["seen"])).days <= FRESH_DAYS and P.NIGHTS_MAIN[0] <= b["fast"]["nights"] <= P.NIGHTS_MAIN[1]:
             cands.append(b["fast"])
         for k in ("any", "onestop"):
             gc = (b.get("google") or {}).get(k)
-            if gc and (today - date.fromisoformat(gc["seen"])).days <= FRESH_DAYS:
+            if gc and ok(gc) and (today - date.fromisoformat(gc["seen"])).days <= FRESH_DAYS:
                 cands.append({**gc, "notes": HC.notes(h, date.fromisoformat(gc["dep"]), date.fromisoformat(gc["ret"]))})
         if not cands:
             continue
@@ -339,7 +347,7 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
             det.append(line(f"😌 הכי נוח (עצירה אחת, עד {P.FAST_HOURS.get(g, 20)} שעות לכיוון כולל המתנה, כרטיס אחד)", opt_cell(conv)))
         if fewo and (fewo["dep"], fewo["nights"]) != (cheap["dep"], cheap["nights"]):
             det.append(line(f"📅 הזול עם עד {few} ימי חופש", opt_cell(fewo)))
-        if b.get("noeu") and b["noeu"]["price"] < (conv or cheap)["price"] + 400:
+        if b.get("noeu") and ok(b["noeu"]) and b["noeu"]["price"] < (conv or cheap)["price"] + 400:
             det.append(line("הזול בלי אירופה", opt_cell(b["noeu"])))
         for hub, st in sorted((b.get("stops") or {}).items(), key=lambda kv: kv[1]["price"]):
             parts = []
@@ -354,7 +362,7 @@ def holiday_body(h: HC.Holiday, best: dict, curve: dict, news: list, today: date
                             f"{e(', '.join(parts))}</span><br><span style='font-size:13px'>{legs} · "
                             f"{e(', '.join(st['airlines']))}</span><br><a href='{e(T.google_multi_link(st['legs']))}' class=lnk "
                             f"target=_blank>לחיפוש הזה בגוגל</a></td>"))
-        if low and low["price"] < cheap["price"]:
+        if low and ok(low) and low["price"] < cheap["price"]:
             det.append(line("היה זול יותר", f"<td class=m>${low['price']:,} ב-{low['found'][8:10]}/{low['found'][5:7]} "
                             f"({dshort(low['dep'])} - {dshort(low['ret'])}). המחיר הזה כבר לא נמצא בבדיקות האחרונות.</td>"))
         bz = b.get("biz")
