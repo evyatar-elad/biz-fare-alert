@@ -15,7 +15,7 @@
     "src": "google",
     "vac": 12
    },
-   "checked": "2026-11-15T20:40:13+00:00",
+   "checked": "2026-11-15T22:36:08+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -311,69 +311,19 @@
     }
    },
    "low": {
-    "airlines": [
-     "Ethiopian Airlines"
-    ],
     "dep": "2027-04-23",
     "dest": "BKK",
-    "europe": false,
     "found": "2026-11-15",
-    "hours_out": 22.6,
-    "hours_ret": 16.8,
-    "legs_out": [
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-04-23T14:15:00",
-      "dep": "2027-04-23T10:00:00",
-      "flight": "ET415",
-      "from": "TLV",
-      "to": "ADD"
-     },
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-04-24T12:35:00",
-      "dep": "2027-04-23T23:55:00",
-      "flight": "ET628",
-      "from": "ADD",
-      "to": "BKK"
-     }
-    ],
-    "legs_ret": [
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-05-14T06:00:00",
-      "dep": "2027-05-14T01:50:00",
-      "flight": "ET629",
-      "from": "BKK",
-      "to": "ADD"
-     },
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-05-14T14:35:00",
-      "dep": "2027-05-14T10:25:00",
-      "flight": "ET418",
-      "from": "ADD",
-      "to": "TLV"
-     }
-    ],
     "nights": 21,
     "notes": [
      "מפספס 2 ימי חג",
      "ליל הסדר בבית"
     ],
-    "price": 825,
+    "price": 778,
     "ret": "2027-05-14",
     "seen": "2026-11-15",
-    "separate": false,
-    "src": "kiwi",
-    "url": "https://kiwi.com/u/rxyc8k",
-    "vac": 10,
-    "via_out": [
-     "ADD"
-    ],
-    "via_ret": [
-     "ADD"
-    ]
+    "src": "google",
+    "vac": 10
    },
    "noeu": {
     "airlines": [
@@ -440,68 +390,18 @@
     ]
    },
    "now": {
-    "airlines": [
-     "Ethiopian Airlines"
-    ],
     "dep": "2027-04-23",
     "dest": "BKK",
-    "europe": false,
-    "hours_out": 22.6,
-    "hours_ret": 16.8,
-    "legs_out": [
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-04-23T14:15:00",
-      "dep": "2027-04-23T10:00:00",
-      "flight": "ET415",
-      "from": "TLV",
-      "to": "ADD"
-     },
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-04-24T12:35:00",
-      "dep": "2027-04-23T23:55:00",
-      "flight": "ET628",
-      "from": "ADD",
-      "to": "BKK"
-     }
-    ],
-    "legs_ret": [
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-05-14T06:00:00",
-      "dep": "2027-05-14T01:50:00",
-      "flight": "ET629",
-      "from": "BKK",
-      "to": "ADD"
-     },
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-05-14T14:35:00",
-      "dep": "2027-05-14T10:25:00",
-      "flight": "ET418",
-      "from": "ADD",
-      "to": "TLV"
-     }
-    ],
     "nights": 21,
     "notes": [
      "מפספס 2 ימי חג",
      "ליל הסדר בבית"
     ],
-    "price": 825,
+    "price": 778,
     "ret": "2027-05-14",
     "seen": "2026-11-15",
-    "separate": false,
-    "src": "kiwi",
-    "url": "https://kiwi.com/u/rxyc8k",
-    "vac": 10,
-    "via_out": [
-     "ADD"
-    ],
-    "via_ret": [
-     "ADD"
-    ]
+    "src": "google",
+    "vac": 10
    },
    "now_day": "2026-11-15",
    "onestop": {
@@ -3363,7 +3263,7 @@
     "src": "google",
     "vac": 8
    },
-   "checked": "2026-11-15T20:40:43+00:00",
+   "checked": "2026-11-15T22:37:38+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -3993,7 +3893,7 @@
     "src": "google",
     "vac": 8
    },
-   "checked": "2026-11-15T20:41:27+00:00",
+   "checked": "2026-11-15T22:37:19+00:00",
    "fewvac": {
     "airlines": [
      "Etihad Airways",
