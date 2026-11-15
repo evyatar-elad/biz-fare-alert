@@ -8267,6 +8267,59 @@
    },
    "prev_day_price": 1383,
    "stops": {
+    "AUH": {
+     "airlines": [
+      "Condor",
+      "Etihad Airways",
+      "Thai Airways"
+     ],
+     "banned": false,
+     "hours": [
+      3.2,
+      12.7,
+      16.4,
+      3.4
+     ],
+     "hub": "AUH",
+     "legs": [
+      [
+       "TLV",
+       "AUH",
+       "2027-09-24"
+      ],
+      [
+       "AUH",
+       "DAD",
+       "2027-09-25"
+      ],
+      [
+       "DAD",
+       "AUH",
+       "2027-10-08"
+      ],
+      [
+       "AUH",
+       "TLV",
+       "2027-10-09"
+      ]
+     ],
+     "n_back": 1,
+     "n_out": 1,
+     "nights": 15,
+     "price": 2352,
+     "seen": "2026-11-15",
+     "vac": 9,
+     "via": [
+      [],
+      [
+       "BKK"
+      ],
+      [
+       "BKK"
+      ],
+      []
+     ]
+    },
     "GYD": {
      "airlines": [
       "Azerbaijan Airlines",
@@ -9339,6 +9392,53 @@
    },
    "prev_day_price": 1148,
    "stops": {
+    "AUH": {
+     "airlines": [
+      "Etihad Airways"
+     ],
+     "banned": false,
+     "hours": [
+      3.2,
+      9.6,
+      8.9,
+      3.4
+     ],
+     "hub": "AUH",
+     "legs": [
+      [
+       "TLV",
+       "AUH",
+       "2027-09-25"
+      ],
+      [
+       "AUH",
+       "DPS",
+       "2027-09-26"
+      ],
+      [
+       "DPS",
+       "AUH",
+       "2027-10-08"
+      ],
+      [
+       "AUH",
+       "TLV",
+       "2027-10-09"
+      ]
+     ],
+     "n_back": 1,
+     "n_out": 1,
+     "nights": 14,
+     "price": 2257,
+     "seen": "2026-11-15",
+     "vac": 9,
+     "via": [
+      [],
+      [],
+      [],
+      []
+     ]
+    },
     "GYD": {
      "airlines": [
       "Azerbaijan Airlines",
