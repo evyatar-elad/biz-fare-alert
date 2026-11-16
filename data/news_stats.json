@@ -46,8 +46,11 @@
   "senders": {}
  },
  "2026-11-16": {
-  "read": 0,
+  "read": 2,
   "matched": 0,
-  "senders": {}
+  "senders": {
+   "lastminute.co.il": 1,
+   "אופיר טורס -חופשות סקי": 1
+  }
  }
 }
