@@ -1,6 +1,6 @@
 """Tests for the holidays profile (no network): calendar, vacation days, best spread.
 Usage: python test_holidays.py"""
-from datetime import date
+from datetime import date, timedelta
 
 import holiday_cal as HC
 
@@ -58,31 +58,33 @@ def scanner_and_page():
     import holiday_scanner as S
     import holiday_status as HS
     t = HC.tishrei(5788)
+    D_B = date.today().isoformat()  # relative: the page hides prices older than FRESH_DAYS
+    D_A = (date.today() - timedelta(days=1)).isoformat()
     pts = [{"dep": "2027-10-08", "nights": 15, "price": 900, "src": "kiwi", "dest": "BKK",
             "info": {"out": {"via": ["AUH"], "airlines": ["Etihad"], "hours": 12.0, "to": "BKK", "legs": []},
                      "ret": {"via": ["VIE"], "airlines": ["Austrian"], "hours": 16.0, "to": "TLV", "legs": []},
                      "separate": False, "url": "https://kiwi.example"}},
            {"dep": "2027-10-01", "nights": 21, "price": 850, "src": "google", "dest": "BKK", "info": None}]
     best, curve, prices, alerts = {}, {}, {}, []
-    S.record(prices, pts, "2026-11-12")
-    S.record(prices, pts, "2026-11-13")  # unchanged price: not stored twice
-    assert prices["kiwi|BKK"]["2027-10-08|15"] == [["2026-11-12", 900]]
-    S.update_best(best, t, "BKK", pts, "2026-11-12", alerts)
+    S.record(prices, pts, D_A)
+    S.record(prices, pts, D_B)  # unchanged price: not stored twice
+    assert prices["kiwi|BKK"]["2027-10-08|15"] == [[D_A, 900]]
+    S.update_best(best, t, "BKK", pts, D_A, alerts)
     b = best[t.key]["BKK"]
     assert b["now"]["price"] == 850 and b["now"]["vac"] == 7 and b["low"]["price"] == 850
     assert b["noeu"] is None if "noeu" in b else True  # google option has no route info
     assert alerts == []                                  # first day: no alerts
     cheaper = [{**pts[1], "price": 700}]
-    S.update_best(best, t, "BKK", cheaper, "2026-11-13", alerts)
+    S.update_best(best, t, "BKK", cheaper, D_B, alerts)
     assert alerts and alerts[0]["type"] == "low" and alerts[0]["prev"] == 850, alerts
-    S.update_curve(curve, t, "BKK", 700, "2026-11-13")
-    assert curve[t.key]["BKK"][0][1] == (t.core[0] - date(2026, 11, 13)).days
+    S.update_curve(curve, t, "BKK", 700, D_B)
+    assert curve[t.key]["BKK"][0][1] == (t.core[0] - date.fromisoformat(D_B)).days
     best[t.key]["BKK"]["stops"] = {"GYD": {"price": 959, "legs": [["TLV", "GYD", "2027-10-08"], ["GYD", "BKK", "2027-10-09"],
                                                                  ["BKK", "GYD", "2027-10-21"], ["GYD", "TLV", "2027-10-23"]],
                                            "airlines": ["Azerbaijan Airlines"], "hours": [3, 8, 8, 3], "via": [[], [], [], []],
-                                           "hub": "GYD", "n_out": 1, "n_back": 2, "vac": 3, "nights": 15, "seen": "2026-11-13"}}
+                                           "hub": "GYD", "n_out": 1, "n_back": 2, "vac": 3, "nights": 15, "seen": D_B}}
     best[t.key]["_open_jaw_1t"] = {"KIX-NRT": {"price": 1200, "legs": [["TLV", "KIX", "2027-10-08"], ["NRT", "TLV", "2027-10-23"]],
-                                               "airlines": ["X"], "nights": 15, "vac": 3, "seen": "2026-11-13"}}
+                                               "airlines": ["X"], "nights": 15, "vac": 3, "seen": D_B}}
     tmp = Path(tempfile.mkdtemp())
     (tmp / "prices").mkdir()
     import json
