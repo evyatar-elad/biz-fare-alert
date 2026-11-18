@@ -74,6 +74,16 @@ jobs:
       - name: holidays page
         if: always() && env.MODE == 'scan'
         run: python holiday_status.py
+      # 18/11: a failing test skipped the holiday scan for 3 days unnoticed. Email on a real problem.
+      - name: health check
+        if: always() && env.MODE == 'scan'
+        continue-on-error: true
+        env:
+          JOB_STATUS: ${{ job.status }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python health.py holidays
       - name: save
         if: always()
         run: |

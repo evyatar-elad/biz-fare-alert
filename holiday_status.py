@@ -13,6 +13,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+import health
 import holiday_cal as HC
 import holiday_text as T
 from profiles import holidays as P
@@ -268,7 +269,7 @@ def page_html(title: str, active: str, tabs: list, body: str, now: datetime, lr:
 <header><h1>🌴 חגים בתיירים</h1>
 <div style="opacity:.85;font-size:13px;margin-top:4px">הלוך חזור מתל אביב, נוסע אחד. עודכן {t(now.isoformat())}.</div>
 <nav class=tabs>{tab_html}<a href="index.html">ביזנס ←</a></nav></header>
-{body}
+{health.warning_html('holidays')}{body}
 <p class=m style="font-size:12px">הריצה האחרונה: {t(lr.get('at'))}, {lr.get('calls', 0)} חיפושים.
 <a href="https://github.com/evyatar-elad/biz-fare-alert/actions" style="color:inherit">ריצות</a></p>
 </div></body></html>"""

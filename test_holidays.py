@@ -48,6 +48,7 @@ def main():
     up = HC.upcoming(d(2026, 11, 11))
     assert [h.key for h in up][:2] == ["pesach-5787", "tishrei-5788"], [h.key for h in up]
     scanner_and_page()
+    health_check()
     print("HOLIDAYS_OK")
 
 
@@ -97,6 +98,27 @@ def scanner_and_page():
     assert "חגי תשרי" in (tmp / "site" / "holidays.html").read_text()
     assert "חגי תשרי" in html_ and "$700" in html_ and "ימי חופש" in html_
     assert "עצירה בבאקו (כרטיס אחד)" in html_ and "$959" in html_ and "(כרטיס אחד)" in html_
+
+
+def health_check():
+    """The 18/11 failure: runs keep going but collect nothing -> a problem; fresh collecting run -> healthy."""
+    import json
+    import tempfile
+    from datetime import datetime, timezone
+    from pathlib import Path
+    import health
+    d = Path(tempfile.mkdtemp())
+    now = datetime(2026, 11, 18, 12, tzinfo=timezone.utc)
+    w = lambda rows: (d / "runs.jsonl").write_text("\n".join(json.dumps(r) for r in rows))
+    w([{"at": "2026-11-18T11:00:00+00:00", "points": 500}])
+    assert health.problems("holidays", now, d) == []
+    w([{"at": "2026-11-18T00:00:00+00:00", "points": 500}, {"at": "2026-11-18T11:00:00+00:00", "points": 0}])
+    assert "לא אספו" in health.problems("holidays", now, d)[0]
+    w([{"at": "2026-11-16T00:00:00+00:00", "points": 500}])
+    assert "לא נרשמה" in health.problems("holidays", now, d)[0]
+    w([{"at": "2026-11-18T11:00:00+00:00", "points": 500}])
+    (d / "health.json").write_text(json.dumps({"fail_streak": 2}))
+    assert "נכשלו" in health.problems("holidays", now, d)[0]
 
 
 if __name__ == "__main__":

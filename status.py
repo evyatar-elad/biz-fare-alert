@@ -13,6 +13,7 @@ from zoneinfo import ZoneInfo
 from pathlib import Path
 
 import config as C
+import health as health_mod
 import scanner
 from notify import name
 
@@ -205,7 +206,7 @@ th{{color:var(--muted);font-weight:normal;font-size:13px;border-top:0}} .good b{
 <header><h1>✈️ בוט מציאות ביזנס</h1>
 <a href="holidays.html" style="display:inline-block;margin-top:10px;background:#fff;color:#0f2a4a;font-weight:bold;padding:7px 14px;border-radius:9px;text-decoration:none">🌴 חגים בתיירים (פסח ותשרי) ←</a>
 <div style="opacity:.8;margin-top:8px">ביזנס הלוך חזור מתל אביב. מקורות: Google Flights ו-Kiwi.com, וגם ניוזלטרים של חברות תעופה ו-Fly4free. עודכן {t(now.isoformat())}</div></header>
-<div class="card"><span id=health style="color:{color};font-weight:bold">● {health}</span></div>
+{health_mod.warning_html("biz")}<div class="card"><span id=health style="color:{color};font-weight:bold">● {health}</span></div>
 <script>
 // The page is regenerated after every run. If it is old, the bot (or this page) stopped: say so.
 (function(){{var age=(Date.now()-{int(now.timestamp()*1000)})/36e5; if(age>2.5){{var h=document.getElementById('health');

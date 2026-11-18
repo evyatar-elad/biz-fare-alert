@@ -70,6 +70,16 @@ jobs:
       - name: status page
         if: always()
         run: python status.py || true
+      # 18/11: a failing test skipped the holiday scan for 3 days unnoticed. Email on a real problem.
+      - name: health check
+        if: always() && inputs.test_email != true && inputs.only == '' && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          JOB_STATUS: ${{ job.status }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python health.py biz
       - name: save state
         if: always()
         run: |
