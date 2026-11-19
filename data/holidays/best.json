@@ -578,6 +578,7 @@
      "nights": 14,
      "price": 1558,
      "seen": "2026-11-14",
+     "stale": true,
      "vac": 11,
      "via": [
       [],
@@ -1347,6 +1348,7 @@
      "nights": 15,
      "price": 2277,
      "seen": "2026-11-14",
+     "stale": true,
      "vac": 11,
      "via": [
       [
@@ -1401,6 +1403,7 @@
      "nights": 15,
      "price": 8508,
      "seen": "2026-11-14",
+     "stale": true,
      "vac": 11,
      "via": [
       [],
@@ -1905,6 +1908,7 @@
      "nights": 20,
      "price": 5631,
      "seen": "2026-11-14",
+     "stale": true,
      "vac": 10,
      "via": [
       [
@@ -3370,6 +3374,61 @@
    },
    "prev_day_price": 867,
    "stops": {
+    "DXB": {
+     "airlines": [
+      "Aegean Airlines",
+      "Emirates",
+      "Thai Airways"
+     ],
+     "banned": false,
+     "hours": [
+      16.9,
+      12.3,
+      6.8,
+      12.8
+     ],
+     "hub": "DXB",
+     "legs": [
+      [
+       "TLV",
+       "DXB",
+       "2027-04-22"
+      ],
+      [
+       "DXB",
+       "HAN",
+       "2027-04-23"
+      ],
+      [
+       "HAN",
+       "DXB",
+       "2027-05-09"
+      ],
+      [
+       "DXB",
+       "TLV",
+       "2027-05-10"
+      ]
+     ],
+     "n_back": 1,
+     "n_out": 1,
+     "nights": 18,
+     "price": 5570,
+     "seen": "2026-11-19",
+     "vac": 8,
+     "via": [
+      [
+       "ATH"
+      ],
+      [
+       "BKK"
+      ],
+      [],
+      [
+       "ATH"
+      ]
+     ]
+    },
     "GYD": {
      "airlines": [
       "Azerbaijan Airlines",
