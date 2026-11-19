@@ -112,7 +112,8 @@ def health_check():
     w = lambda rows: (d / "runs.jsonl").write_text("\n".join(json.dumps(r) for r in rows))
     w([{"at": "2026-11-18T11:00:00+00:00", "points": 500}])
     assert health.problems("holidays", now, d) == []
-    w([{"at": "2026-11-18T00:00:00+00:00", "points": 500}, {"at": "2026-11-18T11:00:00+00:00", "points": 0}])
+    w([{"at": "2026-11-17T00:00:00+00:00", "points": 500}, {"at": "2026-11-18T11:00:00+00:00", "points": 0}])
+    assert health.problems("holidays", datetime(2026, 11, 17, 20, tzinfo=timezone.utc), d) == []  # sweep done, nothing due
     assert "לא אספו" in health.problems("holidays", now, d)[0]
     w([{"at": "2026-11-16T00:00:00+00:00", "points": 500}])
     assert "לא נרשמה" in health.problems("holidays", now, d)[0]
