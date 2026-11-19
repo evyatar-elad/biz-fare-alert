@@ -15,7 +15,7 @@
     "src": "google",
     "vac": 12
    },
-   "checked": "2026-11-19T08:58:15+00:00",
+   "checked": "2026-11-19T10:44:12+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -595,17 +595,18 @@
   "BOM": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-04-05",
+    "dep": "2027-04-02",
     "dest": "BOM",
     "nights": 15,
     "notes": [
+     "מפספס 8 ימי חג",
      "ליל הסדר בבית"
     ],
     "price": 1898,
-    "ret": "2027-04-20",
-    "seen": "2026-11-12",
+    "ret": "2027-04-17",
+    "seen": "2026-11-19",
     "src": "google",
-    "vac": 12
+    "vac": 10
    },
    "checked": "2026-11-19T05:25:19+00:00",
    "fast": {
@@ -945,15 +946,15 @@
   "DAD": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-04-11",
+    "dep": "2027-04-14",
     "dest": "DAD",
     "nights": 15,
     "notes": [],
-    "price": 9332,
-    "ret": "2027-04-26",
-    "seen": "2026-11-14",
+    "price": 8010,
+    "ret": "2027-04-29",
+    "seen": "2026-11-19",
     "src": "google",
-    "vac": 8
+    "vac": 6
    },
    "checked": "2026-11-19T06:39:53+00:00",
    "fewvac": {
@@ -1873,15 +1874,17 @@
   "DPS": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-04-14",
+    "dep": "2027-04-11",
     "dest": "DPS",
     "nights": 15,
-    "notes": [],
-    "price": 6697,
-    "ret": "2027-04-29",
-    "seen": "2026-11-14",
+    "notes": [
+     "מפספס 2 ימי חג"
+    ],
+    "price": 10510,
+    "ret": "2027-04-26",
+    "seen": "2026-11-19",
     "src": "google",
-    "vac": 6
+    "vac": 8
    },
    "checked": "2026-11-19T06:41:34+00:00",
    "fast": {
@@ -2854,15 +2857,18 @@
   "HAN": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-04-06",
+    "dep": "2027-04-04",
     "dest": "HAN",
     "nights": 15,
-    "notes": [],
+    "notes": [
+     "מפספס 8 ימי חג",
+     "ליל הסדר בבית"
+    ],
     "price": 2581,
-    "ret": "2027-04-21",
-    "seen": "2026-11-14",
+    "ret": "2027-04-19",
+    "seen": "2026-11-19",
     "src": "google",
-    "vac": 11
+    "vac": 12
    },
    "checked": "2026-11-19T05:26:49+00:00",
    "direct": {
@@ -3437,17 +3443,20 @@
   "HKT": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-04-10",
+    "dep": "2027-04-04",
     "dest": "HKT",
     "nights": 15,
-    "notes": [],
-    "price": 3759,
-    "ret": "2027-04-25",
-    "seen": "2026-11-14",
+    "notes": [
+     "מפספס 8 ימי חג",
+     "ליל הסדר בבית"
+    ],
+    "price": 3758,
+    "ret": "2027-04-19",
+    "seen": "2026-11-19",
     "src": "google",
-    "vac": 8
+    "vac": 12
    },
-   "checked": "2026-11-19T08:58:45+00:00",
+   "checked": "2026-11-19T10:45:42+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -4058,17 +4067,17 @@
   "KIX": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-04-11",
+    "dep": "2027-04-20",
     "dest": "KIX",
     "nights": 15,
     "notes": [],
-    "price": 6857,
-    "ret": "2027-04-26",
-    "seen": "2026-11-12",
+    "price": 5682,
+    "ret": "2027-05-05",
+    "seen": "2026-11-19",
     "src": "google",
-    "vac": 8
+    "vac": 6
    },
-   "checked": "2026-11-19T08:56:14+00:00",
+   "checked": "2026-11-19T10:46:22+00:00",
    "fewvac": {
     "airlines": [
      "China Eastern Airlines",
@@ -4546,15 +4555,18 @@
   "SGN": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-04-09",
+    "dep": "2027-04-02",
     "dest": "SGN",
     "nights": 15,
-    "notes": [],
-    "price": 5531,
-    "ret": "2027-04-24",
-    "seen": "2026-11-14",
+    "notes": [
+     "מפספס 8 ימי חג",
+     "ליל הסדר בבית"
+    ],
+    "price": 5522,
+    "ret": "2027-04-17",
+    "seen": "2026-11-19",
     "src": "google",
-    "vac": 8
+    "vac": 10
    },
    "checked": "2026-11-19T05:26:29+00:00",
    "fewvac": {
@@ -4981,13 +4993,13 @@
   "TYO": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-04-20",
+    "dep": "2027-04-19",
     "dest": "HND",
     "nights": 15,
     "notes": [],
-    "price": 4055,
-    "ret": "2027-05-05",
-    "seen": "2026-11-14",
+    "price": 3913,
+    "ret": "2027-05-04",
+    "seen": "2026-11-19",
     "src": "google",
     "vac": 6
    },
@@ -5848,21 +5860,21 @@
     ]
    },
    "HND-KIX": {
-    "dep": "2027-04-06",
-    "nights": 15,
+    "dep": "2027-04-17",
+    "nights": 16,
     "notes": [],
     "parts": [
-     459,
-     473
+     487,
+     661
     ],
-    "price": 932,
-    "ret": "2027-04-21",
-    "seen": "2026-11-14",
+    "price": 1148,
+    "ret": "2027-05-03",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/xxkppmy",
-     "https://kiwi.com/u/fh94rk"
+     "https://kiwi.com/u/qj7xx4r2fr",
+     "https://kiwi.com/u/8x46vd5b6v"
     ],
-    "vac": 11,
+    "vac": 6,
     "via_out": [
      "ATH",
      "SIN"
@@ -5872,23 +5884,21 @@
     ]
    },
    "KIX-HND": {
-    "dep": "2027-04-06",
-    "nights": 14,
-    "notes": [
-     "ליל הסדר בבית"
-    ],
+    "dep": "2027-04-17",
+    "nights": 16,
+    "notes": [],
     "parts": [
-     449,
-     466
+     487,
+     657
     ],
-    "price": 915,
-    "ret": "2027-04-20",
-    "seen": "2026-11-14",
+    "price": 1144,
+    "ret": "2027-05-03",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/5xpmpu",
-     "https://kiwi.com/u/k8pj7z"
+     "https://kiwi.com/u/v3t9gkpym4",
+     "https://kiwi.com/u/c8h2fntjfu"
     ],
-    "vac": 11,
+    "vac": 6,
     "via_out": [
      "ATH",
      "SIN"
@@ -5898,48 +5908,45 @@
     ]
    },
    "KIX-NRT": {
-    "dep": "2027-04-06",
-    "nights": 14,
-    "notes": [
-     "ליל הסדר בבית"
-    ],
+    "dep": "2027-04-17",
+    "nights": 21,
+    "notes": [],
     "parts": [
-     449,
-     610
+     487,
+     781
     ],
-    "price": 1059,
-    "ret": "2027-04-20",
-    "seen": "2026-11-14",
+    "price": 1268,
+    "ret": "2027-05-08",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/9568qmr",
-     "https://kiwi.com/u/fs4qr6u"
+     "https://kiwi.com/u/8xt75uh8v7",
+     "https://kiwi.com/u/r3wrsyvvrx"
     ],
-    "vac": 11,
+    "vac": 9,
     "via_out": [
      "ATH",
      "SIN"
     ],
     "via_ret": [
-     "ITM",
-     "DEL"
+     "AUH"
     ]
    },
    "NRT-KIX": {
-    "dep": "2027-04-06",
-    "nights": 15,
+    "dep": "2027-04-17",
+    "nights": 16,
     "notes": [],
     "parts": [
-     459,
-     473
+     487,
+     661
     ],
-    "price": 932,
-    "ret": "2027-04-21",
-    "seen": "2026-11-14",
+    "price": 1148,
+    "ret": "2027-05-03",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/r4szxkq",
-     "https://kiwi.com/u/sh47psr"
+     "https://kiwi.com/u/sxyu8t3nxj",
+     "https://kiwi.com/u/pggbvpsxkh"
     ],
-    "vac": 11,
+    "vac": 6,
     "via_out": [
      "ATH",
      "SIN"
@@ -13043,30 +13050,29 @@
     ]
    },
    "HND-KIX": {
-    "dep": "2027-09-26",
-    "nights": 14,
+    "dep": "2027-10-15",
+    "nights": 16,
     "notes": [
-     "ערב סוכות בבית"
+     "ראש השנה בבית"
     ],
     "parts": [
-     824,
-     703
+     796,
+     783
     ],
-    "price": 1527,
-    "ret": "2027-10-10",
-    "seen": "2026-11-14",
+    "price": 1579,
+    "ret": "2027-10-31",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/tjyybpt",
-     "https://kiwi.com/u/8vsm2g"
+     "https://kiwi.com/u/nwp3gfjp4y",
+     "https://kiwi.com/u/9sbp25dstk"
     ],
-    "vac": 9,
+    "vac": 6,
     "via_out": [
-     "ADD",
-     "ICN"
+     "CDG"
     ],
     "via_ret": [
-     "AUH",
-     "OTP"
+     "PEK",
+     "ATH"
     ]
    },
    "KIX-HND": {
@@ -13123,30 +13129,30 @@
     ]
    },
    "NRT-KIX": {
-    "dep": "2027-09-24",
-    "nights": 16,
+    "dep": "2027-10-06",
+    "nights": 20,
     "notes": [
-     "ערב סוכות בבית"
+     "ראש השנה בבית"
     ],
     "parts": [
-     663,
-     703
+     765,
+     807
     ],
-    "price": 1366,
-    "ret": "2027-10-10",
-    "seen": "2026-11-14",
+    "price": 1572,
+    "ret": "2027-10-26",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/zwksm5",
-     "https://kiwi.com/u/4ytvr4"
+     "https://kiwi.com/u/v4mvfb8t3f",
+     "https://kiwi.com/u/km76532dgd"
     ],
-    "vac": 9,
+    "vac": 8,
     "via_out": [
-     "ADD",
-     "ICN"
+     "ATH",
+     "AUH"
     ],
     "via_ret": [
-     "AUH",
-     "OTP"
+     "PEK",
+     "BUD"
     ]
    },
    "SGN-HAN": {
