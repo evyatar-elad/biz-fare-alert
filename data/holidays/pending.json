@@ -358,76 +358,6 @@
  },
  {
   "at": "2026-11-19T01:37:24+00:00",
-  "group": "DEL",
-  "h": "pesach-5787",
-  "hname": "פסח תשפ״ז",
-  "o": {
-   "airlines": [
-    "Azerbaijan Airlines",
-    "ITA Airways"
-   ],
-   "dep": "2027-04-14",
-   "dest": "DEL",
-   "europe": true,
-   "hours_out": 14.7,
-   "hours_ret": 11.0,
-   "legs_out": [
-    {
-     "airline": "ITA Airways",
-     "arr": "2027-04-14T10:45:00",
-     "dep": "2027-04-14T08:00:00",
-     "flight": "AZ815",
-     "from": "TLV",
-     "to": "FCO"
-    },
-    {
-     "airline": "ITA Airways",
-     "arr": "2027-04-15T01:10:00",
-     "dep": "2027-04-14T13:55:00",
-     "flight": "AZ770",
-     "from": "FCO",
-     "to": "DEL"
-    }
-   ],
-   "legs_ret": [
-    {
-     "airline": "Azerbaijan Airlines",
-     "arr": "2027-05-04T08:20:00",
-     "dep": "2027-05-04T05:10:00",
-     "flight": "J2508",
-     "from": "DEL",
-     "to": "GYD"
-    },
-    {
-     "airline": "Azerbaijan Airlines",
-     "arr": "2027-05-04T13:40:00",
-     "dep": "2027-05-04T11:15:00",
-     "flight": "J2269",
-     "from": "GYD",
-     "to": "TLV"
-    }
-   ],
-   "nights": 20,
-   "notes": [],
-   "price": 726,
-   "ret": "2027-05-04",
-   "seen": "2026-11-19",
-   "separate": true,
-   "src": "kiwi",
-   "url": "https://kiwi.com/u/usynr84zff",
-   "vac": 9,
-   "via_out": [
-    "FCO"
-   ],
-   "via_ret": [
-    "GYD"
-   ]
-  },
-  "prev": 955,
-  "type": "drop"
- },
- {
-  "at": "2026-11-19T01:37:24+00:00",
   "group": "BKK",
   "h": "pesach-5787",
   "hname": "פסח תשפ״ז",
@@ -769,5 +699,294 @@
   },
   "prev": 795,
   "type": "low"
+ },
+ {
+  "at": "2026-11-19T03:32:31+00:00",
+  "group": "HKT",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Etihad Airways",
+    "Wizz Air Malta"
+   ],
+   "dep": "2027-10-03",
+   "dest": "HKT",
+   "europe": true,
+   "hours_out": 27.2,
+   "hours_ret": 31.4,
+   "legs_out": [
+    {
+     "airline": "Wizz Air Malta",
+     "arr": "2027-10-03T13:55:00",
+     "dep": "2027-10-03T11:05:00",
+     "flight": "W46032",
+     "from": "TLV",
+     "to": "FCO"
+    },
+    {
+     "airline": "Etihad Airways",
+     "arr": "2027-10-04T07:05:00",
+     "dep": "2027-10-03T23:00:00",
+     "flight": "EY84",
+     "from": "FCO",
+     "to": "AUH"
+    },
+    {
+     "airline": "Etihad Airways",
+     "arr": "2027-10-04T18:20:00",
+     "dep": "2027-10-04T08:35:00",
+     "flight": "EY412",
+     "from": "AUH",
+     "to": "HKT"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Etihad Airways",
+     "arr": "2027-10-24T19:00:00",
+     "dep": "2027-10-24T15:20:00",
+     "flight": "EY417",
+     "from": "HKT",
+     "to": "AUH"
+    },
+    {
+     "airline": "Etihad Airways",
+     "arr": "2027-10-25T06:25:00",
+     "dep": "2027-10-25T02:15:00",
+     "flight": "EY85",
+     "from": "AUH",
+     "to": "FCO"
+    },
+    {
+     "airline": "Wizz Air Malta",
+     "arr": "2027-10-25T18:45:00",
+     "dep": "2027-10-25T14:15:00",
+     "flight": "W46033",
+     "from": "FCO",
+     "to": "TLV"
+    }
+   ],
+   "nights": 21,
+   "notes": [
+    "ראש השנה בבית"
+   ],
+   "price": 1186,
+   "ret": "2027-10-24",
+   "seen": "2026-11-19",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/8bvmbt6ydz",
+   "vac": 8,
+   "via_out": [
+    "FCO",
+    "AUH"
+   ],
+   "via_ret": [
+    "AUH",
+    "FCO"
+   ]
+  },
+  "prev": 1191,
+  "type": "low"
+ },
+ {
+  "at": "2026-11-19T03:32:31+00:00",
+  "group": "TYO",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "airlines": [
+    "Aegean",
+    "Austrian Airlines",
+    "Swiss International Air Lines"
+   ],
+   "dep": "2027-04-14",
+   "dest": "NRT",
+   "europe": true,
+   "hours_out": 31.3,
+   "hours_ret": 37.8,
+   "legs_out": [
+    {
+     "airline": "Aegean",
+     "arr": "2027-04-14T22:05:00",
+     "dep": "2027-04-14T19:55:00",
+     "flight": "A3927",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Swiss International Air Lines",
+     "arr": "2027-04-15T08:45:00",
+     "dep": "2027-04-15T06:55:00",
+     "flight": "LX1843",
+     "from": "ATH",
+     "to": "ZRH"
+    },
+    {
+     "airline": "Swiss International Air Lines",
+     "arr": "2027-04-16T09:15:00",
+     "dep": "2027-04-15T13:10:00",
+     "flight": "LX160",
+     "from": "ZRH",
+     "to": "NRT"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Austrian Airlines",
+     "arr": "2027-05-05T18:20:00",
+     "dep": "2027-05-05T11:10:00",
+     "flight": "OS26",
+     "from": "NRT",
+     "to": "VIE"
+    },
+    {
+     "airline": "Austrian Airlines",
+     "arr": "2027-05-06T12:45:00",
+     "dep": "2027-05-06T09:35:00",
+     "flight": "OS801",
+     "from": "VIE",
+     "to": "ATH"
+    },
+    {
+     "airline": "Aegean",
+     "arr": "2027-05-06T19:00:00",
+     "dep": "2027-05-06T17:00:00",
+     "flight": "A3926",
+     "from": "ATH",
+     "to": "TLV"
+    }
+   ],
+   "nights": 21,
+   "notes": [],
+   "price": 1122,
+   "ret": "2027-05-05",
+   "seen": "2026-11-19",
+   "separate": false,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/rsddg8zy9j",
+   "vac": 10,
+   "via_out": [
+    "ATH",
+    "ZRH"
+   ],
+   "via_ret": [
+    "VIE",
+    "ATH"
+   ]
+  },
+  "prev": 1400,
+  "type": "drop"
+ },
+ {
+  "at": "2026-11-19T03:32:31+00:00",
+  "group": "KIX",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "airlines": [
+    "Cebu Pacific",
+    "El Al Israel Airlines",
+    "Philippine Airlines",
+    "SKY express",
+    "Scoot"
+   ],
+   "dep": "2027-04-17",
+   "dest": "KIX",
+   "europe": true,
+   "hours_out": 32.6,
+   "hours_ret": 47.2,
+   "legs_out": [
+    {
+     "airline": "SKY express",
+     "arr": "2027-04-18T01:45:00",
+     "dep": "2027-04-17T23:30:00",
+     "flight": "GQ721",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-04-19T01:10:00",
+     "dep": "2027-04-18T08:55:00",
+     "flight": "TR51",
+     "from": "ATH",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-04-19T14:05:00",
+     "dep": "2027-04-19T06:25:00",
+     "flight": "TR820",
+     "from": "SIN",
+     "to": "KIX"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Philippine Airlines",
+     "arr": "2027-05-05T01:45:00",
+     "dep": "2027-05-04T21:40:00",
+     "flight": "PR439",
+     "from": "KIX",
+     "to": "MNL"
+    },
+    {
+     "airline": "Cebu Pacific",
+     "arr": "2027-05-05T18:10:00",
+     "dep": "2027-05-05T12:25:00",
+     "flight": "5J18",
+     "from": "MNL",
+     "to": "DXB"
+    },
+    {
+     "airline": "El Al Israel Airlines",
+     "arr": "2027-05-06T14:55:00",
+     "dep": "2027-05-06T12:25:00",
+     "flight": "LY972",
+     "from": "DXB",
+     "to": "TLV"
+    }
+   ],
+   "nights": 17,
+   "notes": [],
+   "price": 1153,
+   "ret": "2027-05-04",
+   "seen": "2026-11-19",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/ykh92sbtrn",
+   "vac": 7,
+   "via_out": [
+    "ATH",
+    "SIN"
+   ],
+   "via_ret": [
+    "MNL",
+    "DXB"
+   ]
+  },
+  "prev": 1455,
+  "type": "drop"
+ },
+ {
+  "at": "2026-11-19T03:32:31+00:00",
+  "group": "DEL",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "dep": "2027-04-20",
+   "dest": "DEL",
+   "nights": 14,
+   "notes": [],
+   "price": 688,
+   "ret": "2027-05-04",
+   "seen": "2026-11-19",
+   "src": "google",
+   "vac": 5
+  },
+  "prev": 955,
+  "type": "drop"
  }
 ]
