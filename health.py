@@ -21,7 +21,9 @@ ROOT = Path(__file__).parent
 SYSTEMS = {
     # name, data dir, "a run that collected": key in runs.jsonl, hours without collecting = problem
     "biz": ("ביזנס", ROOT / "data", "ok", 12),
-    "holidays": ("חגים - תיירים", ROOT / "data" / "holidays", "points", 6),
+    # 30, not 6 (19/11 false alarm): each Kiwi task is due every 24 hours, so after a full sweep the
+    # runs only retry Google multi-city searches, which often return nothing, for up to ~20 hours.
+    "holidays": ("חגים - תיירים", ROOT / "data" / "holidays", "points", 30),
 }
 ANY_RUN_HOURS = 4     # no run logged at all for this long = the chain stopped (or the scan step is skipped)
 FAIL_STREAK = 2       # failed workflow runs in a row = problem (one alone can be a passing network error)
