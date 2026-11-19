@@ -68,8 +68,10 @@
   "senders": {}
  },
  "2026-11-19": {
-  "read": 0,
+  "read": 1,
   "matched": 0,
-  "senders": {}
+  "senders": {
+   "קשרי תעופה": 1
+  }
  }
 }
