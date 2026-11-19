@@ -1294,6 +1294,7 @@
      "nights": 15,
      "price": 1781,
      "seen": "2026-11-14",
+     "stale": true,
      "vac": 11,
      "via": [
       [],
@@ -1817,6 +1818,53 @@
    },
    "prev_day_price": 955,
    "stops": {
+    "AUH": {
+     "airlines": [
+      "Etihad Airways"
+     ],
+     "banned": false,
+     "hours": [
+      3.2,
+      3.8,
+      3.5,
+      3.4
+     ],
+     "hub": "AUH",
+     "legs": [
+      [
+       "TLV",
+       "AUH",
+       "2027-04-23"
+      ],
+      [
+       "AUH",
+       "DEL",
+       "2027-04-24"
+      ],
+      [
+       "DEL",
+       "AUH",
+       "2027-05-13"
+      ],
+      [
+       "AUH",
+       "TLV",
+       "2027-05-14"
+      ]
+     ],
+     "n_back": 1,
+     "n_out": 1,
+     "nights": 21,
+     "price": 1526,
+     "seen": "2026-11-19",
+     "vac": 10,
+     "via": [
+      [],
+      [],
+      [],
+      []
+     ]
+    },
     "DXB": {
      "airlines": [
       "Ethiopian Airlines",
@@ -2341,6 +2389,7 @@
      "nights": 14,
      "price": 1808,
      "seen": "2026-11-14",
+     "stale": true,
      "vac": 11,
      "via": [
       [],
@@ -2840,6 +2889,7 @@
      "nights": 19,
      "price": 2182,
      "seen": "2026-11-14",
+     "stale": true,
      "vac": 8,
      "via": [
       [],
