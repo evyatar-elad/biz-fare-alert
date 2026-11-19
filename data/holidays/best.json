@@ -5638,19 +5638,19 @@
   },
   "_open_jaw": {
    "BKK-HKT": {
-    "dep": "2027-04-18",
-    "nights": 15,
+    "dep": "2027-04-17",
+    "nights": 16,
     "notes": [],
     "parts": [
      434,
-     503
+     528
     ],
-    "price": 937,
+    "price": 962,
     "ret": "2027-05-03",
-    "seen": "2026-11-14",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/bpw86fu",
-     "https://kiwi.com/u/pnz7rt6"
+     "https://kiwi.com/u/xk3phcv25h",
+     "https://kiwi.com/u/v43b8jw3cd"
     ],
     "vac": 6,
     "via_out": [
@@ -5658,24 +5658,24 @@
      "SIN"
     ],
     "via_ret": [
-     "BOM",
+     "DEL",
      "GYD"
     ]
    },
    "BOM-DEL": {
-    "dep": "2027-04-16",
+    "dep": "2027-04-14",
     "nights": 18,
     "notes": [],
     "parts": [
-     452,
-     251
+     467,
+     283
     ],
-    "price": 703,
-    "ret": "2027-05-04",
-    "seen": "2026-11-14",
+    "price": 750,
+    "ret": "2027-05-02",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/csdqdbj",
-     "https://kiwi.com/u/j9dwvc"
+     "https://kiwi.com/u/r5xfjyyqw5",
+     "https://kiwi.com/u/qjj4592s24"
     ],
     "vac": 7,
     "via_out": [
@@ -5686,21 +5686,21 @@
     ]
    },
    "DAD-SGN": {
-    "dep": "2027-04-13",
-    "nights": 20,
+    "dep": "2027-04-17",
+    "nights": 16,
     "notes": [],
     "parts": [
-     451,
+     456,
      412
     ],
-    "price": 863,
+    "price": 868,
     "ret": "2027-05-03",
-    "seen": "2026-11-14",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/j2vp6h",
-     "https://kiwi.com/u/u4kpxj"
+     "https://kiwi.com/u/926mpwu482",
+     "https://kiwi.com/u/33g8ud9j3b"
     ],
-    "vac": 9,
+    "vac": 6,
     "via_out": [
      "ATH",
      "SIN"
@@ -5711,48 +5711,46 @@
     ]
    },
    "DEL-BOM": {
-    "dep": "2027-04-23",
-    "nights": 14,
-    "notes": [
-     "ליל הסדר בבית"
-    ],
+    "dep": "2027-04-16",
+    "nights": 16,
+    "notes": [],
     "parts": [
-     502,
-     268
+     473,
+     303
     ],
-    "price": 770,
-    "ret": "2027-05-07",
-    "seen": "2026-11-14",
+    "price": 776,
+    "ret": "2027-05-02",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/wuk3447",
-     "https://kiwi.com/u/xyvyfj"
+     "https://kiwi.com/u/29x4qxdjsp",
+     "https://kiwi.com/u/nyduy99wcj"
     ],
-    "vac": 6,
+    "vac": 5,
     "via_out": [
-     "ADD"
+     "FCO"
     ],
     "via_ret": [
      "GYD"
     ]
    },
    "DEL-GOI": {
-    "dep": "2027-04-12",
-    "nights": 19,
+    "dep": "2027-04-20",
+    "nights": 14,
     "notes": [],
     "parts": [
-     551,
-     383
+     472,
+     359
     ],
-    "price": 934,
-    "ret": "2027-05-01",
-    "seen": "2026-11-12",
+    "price": 831,
+    "ret": "2027-05-04",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/4qqcwwu",
-     "https://kiwi.com/u/b7xqz3"
+     "https://kiwi.com/u/7kh673cy5f",
+     "https://kiwi.com/u/4gs6k8r9vf"
     ],
-    "vac": 8,
+    "vac": 5,
     "via_out": [
-     "DXB"
+     "FCO"
     ],
     "via_ret": [
      "BOM",
@@ -5760,21 +5758,21 @@
     ]
    },
    "GOI-DEL": {
-    "dep": "2027-04-16",
-    "nights": 18,
+    "dep": "2027-04-13",
+    "nights": 19,
     "notes": [],
     "parts": [
-     587,
-     251
+     557,
+     283
     ],
-    "price": 838,
-    "ret": "2027-05-04",
-    "seen": "2026-11-14",
+    "price": 840,
+    "ret": "2027-05-02",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/f63b964",
-     "https://kiwi.com/u/jyddcz"
+     "https://kiwi.com/u/jsc2nxwhpd",
+     "https://kiwi.com/u/4tgp8gxrbu"
     ],
-    "vac": 7,
+    "vac": 8,
     "via_out": [
      "GYD",
      "BOM"
@@ -5813,15 +5811,15 @@
     "nights": 16,
     "notes": [],
     "parts": [
-     458,
+     453,
      412
     ],
-    "price": 870,
+    "price": 865,
     "ret": "2027-05-03",
-    "seen": "2026-11-14",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/2zwu67d",
-     "https://kiwi.com/u/xjttvb"
+     "https://kiwi.com/u/8rd2bwv52b",
+     "https://kiwi.com/u/yprtr8y5vc"
     ],
     "vac": 6,
     "via_out": [
@@ -5834,29 +5832,28 @@
     ]
    },
    "HKT-BKK": {
-    "dep": "2027-04-06",
-    "nights": 14,
-    "notes": [
-     "ליל הסדר בבית"
-    ],
+    "dep": "2027-04-11",
+    "nights": 21,
+    "notes": [],
     "parts": [
-     410,
-     436
+     428,
+     471
     ],
-    "price": 846,
-    "ret": "2027-04-20",
-    "seen": "2026-11-14",
+    "price": 899,
+    "ret": "2027-05-02",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/9b73x46",
-     "https://kiwi.com/u/vjj4bk"
+     "https://kiwi.com/u/vwz7kkc4zz",
+     "https://kiwi.com/u/snvvu4qrqx"
     ],
-    "vac": 11,
+    "vac": 10,
     "via_out": [
      "ATH",
      "SIN"
     ],
     "via_ret": [
-     "DEL"
+     "BOM",
+     "GYD"
     ]
    },
    "HND-KIX": {
@@ -12844,28 +12841,28 @@
     ]
    },
    "BOM-DEL": {
-    "dep": "2027-10-02",
-    "nights": 15,
+    "dep": "2027-10-13",
+    "nights": 21,
     "notes": [
      "ראש השנה בבית"
     ],
     "parts": [
-     337,
-     253
+     338,
+     446
     ],
-    "price": 590,
-    "ret": "2027-10-17",
-    "seen": "2026-11-14",
+    "price": 784,
+    "ret": "2027-11-03",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/7vfvxrc",
-     "https://kiwi.com/u/fn3sg9x"
+     "https://kiwi.com/u/4ydjkc643q",
+     "https://kiwi.com/u/k5cvkzrxbf"
     ],
-    "vac": 7,
+    "vac": 11,
     "via_out": [
      "GYD"
     ],
     "via_ret": [
-     "GYD"
+     "WAW"
     ]
    },
    "DAD-SGN": {
@@ -12945,29 +12942,29 @@
     ]
    },
    "GOI-DEL": {
-    "dep": "2027-10-03",
-    "nights": 14,
+    "dep": "2027-10-13",
+    "nights": 21,
     "notes": [
      "ראש השנה בבית"
     ],
     "parts": [
-     456,
-     253
+     457,
+     446
     ],
-    "price": 709,
-    "ret": "2027-10-17",
-    "seen": "2026-11-14",
+    "price": 903,
+    "ret": "2027-11-03",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/5vcq9yw",
-     "https://kiwi.com/u/j3pj9f"
+     "https://kiwi.com/u/qfpfq2b5u9",
+     "https://kiwi.com/u/c6y4cq8dcj"
     ],
-    "vac": 7,
+    "vac": 11,
     "via_out": [
      "GYD",
      "BOM"
     ],
     "via_ret": [
-     "GYD"
+     "WAW"
     ]
    },
    "HAN-DAD": {
@@ -13076,26 +13073,25 @@
     ]
    },
    "KIX-HND": {
-    "dep": "2027-09-25",
-    "nights": 15,
+    "dep": "2027-10-04",
+    "nights": 19,
     "notes": [
-     "ערב סוכות בבית"
+     "ראש השנה בבית"
     ],
     "parts": [
-     668,
-     657
+     718,
+     658
     ],
-    "price": 1325,
-    "ret": "2027-10-10",
-    "seen": "2026-11-14",
+    "price": 1376,
+    "ret": "2027-10-23",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/k3ng47",
-     "https://kiwi.com/u/kcybg8"
+     "https://kiwi.com/u/pzskbbpcjk",
+     "https://kiwi.com/u/pwgb8wn3g2"
     ],
-    "vac": 9,
+    "vac": 7,
     "via_out": [
-     "VIE",
-     "SIN"
+     "HAN"
     ],
     "via_ret": [
      "DEL"
@@ -13156,28 +13152,30 @@
     ]
    },
    "SGN-HAN": {
-    "dep": "2027-10-01",
-    "nights": 15,
-    "notes": [],
+    "dep": "2027-10-08",
+    "nights": 18,
+    "notes": [
+     "ראש השנה בבית"
+    ],
     "parts": [
-     549,
-     551
+     526,
+     477
     ],
-    "price": 1100,
-    "ret": "2027-10-16",
-    "seen": "2026-11-14",
+    "price": 1003,
+    "ret": "2027-10-26",
+    "seen": "2026-11-19",
     "urls": [
-     "https://kiwi.com/u/y7g9rkp",
-     "https://kiwi.com/u/hzycxhk"
+     "https://kiwi.com/u/62h6u588v2",
+     "https://kiwi.com/u/8fgzjf2n5k"
     ],
-    "vac": 7,
+    "vac": 6,
     "via_out": [
      "GYD",
      "BOM"
     ],
     "via_ret": [
-     "DEL",
-     "GYD"
+     "AUH",
+     "MXP"
     ]
    }
   },
