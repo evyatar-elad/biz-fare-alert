@@ -1,11 +1,11 @@
 {
  "fail_streak": 0,
- "checked": "2026-11-19T20:09:16+00:00",
+ "checked": "2026-11-19T22:04:26+00:00",
  "problems": [
-  "ריצות רצות אבל לא אספו מחירים כבר 9 שעות"
+  "ריצות רצות אבל לא אספו מחירים כבר 11 שעות"
  ],
  "last_run_failed": false,
- "run_url": "https://github.com/evyatar-elad/biz-fare-alert/actions/runs/44604695578",
+ "run_url": "https://github.com/evyatar-elad/biz-fare-alert/actions/runs/44624087259",
  "since": "2026-11-19T18:14:48+00:00",
  "mailed": "2026-11-19T18:14:48+00:00"
 }

@@ -8108,6 +8108,7 @@
      "nights": 15,
      "price": 2352,
      "seen": "2026-11-15",
+     "stale": true,
      "vac": 9,
      "via": [
       [],
