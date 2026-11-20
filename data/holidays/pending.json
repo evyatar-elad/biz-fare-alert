@@ -1,98 +1,6 @@
 [
  {
   "at": "2026-11-19T09:18:15+00:00",
-  "group": "HAN",
-  "h": "tishrei-5788",
-  "hname": "חגי תשרי תשפ״ח",
-  "o": {
-   "airlines": [
-    "Azerbaijan Airlines",
-    "VietJet Air",
-    "Vietnam Airlines"
-   ],
-   "dep": "2027-10-07",
-   "dest": "HAN",
-   "europe": false,
-   "hours_out": 38.7,
-   "hours_ret": 20.3,
-   "legs_out": [
-    {
-     "airline": "Azerbaijan Airlines",
-     "arr": "2027-10-07T16:35:00",
-     "dep": "2027-10-07T12:30:00",
-     "flight": "J2264",
-     "from": "TLV",
-     "to": "GYD"
-    },
-    {
-     "airline": "Azerbaijan Airlines",
-     "arr": "2027-10-08T01:25:00",
-     "dep": "2027-10-07T19:30:00",
-     "flight": "J2515",
-     "from": "GYD",
-     "to": "BOM"
-    },
-    {
-     "airline": "VietJet Air",
-     "arr": "2027-10-09T07:10:00",
-     "dep": "2027-10-09T00:40:00",
-     "flight": "VJ910",
-     "from": "BOM",
-     "to": "HAN"
-    }
-   ],
-   "legs_ret": [
-    {
-     "airline": "Vietnam Airlines",
-     "arr": "2027-10-21T21:35:00",
-     "dep": "2027-10-21T18:15:00",
-     "flight": "VN973",
-     "from": "HAN",
-     "to": "BOM"
-    },
-    {
-     "airline": "Azerbaijan Airlines",
-     "arr": "2027-10-22T05:55:00",
-     "dep": "2027-10-22T02:25:00",
-     "flight": "J2516",
-     "from": "BOM",
-     "to": "GYD"
-    },
-    {
-     "airline": "Azerbaijan Airlines",
-     "arr": "2027-10-22T10:35:00",
-     "dep": "2027-10-22T08:10:00",
-     "flight": "J2263",
-     "from": "GYD",
-     "to": "TLV"
-    }
-   ],
-   "nights": 14,
-   "notes": [
-    "מפספס 2 ימי חג",
-    "ראש השנה בבית"
-   ],
-   "price": 1056,
-   "ret": "2027-10-21",
-   "seen": "2026-11-19",
-   "separate": true,
-   "src": "kiwi",
-   "url": "https://kiwi.com/u/un8fqpfnz8",
-   "vac": 4,
-   "via_out": [
-    "GYD",
-    "BOM"
-   ],
-   "via_ret": [
-    "BOM",
-    "GYD"
-   ]
-  },
-  "prev": 1216,
-  "type": "drop"
- },
- {
-  "at": "2026-11-19T09:18:15+00:00",
   "group": "TYO",
   "h": "pesach-5787",
   "hname": "פסח תשפ״ז",
@@ -572,6 +480,98 @@
    ]
   },
   "prev": 1177,
+  "type": "low"
+ },
+ {
+  "at": "2026-11-20T06:24:55+00:00",
+  "group": "HAN",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Azerbaijan Airlines",
+    "VietJet Air",
+    "Vietnam Airlines"
+   ],
+   "dep": "2027-10-06",
+   "dest": "HAN",
+   "europe": false,
+   "hours_out": 51.2,
+   "hours_ret": 20.3,
+   "legs_out": [
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-10-07T03:59:00",
+     "dep": "2027-10-06T23:55:00",
+     "flight": "J2268",
+     "from": "TLV",
+     "to": "GYD"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-10-08T01:25:00",
+     "dep": "2027-10-07T19:30:00",
+     "flight": "J2515",
+     "from": "GYD",
+     "to": "BOM"
+    },
+    {
+     "airline": "VietJet Air",
+     "arr": "2027-10-09T07:10:00",
+     "dep": "2027-10-09T00:40:00",
+     "flight": "VJ910",
+     "from": "BOM",
+     "to": "HAN"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Vietnam Airlines",
+     "arr": "2027-10-21T21:35:00",
+     "dep": "2027-10-21T18:15:00",
+     "flight": "VN973",
+     "from": "HAN",
+     "to": "BOM"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-10-22T05:55:00",
+     "dep": "2027-10-22T02:25:00",
+     "flight": "J2516",
+     "from": "BOM",
+     "to": "GYD"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-10-22T10:35:00",
+     "dep": "2027-10-22T08:10:00",
+     "flight": "J2263",
+     "from": "GYD",
+     "to": "TLV"
+    }
+   ],
+   "nights": 15,
+   "notes": [
+    "מפספס 2 ימי חג",
+    "ראש השנה בבית"
+   ],
+   "price": 1010,
+   "ret": "2027-10-21",
+   "seen": "2026-11-20",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/6j56vvgxgn",
+   "vac": 5,
+   "via_out": [
+    "GYD",
+    "BOM"
+   ],
+   "via_ret": [
+    "BOM",
+    "GYD"
+   ]
+  },
+  "prev": 1056,
   "type": "low"
  }
 ]
