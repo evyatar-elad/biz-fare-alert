@@ -119,5 +119,16 @@
   "holidays": 0,
   "deals": 1,
   "at": "2026-11-20T08:35:59+00:00"
+ },
+ {
+  "kind": "ai",
+  "from": "Etihad Airways",
+  "subject": "More benefits when you book direct",
+  "snip": "המייל מציע יתרונות להזמנה ישירה באתר אתיחאד, כגון תעריפים בלעדיים וגמישות, ללא הצעת טיסה קונקרטית עם מחיר.",
+  "promo": false,
+  "business": 0,
+  "holidays": 0,
+  "deals": 0,
+  "at": "2026-11-20T17:31:14+00:00"
  }
 ]
