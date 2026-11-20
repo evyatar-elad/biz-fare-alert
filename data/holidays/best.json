@@ -15,7 +15,7 @@
     "src": "google",
     "vac": 12
    },
-   "checked": "2026-11-20T03:51:52+00:00",
+   "checked": "2026-11-20T11:46:22+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -123,86 +123,15 @@
     ]
    },
    "fewvac": {
-    "airlines": [
-     "Azerbaijan Airlines",
-     "SKY express",
-     "Scoot",
-     "Thai Vietjet"
-    ],
     "dep": "2027-04-17",
     "dest": "BKK",
-    "europe": true,
-    "hours_out": 28.6,
-    "hours_ret": 18.4,
-    "legs_out": [
-     {
-      "airline": "SKY express",
-      "arr": "2027-04-18T01:45:00",
-      "dep": "2027-04-17T23:30:00",
-      "flight": "GQ721",
-      "from": "TLV",
-      "to": "ATH"
-     },
-     {
-      "airline": "Scoot",
-      "arr": "2027-04-19T01:10:00",
-      "dep": "2027-04-18T08:55:00",
-      "flight": "TR51",
-      "from": "ATH",
-      "to": "SIN"
-     },
-     {
-      "airline": "Scoot",
-      "arr": "2027-04-19T08:05:00",
-      "dep": "2027-04-19T06:30:00",
-      "flight": "TR608",
-      "from": "SIN",
-      "to": "BKK"
-     }
-    ],
-    "legs_ret": [
-     {
-      "airline": "Thai Vietjet",
-      "arr": "2027-05-02T23:50:00",
-      "dep": "2027-05-02T21:05:00",
-      "flight": "VZ760",
-      "from": "BKK",
-      "to": "BOM"
-     },
-     {
-      "airline": "Azerbaijan Airlines",
-      "arr": "2027-05-03T07:55:00",
-      "dep": "2027-05-03T04:10:00",
-      "flight": "J2516",
-      "from": "BOM",
-      "to": "GYD"
-     },
-     {
-      "airline": "Azerbaijan Airlines",
-      "arr": "2027-05-03T11:30:00",
-      "dep": "2027-05-03T09:05:00",
-      "flight": "J2263",
-      "from": "GYD",
-      "to": "TLV"
-     }
-    ],
-    "nights": 15,
+    "nights": 14,
     "notes": [],
-    "price": 912,
-    "ret": "2027-05-02",
+    "price": 1496,
+    "ret": "2027-05-01",
     "seen": "2026-11-20",
-    "separate": true,
-    "src": "kiwi",
-    "url": "https://kiwi.com/u/vw65jmqqxb",
-    "vac": 5,
-    "via_out": [
-     "ATH",
-     "SIN"
-    ],
-    "via_ret": [
-     "BOM",
-     "GYD"
-    ]
+    "src": "google",
+    "vac": 4
    },
    "flex": {
     "airlines": [
@@ -3639,7 +3568,7 @@
     "src": "google",
     "vac": 12
    },
-   "checked": "2026-11-20T10:14:50+00:00",
+   "checked": "2026-11-20T11:53:22+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -3746,86 +3675,15 @@
     ]
    },
    "fewvac": {
-    "airlines": [
-     "Aegean",
-     "Akasa Air",
-     "Azerbaijan Airlines",
-     "Scoot"
-    ],
-    "dep": "2027-04-20",
+    "dep": "2027-04-16",
     "dest": "HKT",
-    "europe": true,
-    "hours_out": 32.4,
-    "hours_ret": 25.7,
-    "legs_out": [
-     {
-      "airline": "Aegean",
-      "arr": "2027-04-20T22:05:00",
-      "dep": "2027-04-20T19:55:00",
-      "flight": "A3927",
-      "from": "TLV",
-      "to": "ATH"
-     },
-     {
-      "airline": "Scoot",
-      "arr": "2027-04-22T01:10:00",
-      "dep": "2027-04-21T08:55:00",
-      "flight": "TR51",
-      "from": "ATH",
-      "to": "SIN"
-     },
-     {
-      "airline": "Scoot",
-      "arr": "2027-04-22T08:20:00",
-      "dep": "2027-04-22T07:30:00",
-      "flight": "TR658",
-      "from": "SIN",
-      "to": "HKT"
-     }
-    ],
-    "legs_ret": [
-     {
-      "airline": "Akasa Air",
-      "arr": "2027-05-04T17:10:00",
-      "dep": "2027-05-04T13:50:00",
-      "flight": "QP619",
-      "from": "HKT",
-      "to": "BOM"
-     },
-     {
-      "airline": "Azerbaijan Airlines",
-      "arr": "2027-05-05T05:55:00",
-      "dep": "2027-05-05T02:25:00",
-      "flight": "J2516",
-      "from": "BOM",
-      "to": "GYD"
-     },
-     {
-      "airline": "Azerbaijan Airlines",
-      "arr": "2027-05-05T11:30:00",
-      "dep": "2027-05-05T09:05:00",
-      "flight": "J2263",
-      "from": "GYD",
-      "to": "TLV"
-     }
-    ],
-    "nights": 14,
+    "nights": 15,
     "notes": [],
-    "price": 1022,
-    "ret": "2027-05-04",
+    "price": 1380,
+    "ret": "2027-05-01",
     "seen": "2026-11-20",
-    "separate": true,
-    "src": "kiwi",
-    "url": "https://kiwi.com/u/p84z24hu3k",
-    "vac": 5,
-    "via_out": [
-     "ATH",
-     "SIN"
-    ],
-    "via_ret": [
-     "BOM",
-     "GYD"
-    ]
+    "src": "google",
+    "vac": 4
    },
    "flex": {
     "airlines": [
@@ -4270,7 +4128,7 @@
     "src": "google",
     "vac": 6
    },
-   "checked": "2026-11-20T10:14:39+00:00",
+   "checked": "2026-11-20T12:07:03+00:00",
    "fewvac": {
     "airlines": [
      "Aegean",
@@ -11267,7 +11125,7 @@
    "stops": {}
   },
   "KIX": {
-   "checked": "2026-11-20T10:14:05+00:00",
+   "checked": "2026-11-20T11:27:11+00:00",
    "fast": {
     "airlines": [
      "Air India Limited",
