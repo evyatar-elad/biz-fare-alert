@@ -4707,7 +4707,7 @@
     "src": "google",
     "vac": 6
    },
-   "checked": "2026-11-21T11:01:30+00:00",
+   "checked": "2026-11-21T12:30:40+00:00",
    "fast": {
     "airlines": [
      "Air India Limited",
@@ -6657,10 +6657,10 @@
     ],
     "price": 1148,
     "ret": "2027-05-03",
-    "seen": "2026-11-19",
+    "seen": "2026-11-21",
     "urls": [
-     "https://kiwi.com/u/qj7xx4r2fr",
-     "https://kiwi.com/u/8x46vd5b6v"
+     "https://kiwi.com/u/k4rv7vv23u",
+     "https://kiwi.com/u/2tjx86dr4h"
     ],
     "vac": 6,
     "via_out": [
@@ -6676,15 +6676,15 @@
     "nights": 16,
     "notes": [],
     "parts": [
-     487,
+     482,
      657
     ],
-    "price": 1144,
+    "price": 1139,
     "ret": "2027-05-03",
-    "seen": "2026-11-19",
+    "seen": "2026-11-21",
     "urls": [
-     "https://kiwi.com/u/v3t9gkpym4",
-     "https://kiwi.com/u/c8h2fntjfu"
+     "https://kiwi.com/u/c8dyt47c22",
+     "https://kiwi.com/u/5b73qjsfyc"
     ],
     "vac": 6,
     "via_out": [
@@ -6697,18 +6697,18 @@
    },
    "KIX-NRT": {
     "dep": "2027-04-17",
-    "nights": 21,
+    "nights": 19,
     "notes": [],
     "parts": [
-     487,
-     781
+     482,
+     732
     ],
-    "price": 1268,
-    "ret": "2027-05-08",
-    "seen": "2026-11-19",
+    "price": 1214,
+    "ret": "2027-05-06",
+    "seen": "2026-11-21",
     "urls": [
-     "https://kiwi.com/u/8xt75uh8v7",
-     "https://kiwi.com/u/r3wrsyvvrx"
+     "https://kiwi.com/u/2qg6ng57cx",
+     "https://kiwi.com/u/gtx2q24dkz"
     ],
     "vac": 9,
     "via_out": [
@@ -6716,7 +6716,8 @@
      "SIN"
     ],
     "via_ret": [
-     "AUH"
+     "SIN",
+     "ATH"
     ]
    },
    "NRT-KIX": {
@@ -6729,10 +6730,10 @@
     ],
     "price": 1148,
     "ret": "2027-05-03",
-    "seen": "2026-11-19",
+    "seen": "2026-11-21",
     "urls": [
-     "https://kiwi.com/u/sxyu8t3nxj",
-     "https://kiwi.com/u/pggbvpsxkh"
+     "https://kiwi.com/u/styyw45rrf",
+     "https://kiwi.com/u/cbbzjn9345"
     ],
     "vac": 6,
     "via_out": [
@@ -11702,7 +11703,7 @@
    "stops": {}
   },
   "KIX": {
-   "checked": "2026-11-21T11:00:56+00:00",
+   "checked": "2026-11-21T12:30:29+00:00",
    "fast": {
     "airlines": [
      "Air India Limited",
