@@ -1028,7 +1028,63 @@
     ]
    },
    "prev_day_price": 604,
-   "stops": {}
+   "stops": {
+    "DXB": {
+     "airlines": [
+      "Ethiopian Airlines"
+     ],
+     "banned": false,
+     "hours": [
+      10.3,
+      18.9,
+      17.3,
+      9.9
+     ],
+     "hub": "DXB",
+     "legs": [
+      [
+       "TLV",
+       "DXB",
+       "2027-04-23"
+      ],
+      [
+       "DXB",
+       "BOM",
+       "2027-04-24"
+      ],
+      [
+       "BOM",
+       "DXB",
+       "2027-05-13"
+      ],
+      [
+       "DXB",
+       "TLV",
+       "2027-05-14"
+      ]
+     ],
+     "n_back": 1,
+     "n_out": 1,
+     "nights": 21,
+     "price": 2044,
+     "seen": "2026-11-21",
+     "vac": 10,
+     "via": [
+      [
+       "ADD"
+      ],
+      [
+       "ADD"
+      ],
+      [
+       "ADD"
+      ],
+      [
+       "ADD"
+      ]
+     ]
+    }
+   }
   },
   "DAD": {
    "biz": {
@@ -3974,6 +4030,7 @@
      "nights": 18,
      "price": 5570,
      "seen": "2026-11-19",
+     "stale": true,
      "vac": 8,
      "via": [
       [
