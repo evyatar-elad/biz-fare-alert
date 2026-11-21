@@ -358,5 +358,88 @@
   },
   "prev": 1767,
   "type": "drop"
+ },
+ {
+  "at": "2026-11-21T11:05:23+00:00",
+  "group": "DAD",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Arkia",
+    "Thai Airways",
+    "VietJet Air",
+    "Wizz Air Malta"
+   ],
+   "dep": "2027-10-11",
+   "dest": "DAD",
+   "europe": true,
+   "hours_out": 16.2,
+   "hours_ret": 43.9,
+   "legs_out": [
+    {
+     "airline": "Arkia",
+     "arr": "2027-10-12T15:30:00",
+     "dep": "2027-10-11T23:55:00",
+     "flight": "IZ595",
+     "from": "TLV",
+     "to": "HAN"
+    },
+    {
+     "airline": "VietJet Air",
+     "arr": "2027-10-12T20:05:00",
+     "dep": "2027-10-12T18:45:00",
+     "flight": "VJ521",
+     "from": "HAN",
+     "to": "DAD"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Thai Airways",
+     "arr": "2027-11-01T20:55:00",
+     "dep": "2027-11-01T19:00:00",
+     "flight": "TG595",
+     "from": "DAD",
+     "to": "BKK"
+    },
+    {
+     "airline": "Thai Airways",
+     "arr": "2027-11-02T06:45:00",
+     "dep": "2027-11-02T00:35:00",
+     "flight": "TG940",
+     "from": "BKK",
+     "to": "MXP"
+    },
+    {
+     "airline": "Wizz Air Malta",
+     "arr": "2027-11-03T09:55:00",
+     "dep": "2027-11-03T05:00:00",
+     "flight": "W46431",
+     "from": "MXP",
+     "to": "TLV"
+    }
+   ],
+   "nights": 21,
+   "notes": [
+    "ראש השנה בבית"
+   ],
+   "price": 1292,
+   "ret": "2027-11-01",
+   "seen": "2026-11-21",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/jgtfr567km",
+   "vac": 10,
+   "via_out": [
+    "HAN"
+   ],
+   "via_ret": [
+    "BKK",
+    "MXP"
+   ]
+  },
+  "prev": 1308,
+  "type": "low"
  }
 ]
