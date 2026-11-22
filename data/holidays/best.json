@@ -1368,9 +1368,9 @@
      "Thai AirAsia",
      "Thai Vietjet"
     ],
-    "price": 135,
-    "seen": "2026-11-21",
-    "url": "https://kiwi.com/u/r6m7x4mndm"
+    "price": 139,
+    "seen": "2026-11-22",
+    "url": "https://kiwi.com/u/c4hqnm52ww"
    },
    "low": {
     "airlines": [
@@ -2405,7 +2405,7 @@
     "src": "google",
     "vac": 8
    },
-   "checked": "2026-11-22T02:26:56+00:00",
+   "checked": "2026-11-22T03:43:20+00:00",
    "fast": {
     "airlines": [
      "Etihad Airways"
@@ -2682,12 +2682,11 @@
    },
    "hop_bkk": {
     "airlines": [
-     "Thai Airways",
      "Thai Lion Air"
     ],
-    "price": 454,
-    "seen": "2026-11-21",
-    "url": "https://kiwi.com/u/t2kccc7rn2"
+    "price": 438,
+    "seen": "2026-11-22",
+    "url": "https://kiwi.com/u/smgvvt26cx"
    },
    "low": {
     "airlines": [
@@ -5848,9 +5847,9 @@
     "airlines": [
      "Thai AirAsia"
     ],
-    "price": 151,
-    "seen": "2026-11-21",
-    "url": "https://kiwi.com/u/96n28ggkgn"
+    "price": 154,
+    "seen": "2026-11-22",
+    "url": "https://kiwi.com/u/m5fktpb2yh"
    },
    "low": {
     "airlines": [
@@ -6262,10 +6261,10 @@
     ],
     "price": 2508,
     "ret": "2027-05-13",
-    "seen": "2026-11-21",
+    "seen": "2026-11-22",
     "separate": false,
     "src": "kiwi",
-    "url": "https://kiwi.com/u/2wqjywtu75",
+    "url": "https://kiwi.com/u/d45kpu3tjh",
     "vac": 10,
     "via_out": [
      "BKK"
