@@ -96,8 +96,10 @@
   "senders": {}
  },
  "2026-11-23": {
-  "read": 0,
+  "read": 1,
   "matched": 0,
-  "senders": {}
+  "senders": {
+   "אופיר טורס": 1
+  }
  }
 }
