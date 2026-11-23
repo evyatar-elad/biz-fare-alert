@@ -1,1 +1,53 @@
-[]
+[
+ {
+  "at": "2026-11-23T13:00:13+00:00",
+  "group": "HKT",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "El Al Israel Airlines"
+   ],
+   "dep": "2027-10-11",
+   "dest": "HKT",
+   "europe": false,
+   "hours_out": 11.3,
+   "hours_ret": 10.9,
+   "legs_out": [
+    {
+     "airline": "El Al Israel Airlines",
+     "arr": "2027-10-12T14:10:00",
+     "dep": "2027-10-11T22:50:00",
+     "flight": "LY87",
+     "from": "TLV",
+     "to": "HKT"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "El Al Israel Airlines",
+     "arr": "2027-10-31T04:25:00",
+     "dep": "2027-10-30T22:30:00",
+     "flight": "LY88",
+     "from": "HKT",
+     "to": "TLV"
+    }
+   ],
+   "nights": 19,
+   "notes": [
+    "ראש השנה בבית"
+   ],
+   "price": 1030,
+   "ret": "2027-10-30",
+   "seen": "2026-11-23",
+   "separate": false,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/66dqpg2b79",
+   "vac": 8,
+   "via_out": [],
+   "via_ret": []
+  },
+  "prev": 1060,
+  "type": "low"
+ }
+]
