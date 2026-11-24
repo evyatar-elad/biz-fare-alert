@@ -15,7 +15,7 @@
     "src": "google",
     "vac": 12
    },
-   "checked": "2026-11-24T17:44:15+00:00",
+   "checked": "2026-11-24T19:26:53+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -4181,7 +4181,7 @@
     "src": "google",
     "vac": 12
    },
-   "checked": "2026-11-24T17:44:45+00:00",
+   "checked": "2026-11-24T19:32:53+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -4764,7 +4764,7 @@
     "src": "google",
     "vac": 6
    },
-   "checked": "2026-11-24T17:45:25+00:00",
+   "checked": "2026-11-24T19:33:34+00:00",
    "fast": {
     "airlines": [
      "Air India Limited",
@@ -7360,7 +7360,7 @@
     "src": "google",
     "vac": 9
    },
-   "checked": "2026-11-24T17:36:15+00:00",
+   "checked": "2026-11-24T19:12:23+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -7709,7 +7709,7 @@
     "src": "google",
     "vac": 8
    },
-   "checked": "2026-11-24T17:35:24+00:00",
+   "checked": "2026-11-24T19:18:07+00:00",
    "fast": {
     "airlines": [
      "Azerbaijan Airlines"
@@ -8108,7 +8108,7 @@
    "stops": {}
   },
   "DAD": {
-   "checked": "2026-11-24T17:33:55+00:00",
+   "checked": "2026-11-24T19:28:40+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -8813,7 +8813,7 @@
     "src": "google",
     "vac": 7
    },
-   "checked": "2026-11-24T17:26:27+00:00",
+   "checked": "2026-11-24T19:24:05+00:00",
    "direct": {
     "airlines": [
      "Air India Limited"
@@ -9275,7 +9275,7 @@
     "src": "google",
     "vac": 3
    },
-   "checked": "2026-11-24T17:40:50+00:00",
+   "checked": "2026-11-24T19:32:27+00:00",
    "fast": {
     "airlines": [
      "Etihad Airways"
@@ -9978,7 +9978,7 @@
     "src": "google",
     "vac": 5
    },
-   "checked": "2026-11-24T17:30:23+00:00",
+   "checked": "2026-11-24T19:29:28+00:00",
    "fewvac": {
     "airlines": [
      "Air India Limited",
@@ -10477,7 +10477,7 @@
     "src": "google",
     "vac": 5
    },
-   "checked": "2026-11-24T17:46:23+00:00",
+   "checked": "2026-11-24T19:22:34+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -11164,7 +11164,7 @@
     "src": "google",
     "vac": 9
    },
-   "checked": "2026-11-24T17:43:15+00:00",
+   "checked": "2026-11-24T19:29:53+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -11519,7 +11519,7 @@
     "src": "google",
     "vac": 7
    },
-   "checked": "2026-11-24T17:37:20+00:00",
+   "checked": "2026-11-24T19:26:43+00:00",
    "fast": {
     "airlines": [
      "Etihad Airways"
@@ -12041,7 +12041,7 @@
     "src": "google",
     "vac": 3
    },
-   "checked": "2026-11-24T17:45:56+00:00",
+   "checked": "2026-11-24T19:22:01+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
