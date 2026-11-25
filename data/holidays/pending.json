@@ -1,1 +1,183 @@
-[]
+[
+ {
+  "at": "2026-11-25T11:08:55+00:00",
+  "group": "SGN",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Azerbaijan Airlines",
+    "VietJet Air"
+   ],
+   "dep": "2027-10-01",
+   "dest": "SGN",
+   "europe": false,
+   "hours_out": 37.0,
+   "hours_ret": 18.5,
+   "legs_out": [
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-10-01T18:45:00",
+     "dep": "2027-10-01T14:40:00",
+     "flight": "J2270",
+     "from": "TLV",
+     "to": "GYD"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-10-02T03:05:00",
+     "dep": "2027-10-01T21:10:00",
+     "flight": "J2515",
+     "from": "GYD",
+     "to": "BOM"
+    },
+    {
+     "airline": "VietJet Air",
+     "arr": "2027-10-03T07:40:00",
+     "dep": "2027-10-03T00:40:00",
+     "flight": "VJ884",
+     "from": "BOM",
+     "to": "SGN"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "VietJet Air",
+     "arr": "2027-10-21T23:40:00",
+     "dep": "2027-10-21T20:05:00",
+     "flight": "VJ883",
+     "from": "SGN",
+     "to": "BOM"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-10-22T05:55:00",
+     "dep": "2027-10-22T02:25:00",
+     "flight": "J2516",
+     "from": "BOM",
+     "to": "GYD"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-10-22T10:35:00",
+     "dep": "2027-10-22T08:10:00",
+     "flight": "J2263",
+     "from": "GYD",
+     "to": "TLV"
+    }
+   ],
+   "nights": 20,
+   "notes": [
+    "מפספס 2 ימי חג"
+   ],
+   "price": 1048,
+   "ret": "2027-10-21",
+   "seen": "2026-11-25",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/hmjcpcqw95",
+   "vac": 7,
+   "via_out": [
+    "GYD",
+    "BOM"
+   ],
+   "via_ret": [
+    "BOM",
+    "GYD"
+   ]
+  },
+  "prev": 1200,
+  "type": "drop"
+ },
+ {
+  "at": "2026-11-25T11:08:55+00:00",
+  "group": "DPS",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Aegean",
+    "Scoot",
+    "Wizz Air Malta"
+   ],
+   "dep": "2027-09-30",
+   "dest": "DPS",
+   "europe": true,
+   "hours_out": 48.8,
+   "hours_ret": 22.2,
+   "legs_out": [
+    {
+     "airline": "Wizz Air Malta",
+     "arr": "2027-09-30T15:15:00",
+     "dep": "2027-09-30T12:55:00",
+     "flight": "W48401",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-02T01:10:00",
+     "dep": "2027-10-01T08:55:00",
+     "flight": "TR51",
+     "from": "ATH",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-02T18:40:00",
+     "dep": "2027-10-02T15:55:00",
+     "flight": "TR282",
+     "from": "SIN",
+     "to": "DPS"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-21T22:35:00",
+     "dep": "2027-10-21T19:40:00",
+     "flight": "TR283",
+     "from": "DPS",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-22T07:40:00",
+     "dep": "2027-10-22T01:10:00",
+     "flight": "TR50",
+     "from": "SIN",
+     "to": "ATH"
+    },
+    {
+     "airline": "Aegean",
+     "arr": "2027-10-22T12:50:00",
+     "dep": "2027-10-22T10:50:00",
+     "flight": "A3924",
+     "from": "ATH",
+     "to": "TLV"
+    }
+   ],
+   "nights": 21,
+   "notes": [
+    "מפספס 2 ימי חג"
+   ],
+   "price": 1243,
+   "ret": "2027-10-21",
+   "seen": "2026-11-25",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/7n8bg6tuux",
+   "vac": 8,
+   "via_out": [
+    "ATH",
+    "SIN"
+   ],
+   "via_ret": [
+    "SIN",
+    "ATH"
+   ]
+  },
+  "prev": 1393,
+  "type": "drop"
+ }
+]
