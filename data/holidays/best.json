@@ -1452,9 +1452,9 @@
      "Thai AirAsia",
      "Thai Vietjet"
     ],
-    "price": 139,
-    "seen": "2026-11-24",
-    "url": "https://kiwi.com/u/js8ksdwx7r"
+    "price": 153,
+    "seen": "2026-11-25",
+    "url": "https://kiwi.com/u/z23gcz2tr2"
    },
    "low": {
     "airlines": [
@@ -2558,7 +2558,7 @@
     "src": "google",
     "vac": 8
    },
-   "checked": "2026-11-25T05:17:02+00:00",
+   "checked": "2026-11-25T06:35:30+00:00",
    "fast": {
     "airlines": [
      "Etihad Airways"
@@ -2813,11 +2813,12 @@
    },
    "hop_bkk": {
     "airlines": [
+     "Thai Airways",
      "Thai Lion Air"
     ],
-    "price": 438,
-    "seen": "2026-11-24",
-    "url": "https://kiwi.com/u/cczu45mtq4"
+    "price": 409,
+    "seen": "2026-11-25",
+    "url": "https://kiwi.com/u/sd5q2xdtgk"
    },
    "low": {
     "airlines": [
@@ -6039,9 +6040,9 @@
     "airlines": [
      "Thai AirAsia"
     ],
-    "price": 154,
-    "seen": "2026-11-24",
-    "url": "https://kiwi.com/u/chc3yv3c2b"
+    "price": 151,
+    "seen": "2026-11-25",
+    "url": "https://kiwi.com/u/62bkdkdj66"
    },
    "low": {
     "airlines": [
@@ -6405,24 +6406,24 @@
     "airlines": [
      "El Al Israel Airlines"
     ],
-    "dep": "2027-04-22",
+    "dep": "2027-04-18",
     "dest": "SGN",
     "europe": false,
-    "hours_out": 16.3,
+    "hours_out": 16.8,
     "hours_ret": 14.6,
     "legs_out": [
      {
       "airline": "El Al Israel Airlines",
-      "arr": "2027-04-23T14:25:00",
-      "dep": "2027-04-22T22:45:00",
+      "arr": "2027-04-19T14:00:00",
+      "dep": "2027-04-18T22:20:00",
       "flight": "LY81",
       "from": "TLV",
       "to": "BKK"
      },
      {
       "airline": "El Al Israel Airlines",
-      "arr": "2027-04-23T19:05:00",
-      "dep": "2027-04-23T17:35:00",
+      "arr": "2027-04-19T19:05:00",
+      "dep": "2027-04-19T17:35:00",
       "flight": "LY8425",
       "from": "BKK",
       "to": "SGN"
@@ -6431,33 +6432,30 @@
     "legs_ret": [
      {
       "airline": "El Al Israel Airlines",
-      "arr": "2027-05-13T21:35:00",
-      "dep": "2027-05-13T20:10:00",
+      "arr": "2027-05-04T21:35:00",
+      "dep": "2027-05-04T20:10:00",
       "flight": "LY8426",
       "from": "SGN",
       "to": "BKK"
      },
      {
       "airline": "El Al Israel Airlines",
-      "arr": "2027-05-14T06:45:00",
-      "dep": "2027-05-13T23:55:00",
+      "arr": "2027-05-05T06:45:00",
+      "dep": "2027-05-04T23:55:00",
       "flight": "LY82",
       "from": "BKK",
       "to": "TLV"
      }
     ],
-    "nights": 21,
-    "notes": [
-     "מפספס 1 יום חג",
-     "ליל הסדר בבית"
-    ],
-    "price": 2541,
-    "ret": "2027-05-13",
-    "seen": "2026-11-24",
+    "nights": 16,
+    "notes": [],
+    "price": 2675,
+    "ret": "2027-05-04",
+    "seen": "2026-11-25",
     "separate": false,
     "src": "kiwi",
-    "url": "https://kiwi.com/u/9x33npkywj",
-    "vac": 10,
+    "url": "https://kiwi.com/u/h33xchgkww",
+    "vac": 7,
     "via_out": [
      "BKK"
     ],
