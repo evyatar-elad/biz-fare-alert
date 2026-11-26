@@ -116,11 +116,12 @@
   }
  },
  "2026-11-26": {
-  "read": 2,
+  "read": 3,
   "matched": 0,
   "senders": {
    "ארקיע": 1,
-   "lastminute.co.il": 1
+   "lastminute.co.il": 1,
+   "קשרי תעופה": 1
   }
  }
 }
