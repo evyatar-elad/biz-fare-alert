@@ -202,5 +202,275 @@
   },
   "prev": 662,
   "type": "low"
+ },
+ {
+  "at": "2026-11-26T06:20:13+00:00",
+  "group": "GOI",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "airlines": [
+    "Azerbaijan Airlines",
+    "IndiGo Airlines",
+    "Israir"
+   ],
+   "dep": "2027-04-13",
+   "dest": "GOI",
+   "europe": false,
+   "hours_out": 16.1,
+   "hours_ret": 13.9,
+   "legs_out": [
+    {
+     "airline": "Israir",
+     "arr": "2027-04-13T15:35:00",
+     "dep": "2027-04-13T11:30:00",
+     "flight": "6H879",
+     "from": "TLV",
+     "to": "GYD"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-04-14T01:25:00",
+     "dep": "2027-04-13T19:30:00",
+     "flight": "J2515",
+     "from": "GYD",
+     "to": "BOM"
+    },
+    {
+     "airline": "IndiGo Airlines",
+     "arr": "2027-04-14T06:05:00",
+     "dep": "2027-04-14T05:00:00",
+     "flight": "6E6361",
+     "from": "BOM",
+     "to": "GOI"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "IndiGo Airlines",
+     "arr": "2027-05-04T01:25:00",
+     "dep": "2027-05-04T00:05:00",
+     "flight": "6E6156",
+     "from": "GOI",
+     "to": "BOM"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-05-04T07:55:00",
+     "dep": "2027-05-04T04:10:00",
+     "flight": "J2516",
+     "from": "BOM",
+     "to": "GYD"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-05-04T11:30:00",
+     "dep": "2027-05-04T09:05:00",
+     "flight": "J2263",
+     "from": "GYD",
+     "to": "TLV"
+    }
+   ],
+   "nights": 21,
+   "notes": [],
+   "price": 813,
+   "ret": "2027-05-04",
+   "seen": "2026-11-26",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/tqhwv4bq3c",
+   "vac": 10,
+   "via_out": [
+    "GYD",
+    "BOM"
+   ],
+   "via_ret": [
+    "BOM",
+    "GYD"
+   ]
+  },
+  "prev": 835,
+  "type": "low"
+ },
+ {
+  "at": "2026-11-26T06:20:13+00:00",
+  "group": "DAD",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "airlines": [
+    "Arkia",
+    "SKY express",
+    "Scoot"
+   ],
+   "dep": "2027-04-06",
+   "dest": "DAD",
+   "europe": true,
+   "hours_out": 30.4,
+   "hours_ret": 21.1,
+   "legs_out": [
+    {
+     "airline": "SKY express",
+     "arr": "2027-04-07T01:45:00",
+     "dep": "2027-04-06T23:30:00",
+     "flight": "GQ721",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-04-08T01:10:00",
+     "dep": "2027-04-07T08:55:00",
+     "flight": "TR51",
+     "from": "ATH",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-04-08T09:55:00",
+     "dep": "2027-04-08T08:10:00",
+     "flight": "TR510",
+     "from": "SIN",
+     "to": "DAD"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Scoot",
+     "arr": "2027-04-27T22:30:00",
+     "dep": "2027-04-27T18:30:00",
+     "flight": "TR519",
+     "from": "DAD",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-04-28T07:40:00",
+     "dep": "2027-04-28T01:10:00",
+     "flight": "TR50",
+     "from": "SIN",
+     "to": "ATH"
+    },
+    {
+     "airline": "Arkia",
+     "arr": "2027-04-28T11:35:00",
+     "dep": "2027-04-28T09:40:00",
+     "flight": "IZ212",
+     "from": "ATH",
+     "to": "TLV"
+    }
+   ],
+   "nights": 21,
+   "notes": [
+    "מפספס 1 יום חג"
+   ],
+   "price": 980,
+   "ret": "2027-04-27",
+   "seen": "2026-11-26",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/b95zz8nwqv",
+   "vac": 11,
+   "via_out": [
+    "ATH",
+    "SIN"
+   ],
+   "via_ret": [
+    "SIN",
+    "ATH"
+   ]
+  },
+  "prev": 1067,
+  "type": "low"
+ },
+ {
+  "at": "2026-11-26T06:20:13+00:00",
+  "group": "DPS",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "airlines": [
+    "SKY express",
+    "Scoot",
+    "TransNusa",
+    "Wizz Air Malta"
+   ],
+   "dep": "2027-04-17",
+   "dest": "DPS",
+   "europe": true,
+   "hours_out": 37.4,
+   "hours_ret": 29.8,
+   "legs_out": [
+    {
+     "airline": "SKY express",
+     "arr": "2027-04-18T01:45:00",
+     "dep": "2027-04-17T23:30:00",
+     "flight": "GQ721",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-04-19T01:10:00",
+     "dep": "2027-04-18T08:55:00",
+     "flight": "TR51",
+     "from": "ATH",
+     "to": "SIN"
+    },
+    {
+     "airline": "TransNusa",
+     "arr": "2027-04-19T17:55:00",
+     "dep": "2027-04-19T14:15:00",
+     "flight": "8B554",
+     "from": "SIN",
+     "to": "DPS"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Scoot",
+     "arr": "2027-05-04T14:10:00",
+     "dep": "2027-05-04T11:15:00",
+     "flight": "TR281",
+     "from": "DPS",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-05-05T07:40:00",
+     "dep": "2027-05-05T01:10:00",
+     "flight": "TR50",
+     "from": "SIN",
+     "to": "ATH"
+    },
+    {
+     "airline": "Wizz Air Malta",
+     "arr": "2027-05-05T12:00:00",
+     "dep": "2027-05-05T09:55:00",
+     "flight": "W48402",
+     "from": "ATH",
+     "to": "TLV"
+    }
+   ],
+   "nights": 17,
+   "notes": [],
+   "price": 994,
+   "ret": "2027-05-04",
+   "seen": "2026-11-26",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/nxvchz99nv",
+   "vac": 7,
+   "via_out": [
+    "ATH",
+    "SIN"
+   ],
+   "via_ret": [
+    "SIN",
+    "ATH"
+   ]
+  },
+  "prev": 1006,
+  "type": "low"
  }
 ]
