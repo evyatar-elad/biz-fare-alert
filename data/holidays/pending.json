@@ -358,5 +358,114 @@
   },
   "prev": 1079,
   "type": "low"
+ },
+ {
+  "at": "2026-11-26T14:07:26+00:00",
+  "group": "TYO",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "airlines": [
+    "Ethiopian Airlines"
+   ],
+   "dep": "2027-04-18",
+   "dest": "NRT",
+   "europe": false,
+   "hours_out": 21.8,
+   "hours_ret": 24.1,
+   "legs_out": [
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-04-18T21:05:00",
+     "dep": "2027-04-18T15:50:00",
+     "flight": "ET449",
+     "from": "TLV",
+     "to": "ADD"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-04-19T16:00:00",
+     "dep": "2027-04-18T22:35:00",
+     "flight": "ET672",
+     "from": "ADD",
+     "to": "ICN"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-04-19T19:40:00",
+     "dep": "2027-04-19T17:15:00",
+     "flight": "ET672",
+     "from": "ICN",
+     "to": "NRT"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-05-08T23:05:00",
+     "dep": "2027-05-08T20:40:00",
+     "flight": "ET673",
+     "from": "NRT",
+     "to": "ICN"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-05-09T06:55:00",
+     "dep": "2027-05-09T00:20:00",
+     "flight": "ET673",
+     "from": "ICN",
+     "to": "ADD"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-05-09T14:45:00",
+     "dep": "2027-05-09T11:40:00",
+     "flight": "ET448",
+     "from": "ADD",
+     "to": "TLV"
+    }
+   ],
+   "nights": 20,
+   "notes": [],
+   "price": 1053,
+   "ret": "2027-05-08",
+   "seen": "2026-11-26",
+   "separate": false,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/65xdc3cbvc",
+   "vac": 9,
+   "via_out": [
+    "ADD",
+    "ICN"
+   ],
+   "via_ret": [
+    "ICN",
+    "ADD"
+   ]
+  },
+  "prev": 1070,
+  "type": "low"
+ },
+ {
+  "at": "2026-11-26T14:07:26+00:00",
+  "group": "DEL",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "dep": "2027-04-23",
+   "dest": "DEL",
+   "nights": 14,
+   "notes": [
+    "מפספס 2 ימי חג",
+    "ליל הסדר בבית"
+   ],
+   "price": 598,
+   "ret": "2027-05-07",
+   "seen": "2026-11-26",
+   "src": "google",
+   "vac": 6
+  },
+  "prev": 610,
+  "type": "low"
  }
 ]
