@@ -15,7 +15,7 @@
     "src": "google",
     "vac": 12
    },
-   "checked": "2026-11-26T21:31:34+00:00",
+   "checked": "2026-11-26T23:00:32+00:00",
    "direct": {
     "airlines": [
      "Arkia",
@@ -4310,7 +4310,7 @@
     "src": "google",
     "vac": 12
    },
-   "checked": "2026-11-26T21:06:04+00:00",
+   "checked": "2026-11-26T23:05:02+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -4866,7 +4866,7 @@
     "src": "google",
     "vac": 7
    },
-   "checked": "2026-11-26T21:26:12+00:00",
+   "checked": "2026-11-26T23:07:07+00:00",
    "fast": {
     "airlines": [
      "Air India Limited",
@@ -7672,7 +7672,7 @@
     "src": "google",
     "vac": 9
    },
-   "checked": "2026-11-26T21:30:04+00:00",
+   "checked": "2026-11-26T22:59:02+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -7936,14 +7936,14 @@
    "low": {
     "dep": "2027-10-15",
     "dest": "BKK",
-    "found": "2026-11-21",
-    "nights": 20,
+    "found": "2026-11-26",
+    "nights": 21,
     "notes": [
      "ראש השנה בבית"
     ],
-    "price": 739,
-    "ret": "2027-11-04",
-    "seen": "2026-11-21",
+    "price": 738,
+    "ret": "2027-11-05",
+    "seen": "2026-11-26",
     "src": "google",
     "vac": 10
    },
@@ -8014,15 +8014,15 @@
    "now": {
     "dep": "2027-10-15",
     "dest": "BKK",
-    "nights": 14,
+    "nights": 21,
     "notes": [
      "ראש השנה בבית"
     ],
-    "price": 739,
-    "ret": "2027-10-29",
+    "price": 738,
+    "ret": "2027-11-05",
     "seen": "2026-11-26",
     "src": "google",
-    "vac": 5
+    "vac": 10
    },
    "now_day": "2026-11-26",
    "onestop": {
@@ -11487,7 +11487,7 @@
     "src": "google",
     "vac": 9
    },
-   "checked": "2026-11-26T21:30:34+00:00",
+   "checked": "2026-11-26T23:03:32+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -11998,7 +11998,7 @@
     "src": "google",
     "vac": 7
    },
-   "checked": "2026-11-26T21:31:18+00:00",
+   "checked": "2026-11-26T23:04:08+00:00",
    "fast": {
     "airlines": [
      "Air India Limited",
