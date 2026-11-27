@@ -240,5 +240,16 @@
   "holidays": 0,
   "deals": 5,
   "at": "2026-11-27T14:04:09+00:00"
+ },
+ {
+  "kind": "ai",
+  "from": "Etihad Airways",
+  "subject": "Discover the Etihad experience",
+  "snip": "המייל הוא תוכן שיווקי כללי של אתיחד המציג את חוויית הטיסה והמחלקות, ללא הצעת טיסה מסוימת.",
+  "promo": false,
+  "business": 0,
+  "holidays": 0,
+  "deals": 0,
+  "at": "2026-11-27T14:58:55+00:00"
  }
 ]
