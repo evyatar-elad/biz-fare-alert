@@ -538,5 +538,137 @@
   },
   "prev": 1132,
   "type": "low"
+ },
+ {
+  "at": "2026-11-27T15:00:59+00:00",
+  "group": "KIX",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Ethiopian Airlines",
+    "Peach Aviation"
+   ],
+   "dep": "2027-10-05",
+   "dest": "KIX",
+   "europe": false,
+   "hours_out": 41.1,
+   "hours_ret": 28.5,
+   "legs_out": [
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-10-05T21:05:00",
+     "dep": "2027-10-05T15:50:00",
+     "flight": "ET449",
+     "from": "TLV",
+     "to": "ADD"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-10-06T16:00:00",
+     "dep": "2027-10-05T22:35:00",
+     "flight": "ET672",
+     "from": "ADD",
+     "to": "ICN"
+    },
+    {
+     "airline": "Peach Aviation",
+     "arr": "2027-10-07T14:55:00",
+     "dep": "2027-10-07T13:10:00",
+     "flight": "MM738",
+     "from": "GMP",
+     "to": "KIX"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Peach Aviation",
+     "arr": "2027-10-21T18:00:00",
+     "dep": "2027-10-21T16:05:00",
+     "flight": "MM743",
+     "from": "KIX",
+     "to": "GMP"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-10-22T06:55:00",
+     "dep": "2027-10-22T00:20:00",
+     "flight": "ET673",
+     "from": "ICN",
+     "to": "ADD"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-10-22T14:35:00",
+     "dep": "2027-10-22T10:25:00",
+     "flight": "ET418",
+     "from": "ADD",
+     "to": "TLV"
+    }
+   ],
+   "nights": 16,
+   "notes": [
+    "מפספס 2 ימי חג",
+    "ראש השנה בבית"
+   ],
+   "price": 1077,
+   "ret": "2027-10-21",
+   "seen": "2026-11-27",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/wfdxf6b8gw",
+   "vac": 6,
+   "via_out": [
+    "ADD",
+    "ICN"
+   ],
+   "via_ret": [
+    "GMP",
+    "ADD"
+   ]
+  },
+  "prev": 1144,
+  "type": "low"
+ },
+ {
+  "at": "2026-11-27T15:00:59+00:00",
+  "group": "TYO",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "dep": "2027-04-20",
+   "dest": "NRT",
+   "nights": 15,
+   "notes": [],
+   "price": 1034,
+   "ret": "2027-05-05",
+   "seen": "2026-11-27",
+   "src": "google",
+   "vac": 6
+  },
+  "prev": 1053,
+  "type": "low"
+ },
+ {
+  "at": "2026-11-27T15:00:59+00:00",
+  "group": "DEL",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "dep": "2027-04-23",
+   "dest": "DEL",
+   "nights": 14,
+   "notes": [
+    "מפספס 2 ימי חג",
+    "ליל הסדר בבית"
+   ],
+   "price": 577,
+   "ret": "2027-05-07",
+   "seen": "2026-11-27",
+   "src": "google",
+   "vac": 6
+  },
+  "prev": 598,
+  "type": "low"
  }
 ]
