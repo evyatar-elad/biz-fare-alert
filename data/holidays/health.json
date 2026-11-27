@@ -1,7 +1,11 @@
 {
- "fail_streak": 1,
- "checked": "2026-11-27T07:05:56+00:00",
- "problems": [],
+ "fail_streak": 2,
+ "checked": "2026-11-27T08:47:13+00:00",
+ "problems": [
+  "2 ריצות ברצף נכשלו ב-GitHub Actions"
+ ],
  "last_run_failed": true,
- "run_url": "https://github.com/evyatar-elad/biz-fare-alert/actions/runs/45953131812"
+ "run_url": "https://github.com/evyatar-elad/biz-fare-alert/actions/runs/45966593836",
+ "since": "2026-11-27T08:47:13+00:00",
+ "mailed": "2026-11-27T08:47:13+00:00"
 }
