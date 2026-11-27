@@ -447,5 +447,96 @@
   },
   "prev": 798,
   "type": "low"
+ },
+ {
+  "at": "2026-11-27T13:05:03+00:00",
+  "group": "DPS",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Aegean",
+    "Scoot",
+    "Wizz Air Malta"
+   ],
+   "dep": "2027-09-30",
+   "dest": "DPS",
+   "europe": true,
+   "hours_out": 48.8,
+   "hours_ret": 21.6,
+   "legs_out": [
+    {
+     "airline": "Wizz Air Malta",
+     "arr": "2027-09-30T15:15:00",
+     "dep": "2027-09-30T12:55:00",
+     "flight": "W48401",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-02T01:30:00",
+     "dep": "2027-10-01T09:30:00",
+     "flight": "TR51",
+     "from": "ATH",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-02T18:40:00",
+     "dep": "2027-10-02T15:55:00",
+     "flight": "TR282",
+     "from": "SIN",
+     "to": "DPS"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-21T23:00:00",
+     "dep": "2027-10-21T20:15:00",
+     "flight": "TR283",
+     "from": "DPS",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-22T08:15:00",
+     "dep": "2027-10-22T01:15:00",
+     "flight": "TR50",
+     "from": "SIN",
+     "to": "ATH"
+    },
+    {
+     "airline": "Aegean",
+     "arr": "2027-10-22T12:50:00",
+     "dep": "2027-10-22T10:50:00",
+     "flight": "A3924",
+     "from": "ATH",
+     "to": "TLV"
+    }
+   ],
+   "nights": 21,
+   "notes": [
+    "מפספס 2 ימי חג"
+   ],
+   "price": 1130,
+   "ret": "2027-10-21",
+   "seen": "2026-11-27",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/88tm6j3wky",
+   "vac": 8,
+   "via_out": [
+    "ATH",
+    "SIN"
+   ],
+   "via_ret": [
+    "SIN",
+    "ATH"
+   ]
+  },
+  "prev": 1132,
+  "type": "low"
  }
 ]
