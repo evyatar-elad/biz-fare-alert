@@ -125,10 +125,11 @@
   }
  },
  "2026-11-27": {
-  "read": 1,
+  "read": 2,
   "matched": 0,
   "senders": {
-   "lastminute.co.il": 1
+   "lastminute.co.il": 1,
+   "קשרי תעופה": 1
   }
  }
 }
