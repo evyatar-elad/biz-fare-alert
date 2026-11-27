@@ -16,7 +16,7 @@
     "src": "google",
     "vac": 10
    },
-   "checked": "2026-11-27T14:59:58+00:00",
+   "checked": "2026-11-27T20:46:43+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -121,86 +121,15 @@
     ]
    },
    "fewvac": {
-    "airlines": [
-     "Azerbaijan Airlines",
-     "SKY express",
-     "Scoot",
-     "Thai Vietjet"
-    ],
     "dep": "2027-04-17",
     "dest": "BKK",
-    "europe": true,
-    "hours_out": 28.6,
-    "hours_ret": 18.4,
-    "legs_out": [
-     {
-      "airline": "SKY express",
-      "arr": "2027-04-18T01:45:00",
-      "dep": "2027-04-17T23:30:00",
-      "flight": "GQ721",
-      "from": "TLV",
-      "to": "ATH"
-     },
-     {
-      "airline": "Scoot",
-      "arr": "2027-04-19T01:30:00",
-      "dep": "2027-04-18T09:30:00",
-      "flight": "TR51",
-      "from": "ATH",
-      "to": "SIN"
-     },
-     {
-      "airline": "Scoot",
-      "arr": "2027-04-19T08:05:00",
-      "dep": "2027-04-19T06:30:00",
-      "flight": "TR608",
-      "from": "SIN",
-      "to": "BKK"
-     }
-    ],
-    "legs_ret": [
-     {
-      "airline": "Thai Vietjet",
-      "arr": "2027-05-02T23:50:00",
-      "dep": "2027-05-02T21:05:00",
-      "flight": "VZ760",
-      "from": "BKK",
-      "to": "BOM"
-     },
-     {
-      "airline": "Azerbaijan Airlines",
-      "arr": "2027-05-03T07:55:00",
-      "dep": "2027-05-03T04:10:00",
-      "flight": "J2516",
-      "from": "BOM",
-      "to": "GYD"
-     },
-     {
-      "airline": "Azerbaijan Airlines",
-      "arr": "2027-05-03T11:30:00",
-      "dep": "2027-05-03T09:05:00",
-      "flight": "J2263",
-      "from": "GYD",
-      "to": "TLV"
-     }
-    ],
-    "nights": 15,
+    "nights": 14,
     "notes": [],
-    "price": 888,
-    "ret": "2027-05-02",
+    "price": 1045,
+    "ret": "2027-05-01",
     "seen": "2026-11-27",
-    "separate": true,
-    "src": "kiwi",
-    "url": "https://kiwi.com/u/kdvfdbkphq",
-    "vac": 5,
-    "via_out": [
-     "ATH",
-     "SIN"
-    ],
-    "via_ret": [
-     "BOM",
-     "GYD"
-    ]
+    "src": "google",
+    "vac": 4
    },
    "flex": {
     "airlines": [
@@ -312,19 +241,16 @@
     }
    },
    "low": {
-    "dep": "2027-04-23",
+    "dep": "2027-04-19",
     "dest": "BKK",
-    "found": "2026-11-15",
-    "nights": 21,
-    "notes": [
-     "מפספס 2 ימי חג",
-     "ליל הסדר בבית"
-    ],
-    "price": 778,
-    "ret": "2027-05-14",
-    "seen": "2026-11-15",
+    "found": "2026-11-27",
+    "nights": 14,
+    "notes": [],
+    "price": 769,
+    "ret": "2027-05-03",
+    "seen": "2026-11-27",
     "src": "google",
-    "vac": 10
+    "vac": 5
    },
    "noeu": {
     "airlines": [
@@ -388,65 +314,15 @@
     ]
    },
    "now": {
-    "airlines": [
-     "Ethiopian Airlines"
-    ],
     "dep": "2027-04-19",
     "dest": "BKK",
-    "europe": false,
-    "hours_out": 16.8,
-    "hours_ret": 16.8,
-    "legs_out": [
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-04-19T21:05:00",
-      "dep": "2027-04-19T15:50:00",
-      "flight": "ET449",
-      "from": "TLV",
-      "to": "ADD"
-     },
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-04-20T12:35:00",
-      "dep": "2027-04-19T23:55:00",
-      "flight": "ET628",
-      "from": "ADD",
-      "to": "BKK"
-     }
-    ],
-    "legs_ret": [
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-05-04T06:05:00",
-      "dep": "2027-05-04T01:55:00",
-      "flight": "ET609",
-      "from": "BKK",
-      "to": "ADD"
-     },
-     {
-      "airline": "Ethiopian Airlines",
-      "arr": "2027-05-04T14:45:00",
-      "dep": "2027-05-04T11:40:00",
-      "flight": "ET448",
-      "from": "ADD",
-      "to": "TLV"
-     }
-    ],
-    "nights": 15,
+    "nights": 14,
     "notes": [],
-    "price": 815,
-    "ret": "2027-05-04",
+    "price": 769,
+    "ret": "2027-05-03",
     "seen": "2026-11-27",
-    "separate": false,
-    "src": "kiwi",
-    "url": "https://kiwi.com/u/5tgmr59jvg",
-    "vac": 6,
-    "via_out": [
-     "ADD"
-    ],
-    "via_ret": [
-     "ADD"
-    ]
+    "src": "google",
+    "vac": 5
    },
    "now_day": "2026-11-27",
    "onestop": {
@@ -4316,7 +4192,7 @@
     "src": "google",
     "vac": 12
    },
-   "checked": "2026-11-27T18:34:05+00:00",
+   "checked": "2026-11-27T20:32:48+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -4707,32 +4583,32 @@
      "Ethiopian Airlines",
      "Thai Vietjet"
     ],
-    "dep": "2027-04-23",
+    "dep": "2027-04-19",
     "dest": "HKT",
     "europe": false,
-    "hours_out": 33.6,
-    "hours_ret": 20.6,
+    "hours_out": 27.8,
+    "hours_ret": 21.6,
     "legs_out": [
      {
       "airline": "Ethiopian Airlines",
-      "arr": "2027-04-23T14:15:00",
-      "dep": "2027-04-23T10:00:00",
-      "flight": "ET415",
+      "arr": "2027-04-19T21:05:00",
+      "dep": "2027-04-19T15:50:00",
+      "flight": "ET449",
       "from": "TLV",
       "to": "ADD"
      },
      {
       "airline": "Ethiopian Airlines",
-      "arr": "2027-04-24T12:35:00",
-      "dep": "2027-04-23T23:55:00",
+      "arr": "2027-04-20T12:35:00",
+      "dep": "2027-04-19T23:55:00",
       "flight": "ET628",
       "from": "ADD",
       "to": "BKK"
      },
      {
       "airline": "Thai Vietjet",
-      "arr": "2027-04-24T23:35:00",
-      "dep": "2027-04-24T22:00:00",
+      "arr": "2027-04-20T23:35:00",
+      "dep": "2027-04-20T22:00:00",
       "flight": "VZ316",
       "from": "BKK",
       "to": "HKT"
@@ -4741,41 +4617,38 @@
     "legs_ret": [
      {
       "airline": "Thai Vietjet",
-      "arr": "2027-05-13T23:30:00",
-      "dep": "2027-05-13T22:00:00",
-      "flight": "VZ309",
+      "arr": "2027-05-09T22:40:00",
+      "dep": "2027-05-09T21:10:00",
+      "flight": "VZ2309",
       "from": "HKT",
       "to": "BKK"
      },
      {
       "airline": "Ethiopian Airlines",
-      "arr": "2027-05-14T06:00:00",
-      "dep": "2027-05-14T01:50:00",
+      "arr": "2027-05-10T06:00:00",
+      "dep": "2027-05-10T01:50:00",
       "flight": "ET629",
       "from": "BKK",
       "to": "ADD"
      },
      {
       "airline": "Ethiopian Airlines",
-      "arr": "2027-05-14T14:35:00",
-      "dep": "2027-05-14T10:25:00",
-      "flight": "ET418",
+      "arr": "2027-05-10T14:45:00",
+      "dep": "2027-05-10T11:40:00",
+      "flight": "ET448",
       "from": "ADD",
       "to": "TLV"
      }
     ],
     "nights": 20,
-    "notes": [
-     "מפספס 2 ימי חג",
-     "ליל הסדר בבית"
-    ],
-    "price": 1051,
-    "ret": "2027-05-13",
+    "notes": [],
+    "price": 1011,
+    "ret": "2027-05-09",
     "seen": "2026-11-27",
     "separate": true,
     "src": "kiwi",
-    "url": "https://kiwi.com/u/qprs7xy5u9",
-    "vac": 10,
+    "url": "https://kiwi.com/u/c6hnnp3vh4",
+    "vac": 9,
     "via_out": [
      "ADD",
      "BKK"
@@ -4948,7 +4821,7 @@
     "src": "google",
     "vac": 7
    },
-   "checked": "2026-11-27T18:34:29+00:00",
+   "checked": "2026-11-27T20:33:10+00:00",
    "fast": {
     "airlines": [
      "Air India Limited",
@@ -5485,12 +5358,12 @@
     ],
     "nights": 21,
     "notes": [],
-    "price": 1237,
+    "price": 1234,
     "ret": "2027-05-10",
     "seen": "2026-11-27",
     "separate": true,
     "src": "kiwi",
-    "url": "https://kiwi.com/u/78tn43qvp9",
+    "url": "https://kiwi.com/u/yx4dudvd6x",
     "vac": 10,
     "via_out": [
      "HAN"
@@ -6210,7 +6083,7 @@
     "src": "google",
     "vac": 10
    },
-   "checked": "2026-11-27T18:34:18+00:00",
+   "checked": "2026-11-27T20:32:59+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -6810,20 +6683,20 @@
   "_open_jaw": {
    "BKK-HKT": {
     "dep": "2027-04-17",
-    "nights": 17,
+    "nights": 18,
     "notes": [],
     "parts": [
-     416,
-     516
+     423,
+     504
     ],
-    "price": 932,
-    "ret": "2027-05-04",
-    "seen": "2026-11-25",
+    "price": 927,
+    "ret": "2027-05-05",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/hys7szsqrt",
-     "https://kiwi.com/u/rsytk525xb"
+     "https://kiwi.com/u/nqbgrwyxsv",
+     "https://kiwi.com/u/rgs46npqdf"
     ],
-    "vac": 7,
+    "vac": 8,
     "via_out": [
      "ATH",
      "SIN"
@@ -6838,15 +6711,15 @@
     "nights": 21,
     "notes": [],
     "parts": [
-     358,
-     250
+     350,
+     247
     ],
-    "price": 608,
+    "price": 597,
     "ret": "2027-05-04",
-    "seen": "2026-11-25",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/b66xmsxqgh",
-     "https://kiwi.com/u/6g78wp3vzq"
+     "https://kiwi.com/u/q542gsdmjw",
+     "https://kiwi.com/u/747uxf3p79"
     ],
     "vac": 10,
     "via_out": [
@@ -6862,14 +6735,14 @@
     "notes": [],
     "parts": [
      450,
-     414
+     401
     ],
-    "price": 864,
+    "price": 851,
     "ret": "2027-05-03",
-    "seen": "2026-11-25",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/k8mdyy7x8q",
-     "https://kiwi.com/u/458t49spcq"
+     "https://kiwi.com/u/h9sgk4duqu",
+     "https://kiwi.com/u/j7c7qu2wb2"
     ],
     "vac": 6,
     "via_out": [
@@ -6882,46 +6755,46 @@
     ]
    },
    "DEL-BOM": {
-    "dep": "2027-04-19",
-    "nights": 14,
+    "dep": "2027-04-12",
+    "nights": 21,
     "notes": [],
     "parts": [
-     446,
-     266
+     402,
+     263
     ],
-    "price": 712,
+    "price": 665,
     "ret": "2027-05-03",
-    "seen": "2026-11-25",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/ywpzuksnq7",
-     "https://kiwi.com/u/wgyum4nggk"
+     "https://kiwi.com/u/h2pxscfww3",
+     "https://kiwi.com/u/js5f57ufbg"
     ],
-    "vac": 5,
+    "vac": 10,
     "via_out": [
-     "FCO"
+     "GYD"
     ],
     "via_ret": [
      "GYD"
     ]
    },
    "DEL-GOI": {
-    "dep": "2027-04-19",
-    "nights": 15,
+    "dep": "2027-04-15",
+    "nights": 21,
     "notes": [],
     "parts": [
-     446,
-     370
+     418,
+     359
     ],
-    "price": 816,
-    "ret": "2027-05-04",
-    "seen": "2026-11-25",
+    "price": 777,
+    "ret": "2027-05-06",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/bddrwskqn6",
-     "https://kiwi.com/u/z394vbgzg2"
+     "https://kiwi.com/u/t8nkwkf8uy",
+     "https://kiwi.com/u/7k8kdcq3y7"
     ],
-    "vac": 6,
+    "vac": 10,
     "via_out": [
-     "FCO"
+     "GYD"
     ],
     "via_ret": [
      "BOM",
@@ -6933,15 +6806,15 @@
     "nights": 21,
     "notes": [],
     "parts": [
-     429,
-     250
+     415,
+     247
     ],
-    "price": 679,
+    "price": 662,
     "ret": "2027-05-04",
-    "seen": "2026-11-25",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/bckufd6nkm",
-     "https://kiwi.com/u/cktt75nw7v"
+     "https://kiwi.com/u/82nujfcyxh",
+     "https://kiwi.com/u/runynsbs7t"
     ],
     "vac": 10,
     "via_out": [
@@ -6953,25 +6826,28 @@
     ]
    },
    "HAN-DAD": {
-    "dep": "2027-04-19",
-    "nights": 21,
+    "dep": "2027-04-17",
+    "nights": 19,
     "notes": [],
     "parts": [
-     469,
-     630
+     446,
+     625
     ],
-    "price": 1099,
-    "ret": "2027-05-10",
-    "seen": "2026-11-25",
+    "price": 1071,
+    "ret": "2027-05-06",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/m8rdp28npr",
-     "https://kiwi.com/u/6y8t5zf428"
+     "https://kiwi.com/u/gqqcjuwqg9",
+     "https://kiwi.com/u/btgfc5hs72"
     ],
-    "vac": 10,
-    "via_out": [],
+    "vac": 9,
+    "via_out": [
+     "ATH",
+     "SIN"
+    ],
     "via_ret": [
-     "BKK",
-     "DEL"
+     "SIN",
+     "ATH"
     ]
    },
    "HAN-SGN": {
@@ -6979,15 +6855,15 @@
     "nights": 16,
     "notes": [],
     "parts": [
-     450,
-     414
+     446,
+     401
     ],
-    "price": 864,
+    "price": 847,
     "ret": "2027-05-03",
-    "seen": "2026-11-25",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/hmpgkms7tr",
-     "https://kiwi.com/u/bdty574ux4"
+     "https://kiwi.com/u/pw7s3nsy8g",
+     "https://kiwi.com/u/vn5wpndxcp"
     ],
     "vac": 6,
     "via_out": [
@@ -7001,20 +6877,20 @@
    },
    "HKT-BKK": {
     "dep": "2027-04-17",
-    "nights": 18,
+    "nights": 19,
     "notes": [],
     "parts": [
-     429,
-     450
+     428,
+     447
     ],
-    "price": 879,
-    "ret": "2027-05-05",
-    "seen": "2026-11-25",
+    "price": 875,
+    "ret": "2027-05-06",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/kr6n22pu9j",
-     "https://kiwi.com/u/ghkvd8jqyx"
+     "https://kiwi.com/u/x49j4n8qr9",
+     "https://kiwi.com/u/r7ch8btw5g"
     ],
-    "vac": 8,
+    "vac": 9,
     "via_out": [
      "ATH",
      "SIN"
@@ -7123,20 +6999,20 @@
    },
    "SGN-HAN": {
     "dep": "2027-04-19",
-    "nights": 15,
+    "nights": 17,
     "notes": [],
     "parts": [
-     555,
+     548,
      403
     ],
-    "price": 958,
-    "ret": "2027-05-04",
-    "seen": "2026-11-25",
+    "price": 951,
+    "ret": "2027-05-06",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/wdp53hrzrg",
-     "https://kiwi.com/u/phvkd85zdk"
+     "https://kiwi.com/u/gc6pqqqphh",
+     "https://kiwi.com/u/vzr578k2yj"
     ],
-    "vac": 6,
+    "vac": 8,
     "via_out": [
      "HAN"
     ],
@@ -7605,20 +7481,19 @@
   "BKK": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-09-27",
+    "dep": "2027-10-15",
     "dest": "BKK",
     "nights": 15,
     "notes": [
-     "מפספס 9 ימי חג",
-     "ערב סוכות בבית"
+     "ראש השנה בבית"
     ],
-    "price": 2318,
-    "ret": "2027-10-12",
-    "seen": "2026-11-25",
+    "price": 2317,
+    "ret": "2027-10-30",
+    "seen": "2026-11-27",
     "src": "google",
-    "vac": 9
+    "vac": 5
    },
-   "checked": "2026-11-27T18:30:14+00:00",
+   "checked": "2026-11-27T20:45:13+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -7904,16 +7779,16 @@
    "low": {
     "dep": "2027-10-15",
     "dest": "BKK",
-    "found": "2026-11-26",
-    "nights": 21,
+    "found": "2026-11-27",
+    "nights": 15,
     "notes": [
      "ראש השנה בבית"
     ],
-    "price": 738,
-    "ret": "2027-11-05",
-    "seen": "2026-11-26",
+    "price": 699,
+    "ret": "2027-10-30",
+    "seen": "2026-11-27",
     "src": "google",
-    "vac": 10
+    "vac": 5
    },
    "noeu": {
     "airlines": [
@@ -7999,88 +7874,17 @@
     ]
    },
    "now": {
-    "airlines": [
-     "Azerbaijan Airlines",
-     "Hainan Airlines",
-     "Thai Vietjet",
-     "Wizz Air Malta"
-    ],
-    "dep": "2027-09-30",
+    "dep": "2027-10-15",
     "dest": "BKK",
-    "europe": true,
-    "hours_out": 35.3,
-    "hours_ret": 17.5,
-    "legs_out": [
-     {
-      "airline": "Wizz Air Malta",
-      "arr": "2027-09-30T22:10:00",
-      "dep": "2027-09-30T18:55:00",
-      "flight": "W46434",
-      "from": "TLV",
-      "to": "MXP"
-     },
-     {
-      "airline": "Hainan Airlines",
-      "arr": "2027-10-02T05:00:00",
-      "dep": "2027-10-01T12:35:00",
-      "flight": "HU428",
-      "from": "MXP",
-      "to": "CKG"
-     },
-     {
-      "airline": "Hainan Airlines",
-      "arr": "2027-10-02T10:15:00",
-      "dep": "2027-10-02T07:55:00",
-      "flight": "HU423",
-      "from": "CKG",
-      "to": "BKK"
-     }
-    ],
-    "legs_ret": [
-     {
-      "airline": "Thai Vietjet",
-      "arr": "2027-10-21T23:50:00",
-      "dep": "2027-10-21T21:05:00",
-      "flight": "VZ760",
-      "from": "BKK",
-      "to": "BOM"
-     },
-     {
-      "airline": "Azerbaijan Airlines",
-      "arr": "2027-10-22T05:55:00",
-      "dep": "2027-10-22T02:25:00",
-      "flight": "J2516",
-      "from": "BOM",
-      "to": "GYD"
-     },
-     {
-      "airline": "Azerbaijan Airlines",
-      "arr": "2027-10-22T10:35:00",
-      "dep": "2027-10-22T08:10:00",
-      "flight": "J2263",
-      "from": "GYD",
-      "to": "TLV"
-     }
-    ],
-    "nights": 21,
+    "nights": 15,
     "notes": [
-     "מפספס 2 ימי חג"
+     "ראש השנה בבית"
     ],
-    "price": 899,
-    "ret": "2027-10-21",
+    "price": 699,
+    "ret": "2027-10-30",
     "seen": "2026-11-27",
-    "separate": true,
-    "src": "kiwi",
-    "url": "https://kiwi.com/u/gfvrz63gnr",
-    "vac": 8,
-    "via_out": [
-     "MXP",
-     "CKG"
-    ],
-    "via_ret": [
-     "BOM",
-     "GYD"
-    ]
+    "src": "google",
+    "vac": 5
    },
    "now_day": "2026-11-27",
    "onestop": {
@@ -8153,20 +7957,19 @@
   "BOM": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-09-27",
+    "dep": "2027-10-12",
     "dest": "BOM",
     "nights": 15,
     "notes": [
-     "מפספס 9 ימי חג",
-     "ערב סוכות בבית"
+     "ראש השנה בבית"
     ],
     "price": 4315,
-    "ret": "2027-10-12",
-    "seen": "2026-11-25",
+    "ret": "2027-10-27",
+    "seen": "2026-11-27",
     "src": "google",
-    "vac": 9
+    "vac": 7
    },
-   "checked": "2026-11-27T18:32:26+00:00",
+   "checked": "2026-11-27T20:32:03+00:00",
    "fast": {
     "airlines": [
      "Azerbaijan Airlines"
@@ -8567,20 +8370,21 @@
   "DAD": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-10-05",
+    "dep": "2027-10-17",
     "dest": "DAD",
     "nights": 15,
     "notes": [
-     "מפספס 3 ימי חג",
-     "ראש השנה בבית"
+     "מפספס 2 ימי חג",
+     "ראש השנה בבית",
+     "ערב סוכות בבית"
     ],
-    "price": 5378,
-    "ret": "2027-10-20",
-    "seen": "2026-11-25",
+    "price": 4378,
+    "ret": "2027-11-01",
+    "seen": "2026-11-27",
     "src": "google",
-    "vac": 6
+    "vac": 7
    },
-   "checked": "2026-11-27T18:29:20+00:00",
+   "checked": "2026-11-27T20:48:24+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -9286,19 +9090,19 @@
   "DEL": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-10-15",
+    "dep": "2027-10-08",
     "dest": "DEL",
     "nights": 15,
     "notes": [
      "ראש השנה בבית"
     ],
     "price": 3363,
-    "ret": "2027-10-30",
-    "seen": "2026-11-25",
+    "ret": "2027-10-23",
+    "seen": "2026-11-27",
     "src": "google",
-    "vac": 5
+    "vac": 3
    },
-   "checked": "2026-11-27T18:32:16+00:00",
+   "checked": "2026-11-27T20:49:20+00:00",
    "direct": {
     "airlines": [
      "Air India Limited"
@@ -9742,82 +9546,82 @@
   "DPS": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-10-03",
+    "dep": "2027-10-13",
     "dest": "DPS",
     "nights": 15,
     "notes": [
-     "מפספס 5 ימי חג",
      "ראש השנה בבית"
     ],
     "price": 7425,
-    "ret": "2027-10-18",
-    "seen": "2026-11-25",
+    "ret": "2027-10-28",
+    "seen": "2026-11-27",
     "src": "google",
     "vac": 7
    },
-   "checked": "2026-11-27T18:32:05+00:00",
+   "checked": "2026-11-27T20:48:56+00:00",
    "fast": {
     "airlines": [
-     "Etihad Airways",
-     "Thai Airways"
+     "El Al Israel Airlines",
+     "Indonesia AirAsia",
+     "TransNusa"
     ],
-    "dep": "2027-10-13",
+    "dep": "2027-10-11",
     "dest": "DPS",
     "europe": false,
-    "hours_out": 17.6,
-    "hours_ret": 20.2,
+    "hours_out": 16.8,
+    "hours_ret": 18.2,
     "legs_out": [
      {
-      "airline": "Etihad Airways",
-      "arr": "2027-10-13T05:10:00",
-      "dep": "2027-10-13T00:55:00",
-      "flight": "EY600",
+      "airline": "El Al Israel Airlines",
+      "arr": "2027-10-12T14:10:00",
+      "dep": "2027-10-11T22:50:00",
+      "flight": "LY87",
       "from": "TLV",
-      "to": "AUH"
+      "to": "HKT"
      },
      {
-      "airline": "Etihad Airways",
-      "arr": "2027-10-13T23:30:00",
-      "dep": "2027-10-13T09:55:00",
-      "flight": "EY478",
-      "from": "AUH",
+      "airline": "TransNusa",
+      "arr": "2027-10-12T20:35:00",
+      "dep": "2027-10-12T15:35:00",
+      "flight": "8B542",
+      "from": "HKT",
       "to": "DPS"
      }
     ],
     "legs_ret": [
      {
-      "airline": "Thai Airways",
-      "arr": "2027-11-03T19:25:00",
-      "dep": "2027-11-03T16:10:00",
-      "flight": "TG432",
+      "airline": "Indonesia AirAsia",
+      "arr": "2027-10-30T19:10:00",
+      "dep": "2027-10-30T16:10:00",
+      "flight": "QZ246",
       "from": "DPS",
-      "to": "BKK"
+      "to": "HKT"
      },
      {
-      "airline": "Thai Airways",
-      "arr": "2027-11-04T06:20:00",
-      "dep": "2027-11-03T23:55:00",
-      "flight": "TG4583",
-      "from": "BKK",
+      "airline": "El Al Israel Airlines",
+      "arr": "2027-10-31T04:25:00",
+      "dep": "2027-10-30T22:30:00",
+      "flight": "LY88",
+      "from": "HKT",
       "to": "TLV"
      }
     ],
-    "nights": 21,
+    "nights": 19,
     "notes": [
      "ראש השנה בבית"
     ],
-    "price": 2569,
-    "ret": "2027-11-03",
+    "price": 1896,
+    "ret": "2027-10-30",
     "seen": "2026-11-27",
     "separate": true,
     "src": "kiwi",
-    "url": "https://kiwi.com/u/6g8vpp2s3w",
-    "vac": 11,
+    "url": "https://kiwi.com/u/hqs2397sv6",
+    "vac": 8,
     "via_out": [
-     "AUH"
+     "HKT"
     ],
     "via_ret": [
-     "BKK"
+     "HKT"
     ]
    },
    "fewvac": {
@@ -10447,19 +10251,19 @@
   "GOI": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-10-14",
+    "dep": "2027-10-10",
     "dest": "GOI",
     "nights": 15,
     "notes": [
      "ראש השנה בבית"
     ],
-    "price": 5326,
-    "ret": "2027-10-29",
-    "seen": "2026-11-25",
+    "price": 2392,
+    "ret": "2027-10-25",
+    "seen": "2026-11-27",
     "src": "google",
-    "vac": 6
+    "vac": 5
    },
-   "checked": "2026-11-27T18:32:37+00:00",
+   "checked": "2026-11-27T20:32:14+00:00",
    "fewvac": {
     "airlines": [
      "Air India Limited",
@@ -10949,19 +10753,20 @@
   "HAN": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-10-12",
+    "dep": "2027-10-07",
     "dest": "HAN",
     "nights": 15,
     "notes": [
+     "מפספס 1 יום חג",
      "ראש השנה בבית"
     ],
     "price": 2752,
-    "ret": "2027-10-27",
-    "seen": "2026-11-25",
+    "ret": "2027-10-22",
+    "seen": "2026-11-27",
     "src": "google",
-    "vac": 7
+    "vac": 4
    },
-   "checked": "2026-11-27T18:31:43+00:00",
+   "checked": "2026-11-27T20:31:20+00:00",
    "fast": {
     "airlines": [
      "Arkia",
@@ -11406,24 +11211,24 @@
     "airlines": [
      "LOT Polish Airlines"
     ],
-    "dep": "2027-10-11",
+    "dep": "2027-10-13",
     "dest": "HAN",
     "europe": true,
     "hours_out": 15.8,
-    "hours_ret": 23.4,
+    "hours_ret": 39.3,
     "legs_out": [
      {
       "airline": "LOT Polish Airlines",
-      "arr": "2027-10-11T13:45:00",
-      "dep": "2027-10-11T10:45:00",
+      "arr": "2027-10-13T13:45:00",
+      "dep": "2027-10-13T10:45:00",
       "flight": "LO156",
       "from": "TLV",
       "to": "WAW"
      },
      {
       "airline": "LOT Polish Airlines",
-      "arr": "2027-10-12T06:35:00",
-      "dep": "2027-10-11T15:05:00",
+      "arr": "2027-10-14T06:35:00",
+      "dep": "2027-10-13T15:05:00",
       "flight": "LO61",
       "from": "WAW",
       "to": "HAN"
@@ -11432,32 +11237,32 @@
     "legs_ret": [
      {
       "airline": "LOT Polish Airlines",
-      "arr": "2027-10-26T14:40:00",
-      "dep": "2027-10-26T08:25:00",
+      "arr": "2027-10-30T14:40:00",
+      "dep": "2027-10-30T08:25:00",
       "flight": "LO62",
       "from": "HAN",
       "to": "WAW"
      },
      {
       "airline": "LOT Polish Airlines",
-      "arr": "2027-10-27T03:50:00",
-      "dep": "2027-10-26T23:00:00",
-      "flight": "LO151",
+      "arr": "2027-10-31T18:45:00",
+      "dep": "2027-10-31T14:00:00",
+      "flight": "LO155",
       "from": "WAW",
       "to": "TLV"
      }
     ],
-    "nights": 15,
+    "nights": 17,
     "notes": [
      "ראש השנה בבית"
     ],
-    "price": 1257,
-    "ret": "2027-10-26",
+    "price": 1177,
+    "ret": "2027-10-30",
     "seen": "2026-11-27",
     "separate": false,
     "src": "kiwi",
-    "url": "https://kiwi.com/u/47dnujhrw7",
-    "vac": 6,
+    "url": "https://kiwi.com/u/urb8mjdnvm",
+    "vac": 7,
     "via_out": [
      "WAW"
     ],
@@ -11597,11 +11402,11 @@
     ],
     "price": 3646,
     "ret": "2027-10-12",
-    "seen": "2026-11-23",
+    "seen": "2026-11-27",
     "src": "google",
     "vac": 9
    },
-   "checked": "2026-11-27T18:32:59+00:00",
+   "checked": "2026-11-27T20:45:43+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -12123,19 +11928,21 @@
   "KIX": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-10-01",
+    "dep": "2027-10-16",
     "dest": "KIX",
     "nights": 15,
     "notes": [
-     "מפספס 7 ימי חג"
+     "מפספס 1 יום חג",
+     "ראש השנה בבית",
+     "ערב סוכות בבית"
     ],
-    "price": 6194,
-    "ret": "2027-10-16",
-    "seen": "2026-11-21",
+    "price": 6827,
+    "ret": "2027-10-31",
+    "seen": "2026-11-27",
     "src": "google",
-    "vac": 7
+    "vac": 6
    },
-   "checked": "2026-11-27T18:33:20+00:00",
+   "checked": "2026-11-27T20:32:36+00:00",
    "fast": {
     "airlines": [
      "Air India Limited",
@@ -12613,24 +12420,24 @@
      "Arkia",
      "VietJet Air"
     ],
-    "dep": "2027-10-04",
+    "dep": "2027-10-11",
     "dest": "KIX",
     "europe": false,
     "hours_out": 25.9,
-    "hours_ret": 26.5,
+    "hours_ret": 29.3,
     "legs_out": [
      {
       "airline": "Arkia",
-      "arr": "2027-10-05T15:30:00",
-      "dep": "2027-10-04T23:55:00",
+      "arr": "2027-10-12T15:30:00",
+      "dep": "2027-10-11T23:55:00",
       "flight": "IZ595",
       "from": "TLV",
       "to": "HAN"
      },
      {
       "airline": "VietJet Air",
-      "arr": "2027-10-06T07:50:00",
-      "dep": "2027-10-06T01:20:00",
+      "arr": "2027-10-13T07:50:00",
+      "dep": "2027-10-13T01:20:00",
       "flight": "VJ938",
       "from": "HAN",
       "to": "KIX"
@@ -12639,16 +12446,16 @@
     "legs_ret": [
      {
       "airline": "Air India Limited",
-      "arr": "2027-10-24T18:20:00",
-      "dep": "2027-10-24T11:50:00",
+      "arr": "2027-10-31T18:20:00",
+      "dep": "2027-10-31T11:50:00",
       "flight": "AI359",
       "from": "KIX",
       "to": "DEL"
      },
      {
       "airline": "Air India Limited",
-      "arr": "2027-10-25T08:20:00",
-      "dep": "2027-10-25T04:20:00",
+      "arr": "2027-11-01T10:10:00",
+      "dep": "2027-11-01T06:10:00",
       "flight": "AI139",
       "from": "DEL",
       "to": "TLV"
@@ -12658,13 +12465,13 @@
     "notes": [
      "ראש השנה בבית"
     ],
-    "price": 1483,
-    "ret": "2027-10-24",
+    "price": 1446,
+    "ret": "2027-10-31",
     "seen": "2026-11-27",
     "separate": true,
     "src": "kiwi",
-    "url": "https://kiwi.com/u/6yxk9r2qxx",
-    "vac": 8,
+    "url": "https://kiwi.com/u/b7yvqrd52p",
+    "vac": 9,
     "via_out": [
      "HAN"
     ],
@@ -12678,19 +12485,20 @@
   "SGN": {
    "biz": {
     "cabin": "business",
-    "dep": "2027-10-09",
+    "dep": "2027-10-06",
     "dest": "SGN",
     "nights": 15,
     "notes": [
+     "מפספס 2 ימי חג",
      "ראש השנה בבית"
     ],
-    "price": 4732,
-    "ret": "2027-10-24",
-    "seen": "2026-11-25",
+    "price": 3959,
+    "ret": "2027-10-21",
+    "seen": "2026-11-27",
     "src": "google",
-    "vac": 4
+    "vac": 5
    },
-   "checked": "2026-11-27T18:28:58+00:00",
+   "checked": "2026-11-27T20:42:22+00:00",
    "fast": {
     "airlines": [
      "El Al Israel Airlines",
@@ -13432,7 +13240,7 @@
     "src": "google",
     "vac": 9
    },
-   "checked": "2026-11-27T18:33:09+00:00",
+   "checked": "2026-11-27T20:29:40+00:00",
    "direct": {
     "airlines": [
      "El Al Israel Airlines"
@@ -13887,24 +13695,24 @@
   },
   "_open_jaw": {
    "BKK-HKT": {
-    "dep": "2027-10-05",
-    "nights": 16,
+    "dep": "2027-10-03",
+    "nights": 18,
     "notes": [
      "מפספס 2 ימי חג",
      "ראש השנה בבית"
     ],
     "parts": [
-     515,
-     544
+     513,
+     538
     ],
-    "price": 1059,
+    "price": 1051,
     "ret": "2027-10-21",
-    "seen": "2026-11-25",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/98zdukdn95",
-     "https://kiwi.com/u/xdb4s96rg6"
+     "https://kiwi.com/u/f7c6t5yhtv",
+     "https://kiwi.com/u/ch9wf73ss3"
     ],
-    "vac": 6,
+    "vac": 7,
     "via_out": [
      "ATH",
      "SHJ"
@@ -13922,15 +13730,15 @@
      "ראש השנה בבית"
     ],
     "parts": [
-     336,
-     251
+     348,
+     260
     ],
-    "price": 587,
+    "price": 608,
     "ret": "2027-10-22",
-    "seen": "2026-11-25",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/9spj9nhgqr",
-     "https://kiwi.com/u/dbky59c65z"
+     "https://kiwi.com/u/5sykr8fgwn",
+     "https://kiwi.com/u/5dntm7x6bb"
     ],
     "vac": 3,
     "via_out": [
@@ -13948,15 +13756,15 @@
      "ראש השנה בבית"
     ],
     "parts": [
-     589,
-     510
+     590,
+     509
     ],
     "price": 1099,
     "ret": "2027-10-21",
-    "seen": "2026-11-25",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/hnh823fkb8",
-     "https://kiwi.com/u/yumz2uryjy"
+     "https://kiwi.com/u/qw9z2mg4wh",
+     "https://kiwi.com/u/qcwf7uzwz3"
     ],
     "vac": 7,
     "via_out": [
@@ -13969,21 +13777,20 @@
    },
    "DEL-BOM": {
     "dep": "2027-10-08",
-    "nights": 14,
+    "nights": 15,
     "notes": [
-     "מפספס 1 יום חג",
      "ראש השנה בבית"
     ],
     "parts": [
-     419,
-     267
+     434,
+     264
     ],
-    "price": 686,
-    "ret": "2027-10-22",
-    "seen": "2026-11-25",
+    "price": 698,
+    "ret": "2027-10-23",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/7xkchzbh5d",
-     "https://kiwi.com/u/duqwtvzh6q"
+     "https://kiwi.com/u/943dpukmmz",
+     "https://kiwi.com/u/mp5hp3tp8k"
     ],
     "vac": 3,
     "via_out": [
@@ -14021,22 +13828,22 @@
     ]
    },
    "GOI-DEL": {
-    "dep": "2027-10-04",
-    "nights": 18,
+    "dep": "2027-10-02",
+    "nights": 19,
     "notes": [
-     "מפספס 1 יום חג",
+     "מפספס 2 ימי חג",
      "ראש השנה בבית"
     ],
     "parts": [
-     457,
-     251
+     450,
+     260
     ],
-    "price": 708,
-    "ret": "2027-10-22",
-    "seen": "2026-11-25",
+    "price": 710,
+    "ret": "2027-10-21",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/rbujn4fspb",
-     "https://kiwi.com/u/7gz3np4mkz"
+     "https://kiwi.com/u/72374ch7uq",
+     "https://kiwi.com/u/q6tbtm663m"
     ],
     "vac": 7,
     "via_out": [
@@ -14048,27 +13855,25 @@
     ]
    },
    "HAN-DAD": {
-    "dep": "2027-09-24",
-    "nights": 15,
+    "dep": "2027-10-04",
+    "nights": 17,
     "notes": [
-     "ערב סוכות בבית"
+     "מפספס 2 ימי חג",
+     "ראש השנה בבית"
     ],
     "parts": [
-     561,
-     587
+     497,
+     631
     ],
-    "price": 1148,
-    "ret": "2027-10-09",
-    "seen": "2026-11-14",
+    "price": 1128,
+    "ret": "2027-10-21",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/x6hkx7",
-     "https://kiwi.com/u/82h4jh"
+     "https://kiwi.com/u/vh5b42u7wu",
+     "https://kiwi.com/u/5qcc4zt25v"
     ],
-    "vac": 9,
-    "via_out": [
-     "DXB",
-     "BOM"
-    ],
+    "vac": 7,
+    "via_out": [],
     "via_ret": [
      "SIN",
      "ATH"
@@ -14082,15 +13887,15 @@
      "ראש השנה בבית"
     ],
     "parts": [
-     478,
-     510
+     497,
+     509
     ],
-    "price": 988,
+    "price": 1006,
     "ret": "2027-10-21",
-    "seen": "2026-11-25",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/9q2h4c4sru",
-     "https://kiwi.com/u/zn4n3xn4bc"
+     "https://kiwi.com/u/qtfjyjr7m2",
+     "https://kiwi.com/u/kk6vgp4x9t"
     ],
     "vac": 7,
     "via_out": [],
@@ -14101,21 +13906,21 @@
    },
    "HKT-BKK": {
     "dep": "2027-10-06",
-    "nights": 15,
+    "nights": 16,
     "notes": [
-     "מפספס 2 ימי חג",
+     "מפספס 1 יום חג",
      "ראש השנה בבית"
     ],
     "parts": [
-     519,
-     454
+     502,
+     440
     ],
-    "price": 973,
-    "ret": "2027-10-21",
-    "seen": "2026-11-25",
+    "price": 942,
+    "ret": "2027-10-22",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/r5mskhphwz",
-     "https://kiwi.com/u/ndjqx49ym8"
+     "https://kiwi.com/u/2cghphrdcw",
+     "https://kiwi.com/u/d8gqunbhdw"
     ],
     "vac": 5,
     "via_out": [
@@ -14154,25 +13959,23 @@
     ]
    },
    "KIX-HND": {
-    "dep": "2027-10-17",
-    "nights": 17,
+    "dep": "2027-10-10",
+    "nights": 14,
     "notes": [
-     "מפספס 2 ימי חג",
-     "ראש השנה בבית",
-     "ערב סוכות בבית"
+     "ראש השנה בבית"
     ],
     "parts": [
      652,
-     659
+     641
     ],
-    "price": 1311,
-    "ret": "2027-11-03",
-    "seen": "2026-11-25",
+    "price": 1293,
+    "ret": "2027-10-24",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/uht7xsk7wc",
-     "https://kiwi.com/u/smbuj8zsnj"
+     "https://kiwi.com/u/fc9h8vdds9",
+     "https://kiwi.com/u/uwduttjxvx"
     ],
-    "vac": 9,
+    "vac": 4,
     "via_out": [
      "ADD",
      "ICN"
@@ -14182,30 +13985,30 @@
     ]
    },
    "KIX-NRT": {
-    "dep": "2027-09-25",
-    "nights": 15,
+    "dep": "2027-10-04",
+    "nights": 17,
     "notes": [
-     "ערב סוכות בבית"
+     "מפספס 2 ימי חג",
+     "ראש השנה בבית"
     ],
     "parts": [
-     668,
-     699
+     718,
+     551
     ],
-    "price": 1367,
-    "ret": "2027-10-10",
-    "seen": "2026-11-14",
+    "price": 1269,
+    "ret": "2027-10-21",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/ykyw57d",
-     "https://kiwi.com/u/3skkw6h"
+     "https://kiwi.com/u/4j5hmz7fzq",
+     "https://kiwi.com/u/cuj8n5qhfw"
     ],
-    "vac": 9,
+    "vac": 7,
     "via_out": [
-     "VIE",
-     "SIN"
+     "HAN"
     ],
     "via_ret": [
-     "AUH",
-     "OTP"
+     "SIN",
+     "ATH"
     ]
    },
    "NRT-KIX": {
@@ -14235,24 +14038,24 @@
     ]
    },
    "SGN-HAN": {
-    "dep": "2027-10-04",
-    "nights": 17,
+    "dep": "2027-10-08",
+    "nights": 14,
     "notes": [
-     "מפספס 2 ימי חג",
+     "מפספס 1 יום חג",
      "ראש השנה בבית"
     ],
     "parts": [
-     542,
-     538
+     541,
+     427
     ],
-    "price": 1080,
-    "ret": "2027-10-21",
-    "seen": "2026-11-25",
+    "price": 968,
+    "ret": "2027-10-22",
+    "seen": "2026-11-27",
     "urls": [
-     "https://kiwi.com/u/ng4qw6j28d",
-     "https://kiwi.com/u/bgc3tu6pdj"
+     "https://kiwi.com/u/zhuc78mbk8",
+     "https://kiwi.com/u/7nqn284nwd"
     ],
-    "vac": 7,
+    "vac": 3,
     "via_out": [
      "GYD",
      "BOM"
