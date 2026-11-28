@@ -177,5 +177,89 @@
   },
   "prev": 792,
   "type": "low"
+ },
+ {
+  "at": "2026-11-28T13:49:20+00:00",
+  "group": "DAD",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Aegean",
+    "Arkia",
+    "Scoot",
+    "VietJet Air"
+   ],
+   "dep": "2027-10-04",
+   "dest": "DAD",
+   "europe": true,
+   "hours_out": 16.2,
+   "hours_ret": 43.8,
+   "legs_out": [
+    {
+     "airline": "Arkia",
+     "arr": "2027-10-05T15:30:00",
+     "dep": "2027-10-04T23:55:00",
+     "flight": "IZ595",
+     "from": "TLV",
+     "to": "HAN"
+    },
+    {
+     "airline": "VietJet Air",
+     "arr": "2027-10-05T20:05:00",
+     "dep": "2027-10-05T18:45:00",
+     "flight": "VJ521",
+     "from": "HAN",
+     "to": "DAD"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-21T14:45:00",
+     "dep": "2027-10-21T10:55:00",
+     "flight": "TR511",
+     "from": "DAD",
+     "to": "SIN"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-10-22T08:15:00",
+     "dep": "2027-10-22T01:15:00",
+     "flight": "TR50",
+     "from": "SIN",
+     "to": "ATH"
+    },
+    {
+     "airline": "Aegean",
+     "arr": "2027-10-23T02:45:00",
+     "dep": "2027-10-23T00:40:00",
+     "flight": "A3928",
+     "from": "ATH",
+     "to": "TLV"
+    }
+   ],
+   "nights": 17,
+   "notes": [
+    "מפספס 2 ימי חג",
+    "ראש השנה בבית"
+   ],
+   "price": 1081,
+   "ret": "2027-10-21",
+   "seen": "2026-11-28",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/kpj73rk2mp",
+   "vac": 7,
+   "via_out": [
+    "HAN"
+   ],
+   "via_ret": [
+    "SIN",
+    "ATH"
+   ]
+  },
+  "prev": 1194,
+  "type": "low"
  }
 ]
