@@ -261,5 +261,164 @@
   },
   "prev": 1194,
   "type": "low"
+ },
+ {
+  "at": "2026-11-28T16:01:07+00:00",
+  "group": "TYO",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "airlines": [
+    "Ethiopian Airlines"
+   ],
+   "dep": "2027-04-18",
+   "dest": "NRT",
+   "europe": false,
+   "hours_out": 21.8,
+   "hours_ret": 24.1,
+   "legs_out": [
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-04-18T21:05:00",
+     "dep": "2027-04-18T15:50:00",
+     "flight": "ET449",
+     "from": "TLV",
+     "to": "ADD"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-04-19T16:00:00",
+     "dep": "2027-04-18T22:35:00",
+     "flight": "ET672",
+     "from": "ADD",
+     "to": "ICN"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-04-19T19:40:00",
+     "dep": "2027-04-19T17:15:00",
+     "flight": "ET672",
+     "from": "ICN",
+     "to": "NRT"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-05-08T23:05:00",
+     "dep": "2027-05-08T20:40:00",
+     "flight": "ET673",
+     "from": "NRT",
+     "to": "ICN"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-05-09T06:55:00",
+     "dep": "2027-05-09T00:20:00",
+     "flight": "ET673",
+     "from": "ICN",
+     "to": "ADD"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-05-09T14:45:00",
+     "dep": "2027-05-09T11:40:00",
+     "flight": "ET448",
+     "from": "ADD",
+     "to": "TLV"
+    }
+   ],
+   "nights": 20,
+   "notes": [],
+   "price": 997,
+   "ret": "2027-05-08",
+   "seen": "2026-11-28",
+   "separate": false,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/pw3dvc77tc",
+   "vac": 9,
+   "via_out": [
+    "ADD",
+    "ICN"
+   ],
+   "via_ret": [
+    "ICN",
+    "ADD"
+   ]
+  },
+  "prev": 1034,
+  "type": "low"
+ },
+ {
+  "at": "2026-11-28T16:01:07+00:00",
+  "group": "DEL",
+  "h": "tishrei-5788",
+  "hname": "חגי תשרי תשפ״ח",
+  "o": {
+   "airlines": [
+    "Ethiopian Airlines"
+   ],
+   "dep": "2027-10-05",
+   "dest": "DEL",
+   "europe": false,
+   "hours_out": 31.0,
+   "hours_ret": 14.8,
+   "legs_out": [
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-10-05T21:05:00",
+     "dep": "2027-10-05T15:50:00",
+     "flight": "ET449",
+     "from": "TLV",
+     "to": "ADD"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-10-07T01:20:00",
+     "dep": "2027-10-06T16:05:00",
+     "flight": "ET688",
+     "from": "ADD",
+     "to": "DEL"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-10-21T06:30:00",
+     "dep": "2027-10-21T02:30:00",
+     "flight": "ET687",
+     "from": "DEL",
+     "to": "ADD"
+    },
+    {
+     "airline": "Ethiopian Airlines",
+     "arr": "2027-10-21T14:45:00",
+     "dep": "2027-10-21T11:40:00",
+     "flight": "ET448",
+     "from": "ADD",
+     "to": "TLV"
+    }
+   ],
+   "nights": 16,
+   "notes": [
+    "מפספס 2 ימי חג",
+    "ראש השנה בבית"
+   ],
+   "price": 576,
+   "ret": "2027-10-21",
+   "seen": "2026-11-28",
+   "separate": false,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/prg6jzxzb9",
+   "vac": 6,
+   "via_out": [
+    "ADD"
+   ],
+   "via_ret": [
+    "ADD"
+   ]
+  },
+  "prev": 661,
+  "type": "low"
  }
 ]
