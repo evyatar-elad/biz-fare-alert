@@ -88,5 +88,94 @@
   },
   "prev": 890,
   "type": "low"
+ },
+ {
+  "at": "2026-11-28T12:05:33+00:00",
+  "group": "GOI",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "airlines": [
+    "Arkia",
+    "Azerbaijan Airlines",
+    "IndiGo Airlines"
+   ],
+   "dep": "2027-04-15",
+   "dest": "GOI",
+   "europe": false,
+   "hours_out": 34.9,
+   "hours_ret": 17.7,
+   "legs_out": [
+    {
+     "airline": "Arkia",
+     "arr": "2027-04-15T14:15:00",
+     "dep": "2027-04-15T10:05:00",
+     "flight": "IZ321",
+     "from": "TLV",
+     "to": "GYD"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-04-16T01:25:00",
+     "dep": "2027-04-15T19:30:00",
+     "flight": "J2515",
+     "from": "GYD",
+     "to": "BOM"
+    },
+    {
+     "airline": "IndiGo Airlines",
+     "arr": "2027-04-16T23:30:00",
+     "dep": "2027-04-16T22:15:00",
+     "flight": "6E5106",
+     "from": "BOM",
+     "to": "GOI"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "IndiGo Airlines",
+     "arr": "2027-05-04T01:10:00",
+     "dep": "2027-05-03T22:30:00",
+     "flight": "6E5008",
+     "from": "GOI",
+     "to": "DEL"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-05-04T08:20:00",
+     "dep": "2027-05-04T05:10:00",
+     "flight": "J2508",
+     "from": "DEL",
+     "to": "GYD"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-05-04T13:40:00",
+     "dep": "2027-05-04T11:15:00",
+     "flight": "J2269",
+     "from": "GYD",
+     "to": "TLV"
+    }
+   ],
+   "nights": 18,
+   "notes": [],
+   "price": 788,
+   "ret": "2027-05-03",
+   "seen": "2026-11-28",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/ft3n2skhzj",
+   "vac": 7,
+   "via_out": [
+    "GYD",
+    "BOM"
+   ],
+   "via_ret": [
+    "DEL",
+    "GYD"
+   ]
+  },
+  "prev": 792,
+  "type": "low"
  }
 ]
