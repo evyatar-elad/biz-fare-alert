@@ -1,1 +1,92 @@
-[]
+[
+ {
+  "at": "2026-11-28T09:49:36+00:00",
+  "group": "SGN",
+  "h": "pesach-5787",
+  "hname": "פסח תשפ״ז",
+  "o": {
+   "airlines": [
+    "Azerbaijan Airlines",
+    "SKY express",
+    "Scoot",
+    "VietJet Air"
+   ],
+   "dep": "2027-04-17",
+   "dest": "SGN",
+   "europe": true,
+   "hours_out": 39.5,
+   "hours_ret": 22.2,
+   "legs_out": [
+    {
+     "airline": "SKY express",
+     "arr": "2027-04-18T01:45:00",
+     "dep": "2027-04-17T23:30:00",
+     "flight": "GQ721",
+     "from": "TLV",
+     "to": "ATH"
+    },
+    {
+     "airline": "Scoot",
+     "arr": "2027-04-19T01:30:00",
+     "dep": "2027-04-18T09:30:00",
+     "flight": "TR51",
+     "from": "ATH",
+     "to": "SIN"
+    },
+    {
+     "airline": "VietJet Air",
+     "arr": "2027-04-19T19:00:00",
+     "dep": "2027-04-19T17:55:00",
+     "flight": "VJ814",
+     "from": "SIN",
+     "to": "SGN"
+    }
+   ],
+   "legs_ret": [
+    {
+     "airline": "VietJet Air",
+     "arr": "2027-05-03T22:55:00",
+     "dep": "2027-05-03T19:25:00",
+     "flight": "VJ895",
+     "from": "SGN",
+     "to": "DEL"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-05-04T08:20:00",
+     "dep": "2027-05-04T05:10:00",
+     "flight": "J2508",
+     "from": "DEL",
+     "to": "GYD"
+    },
+    {
+     "airline": "Azerbaijan Airlines",
+     "arr": "2027-05-04T13:40:00",
+     "dep": "2027-05-04T11:15:00",
+     "flight": "J2269",
+     "from": "GYD",
+     "to": "TLV"
+    }
+   ],
+   "nights": 16,
+   "notes": [],
+   "price": 888,
+   "ret": "2027-05-03",
+   "seen": "2026-11-28",
+   "separate": true,
+   "src": "kiwi",
+   "url": "https://kiwi.com/u/m7nwg7bc75",
+   "vac": 6,
+   "via_out": [
+    "ATH",
+    "SIN"
+   ],
+   "via_ret": [
+    "DEL",
+    "GYD"
+   ]
+  },
+  "prev": 890,
+  "type": "low"
+ }
+]
