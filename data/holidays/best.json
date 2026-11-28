@@ -3350,6 +3350,7 @@
      "nights": 16,
      "price": 2335,
      "seen": "2026-11-26",
+     "stale": true,
      "vac": 7,
      "via": [
       [
@@ -6594,6 +6595,7 @@
      "nights": 21,
      "price": 3857,
      "seen": "2026-11-26",
+     "stale": true,
      "vac": 10,
      "via": [
       [
